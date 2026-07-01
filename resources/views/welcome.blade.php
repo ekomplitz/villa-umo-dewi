@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <style>
+<style>
         * { 
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif; 
             margin: 0;
@@ -29,8 +29,6 @@
             --primary-hover: #16a34a;
             --available-color: #22c55e;
             --occupied-color: #ef4444;
-            --nav-text-color: #ffffff;
-            --nav-text-scrolled: #14532d;
         }
         
         .dark-mode {
@@ -46,8 +44,6 @@
             --primary-hover: #047857;
             --available-color: #22c55e;
             --occupied-color: #ef4444;
-            --nav-text-color: #ffffff;
-            --nav-text-scrolled: #dcfce7;
         }
         
         body {
@@ -55,66 +51,52 @@
             color: var(--text-body);
             transition: all 0.3s ease;
             overflow-x: hidden;
+            padding-top: 0 !important; /* Menghapus padding-top default dari Tailwind */
         }
         
-        /* ========== NAVBAR ========== */
+        /* ========== NAVBAR - SOLID (TIDAK TRANSPARAN) ========== */
         nav {
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            background-color: transparent;
             transition: all 0.3s ease;
+            box-shadow: var(--nav-shadow);
             padding: 16px 32px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         nav .nav-links a,
         nav h1,
         nav h1 i,
         nav .menu-btn {
-            color: var(--nav-text-color);
+            color: var(--text-body);
             transition: color 0.3s ease;
             text-decoration: none;
         }
 
+        nav .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
         nav .lang-switch {
-            background-color: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
         }
 
         nav .lang-option {
-            color: var(--nav-text-color);
+            color: var(--text-body);
         }
 
         nav .lang-option.active {
             background-color: var(--primary-color);
             color: white;
         }
-
-        nav.scrolled {
-            background-color: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--nav-shadow);
-        }
-
-        nav.scrolled .nav-links a,
-        nav.scrolled h1,
-        nav.scrolled h1 i,
-        nav.scrolled .menu-btn {
-            color: var(--nav-text-scrolled);
-        }
-
-        nav.scrolled .lang-switch {
-            background-color: var(--bg-card);
-            border-color: var(--border-color);
-        }
-
-        nav.scrolled .lang-option {
-            color: var(--text-body);
-        }
         
-        /* ========== SWITCHER - UKURAN KECIL ========== */
+        /* ========== SWITCHER ========== */
         .lang-switch {
             display: inline-flex;
             align-items: center;
@@ -210,53 +192,33 @@
             cursor: pointer; 
             background: none; 
             border: none; 
+            color: var(--text-body);
         }
         
-        /* ========== RESPONSIVE MOBILE ========== */
         @media (max-width: 768px) {
             nav {
-                background-color: rgba(0, 0, 0, 0.5) !important;
-                backdrop-filter: blur(8px) !important;
                 padding: 12px 20px !important;
+            }
+            
+            nav h1 {
+                font-size: 1rem !important;
             }
             
             nav .nav-links a,
             nav h1,
             nav h1 i,
             nav .menu-btn {
-                color: white !important;
-                text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-            }
-            
-            nav.scrolled {
-                background-color: var(--nav-bg) !important;
-                backdrop-filter: blur(10px) !important;
-            }
-            
-            nav.scrolled .nav-links a,
-            nav.scrolled h1,
-            nav.scrolled h1 i,
-            nav.scrolled .menu-btn {
-                color: var(--nav-text-scrolled) !important;
-                text-shadow: none;
+                color: var(--text-body) !important;
+                text-shadow: none !important;
             }
             
             nav .lang-switch {
-                background-color: rgba(0, 0, 0, 0.5) !important;
-                border-color: rgba(255, 255, 255, 0.3) !important;
-            }
-            
-            nav.scrolled .lang-switch {
-                background-color: var(--bg-card) !important;
-                border-color: var(--border-color) !important;
+                background-color: rgba(0, 0, 0, 0.05);
+                border-color: var(--border-color);
             }
             
             nav .lang-option {
-                color: white !important;
-            }
-            
-            nav.scrolled .lang-option {
-                color: var(--text-body) !important;
+                color: var(--text-body);
             }
             
             .nav-links {
@@ -296,11 +258,6 @@
             .theme-switch {
                 width: 48px !important;
                 height: 28px !important;
-            }
-            
-            .theme-slider {
-                border-radius: 28px !important;
-                padding: 0 5px !important;
             }
             
             .theme-slider:before {
@@ -355,19 +312,31 @@
             }
         }
 
-        /* ========== HERO SECTION - FULL 1 LAYAR ========== */
+        /* ========== HERO SECTION ========== */
         html {
             scroll-behavior: smooth;
         }
 
+        section[id] {
+            scroll-margin-top: 80px;
+        }
+
+        #home {
+            scroll-margin-top: 0;
+        }
+
         .hero-section {
             position: relative;
-            height: 100vh;
+            height: 100vh !important;
+            min-height: 100vh !important;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            background-color: #000;
         }
 
         .hero-background {
@@ -380,6 +349,7 @@
             background-position: center;
             background-repeat: no-repeat;
             transition: opacity 1s ease-in-out;
+            z-index: 0;
         }
         
         .hero-background.active { opacity: 1; }
@@ -391,7 +361,7 @@
             width: 100%;
             padding: 0 20px;
         }
-        
+
         .hero-content > div {
             max-width: 600px;
             margin: 0 auto;
@@ -506,7 +476,6 @@
             transform: scale(1.03);
         }
 
-        /* Text justify */
         .text-justify {
             text-align: justify;
         }
@@ -554,7 +523,7 @@
     </div>
 </nav>
 
-<!-- HERO SECTION - FULL 1 LAYAR (5 GAMBAR) -->
+<!-- HERO SECTION -->
 <section id="home" class="hero-section">
     <div class="hero-background active" style="background-image: url('{{ asset('images/image_1.jpg') }}')"></div>
     <div class="hero-background" style="background-image: url('{{ asset('images/image_2.jpg') }}')"></div>
@@ -564,9 +533,9 @@
 
     <div class="hero-content text-center">
         <div>
-            <h2 data-hero-title>Enjoy Your Stay at Villa Umo Dewi</h2>
-            <p data-hero-desc>Relax in the middle of rice fields, beautiful view, calm vibes. Perfect escape from your toxic reality!</p>
-            <a href="{{ route('booking') }}" data-btn class="btn-primary px-6 py-3 text-white inline-block shadow-lg">Book Now</a>
+            <h2 data-hero-title></h2>
+            <p data-hero-desc></p>
+            <a href="{{ route('booking') }}" data-btn class="btn-primary px-6 py-3 text-white inline-block shadow-lg"></a>
         </div>
     </div>
     
@@ -591,115 +560,118 @@
                 <img src="{{ asset('images/about_villa.jpg') }}" alt="Villa Umo Dewi" class="w-full h-[400px] md:h-[500px] object-cover">
             </div>
             <div>
-                <h1 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text-body)" data-villa-page-title>Villa Umo Dewi</h1>
-                <p class="text-lg mb-6 leading-relaxed text-justify" style="color: var(--text-card)" data-villa-page-desc>Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali.</p>
-
+                <h1 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text-body)" data-villa-page-title></h1>
+                <p class="text-lg mb-6 leading-relaxed text-justify" style="color: var(--text-card)" data-villa-page-desc></p>
                 <div class="space-y-4">
-                    <p class="leading-relaxed text-justify" style="color: var(--text-card)" data-villa-desc-text>Villa Umo Dewi offers a unique stay experience with a modern concept that blends perfectly with nature. Located in the middle of green rice fields, this villa is designed to provide maximum comfort for all guests. The architecture combines traditional Balinese elements with contemporary design, creating a harmonious atmosphere that soothes the soul.</p>
-                    
-                    <p class="leading-relaxed text-justify" style="color: var(--text-card)" data-villa-desc-text2>Every detail is carefully considered, from the selection of natural materials to the room layout that optimizes air circulation and natural lighting. The open-plan design allows fresh air to flow freely, while large windows frame stunning views of the surrounding rice paddies.</p>
+                    <p class="leading-relaxed text-justify" style="color: var(--text-card)" data-villa-desc-text></p>
+                    <p class="leading-relaxed text-justify" style="color: var(--text-card)" data-villa-desc-text2></p>
                 </div>
             </div>
         </div>
 
+        <!-- BUNGALOW SECTION - Dynamic dari Database -->
         <div class="mb-16">
             <div class="text-center mb-8">
-                <i class="fas fa-bed text-3xl mb-2 mt-7" style="color: var(--primary-color)"></i>
-                <h2 class="text-3xl font-bold" style="color: var(--text-body)" data-villa-rooms-title>Available Rooms</h2>
-                <p class="mt-2" style="color: var(--text-card)" data-villa-rooms-desc>Room status may change at any time</p>
+                <i class="fas fa-bed text-3xl mb-2" style="color: var(--primary-color)"></i>
+                <h2 class="text-3xl font-bold" style="color: var(--text-body)" data-villa-rooms-title></h2>
+                <p class="mt-2" style="color: var(--text-card)" data-villa-rooms-desc></p>
             </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="room-card rounded-2xl overflow-hidden shadow-lg" style="background-color: var(--bg-card)" data-room-id="1" data-room-status="available">
-                    <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="Deluxe Room">
-                    <div class="p-4 text-center">
-                        <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: var(--occupied-color)"></i>
-                        <h3 class="font-bold text-lg" style="color: var(--text-body)">Bungalow 1</h3>
-                        <p class="text-sm mt-1" style="color: var(--text-card)" data-room-desc-1>Spacious room with rice field view</p>
-                        <p class="font-bold mt-2" style="color: var(--primary-color)">Rp 250.000<span class="text-sm font-normal">/night</span></p>
-                        <div class="mt-3 flex items-center justify-center gap-2">
-                            <span class="status-badge available"></span>
-                            <span class="room-status-text text-sm font-semibold" style="color: var(--available-color)">Available</span>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="roomsContainer">
+                @if(isset($bungalows) && $bungalows->count() > 0)
+                    @foreach($bungalows as $bungalow)
+                    <div class="room-card rounded-2xl overflow-hidden shadow-lg transition duration-300 hover:scale-105" 
+                        style="background-color: var(--bg-card)"
+                        data-bungalow="{{ $bungalow->code }}"
+                        data-desc-id="{{ $bungalow->description_id }}"
+                        data-desc-en="{{ $bungalow->description_en }}">
+                        <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow->name }}">
+                        <div class="p-4 text-center">
+                            <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: {{ $bungalow->status == 'active' ? 'var(--primary-color)' : 'var(--occupied-color)' }}"></i>
+                            <h3 class="font-bold text-lg" style="color: var(--text-body)">{{ $bungalow->name }}</h3>
+                            <p class="text-sm mt-1 bungalow-desc" style="color: var(--text-card)"></p>
+                            <p class="font-bold mt-2" style="color: var(--primary-color)">Rp {{ number_format($bungalow->price, 0, ',', '.') }}<span class="text-sm font-normal">/malam</span></p>
+                            <div class="mt-3 flex items-center justify-center gap-2">
+                                <span class="status-badge {{ $bungalow->status == 'active' ? 'available' : 'occupied' }}"></span>
+                                <span class="room-status-text text-sm font-semibold" 
+                                    style="color: {{ $bungalow->status == 'active' ? 'var(--available-color)' : 'var(--occupied-color)' }}">
+                                    {{ $bungalow->status == 'active' ? 'Tersedia' : 'Tidak Tersedia' }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="room-card rounded-2xl overflow-hidden shadow-lg" style="background-color: var(--bg-card)" data-room-id="2" data-room-status="occupied">
-                    <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="Family Room">
-                    <div class="p-4 text-center">
-                        <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: var(--occupied-color)"></i>
-                        <h3 class="font-bold text-lg" style="color: var(--text-body)">Bungalow 2</h3>
-                        <p class="text-sm mt-1" style="color: var(--text-card)" data-room-desc-2>Perfect for family</p>
-                        <p class="font-bold mt-2" style="color: var(--primary-color)">Rp 250.000<span class="text-sm font-normal">/night</span></p>
-                        <div class="mt-3 flex items-center justify-center gap-2">
-                            <span class="status-badge occupied"></span>
-                            <span class="room-status-text text-sm font-semibold" style="color: var(--occupied-color)">Occupied</span>
+                    @endforeach
+                @else
+                    @php
+                        $fallbackBungalows = [
+                            ['name' => 'Bungalow 1', 'description_id' => 'Kamar dengan view sawah', 'description_en' => 'Spacious room with rice field view', 'price' => 250000, 'status' => 'active'],
+                            ['name' => 'Bungalow 2', 'description_id' => 'Cocok untuk keluarga', 'description_en' => 'Perfect for family', 'price' => 250000, 'status' => 'active'],
+                            ['name' => 'Bungalow 3', 'description_id' => 'Kamar dengan balkon', 'description_en' => 'Premium room with balcony', 'price' => 500000, 'status' => 'active'],
+                            ['name' => 'Bungalow 4', 'description_id' => 'Kamar standar nyaman', 'description_en' => 'Comfortable economy room', 'price' => 500000, 'status' => 'active'],
+                        ];
+                    @endphp
+                    @foreach($fallbackBungalows as $bungalow)
+                    <div class="room-card rounded-2xl overflow-hidden shadow-lg transition duration-300 hover:scale-105" 
+                         style="background-color: var(--bg-card)">
+                        <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow['name'] }}">
+                        <div class="p-4 text-center">
+                            <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: var(--primary-color)"></i>
+                            <h3 class="font-bold text-lg" style="color: var(--text-body)">{{ $bungalow['name'] }}</h3>
+                            <p class="text-sm mt-1" style="color: var(--text-card)">
+                                @php
+                                    $lang = session('lang', 'id');
+                                @endphp
+                                @if($lang == 'en')
+                                    {{ $bungalow['description_en'] }}
+                                @else
+                                    {{ $bungalow['description_id'] }}
+                                @endif
+                            </p>
+                            <p class="font-bold mt-2" style="color: var(--primary-color)">Rp {{ number_format($bungalow['price'], 0, ',', '.') }}<span class="text-sm font-normal">/malam</span></p>
+                            <div class="mt-3 flex items-center justify-center gap-2">
+                                <span class="status-badge available"></span>
+                                <span class="room-status-text text-sm font-semibold" style="color: var(--available-color)">Tersedia</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="room-card rounded-2xl overflow-hidden shadow-lg" style="background-color: var(--bg-card)" data-room-id="3" data-room-status="available">
-                    <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="Suite Room">
-                    <div class="p-4 text-center">
-                        <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: var(--occupied-color)"></i>
-                        <h3 class="font-bold text-lg" style="color: var(--text-body)">Bungalow 3</h3>
-                        <p class="text-sm mt-1" style="color: var(--text-card)" data-room-desc-3>Premium room with balcony</p>
-                        <p class="font-bold mt-2" style="color: var(--primary-color)">Rp 500.000<span class="text-sm font-normal">/night</span></p>
-                        <div class="mt-3 flex items-center justify-center gap-2">
-                            <span class="status-badge available"></span>
-                            <span class="room-status-text text-sm font-semibold" style="color: var(--available-color)">Available</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="room-card rounded-2xl overflow-hidden shadow-lg" style="background-color: var(--bg-card)" data-room-id="4" data-room-status="occupied">
-                    <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="Standard Room">
-                    <div class="p-4 text-center">
-                        <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: var(--occupied-color)"></i>
-                        <h3 class="font-bold text-lg" style="color: var(--text-body)">Bungalow 4</h3>
-                        <p class="text-sm mt-1" style="color: var(--text-card)" data-room-desc-4>Comfortable economy room</p>
-                        <p class="font-bold mt-2" style="color: var(--primary-color)">Rp 500.000<span class="text-sm font-normal">/night</span></p>
-                        <div class="mt-3 flex items-center justify-center gap-2">
-                            <span class="status-badge occupied"></span>
-                            <span class="room-status-text text-sm font-semibold" style="color: var(--occupied-color)">Occupied</span>
-                        </div>
-                    </div>
-                </div>
+                    @endforeach
+                @endif
             </div>
             
             <div class="flex justify-center gap-6 mt-6">
                 <div class="flex items-center gap-2">
                     <span class="status-badge available"></span>
-                    <span class="text-sm" style="color: var(--text-card)">Available</span>
+                    <span class="text-sm" style="color: var(--text-card)">Tersedia / Available</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="status-badge occupied"></span>
-                    <span class="text-sm" style="color: var(--text-card)">Occupied</span>
+                    <span class="text-sm" style="color: var(--text-card)">Tidak Tersedia / Unavailable</span>
                 </div>
             </div>
         </div>
 
+        <!-- FEATURES SECTION - 3 CARD -->
         <div class="grid md:grid-cols-3 gap-6 py-8">
-            <div class="card-bg p-6 rounded-2xl border text-center transition hover:scale-105">
+            <div class="card-bg p-6 rounded-2xl border card-text text-center transform transition hover:scale-105">
                 <i class="fas fa-tree feature-icon"></i>
-                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature1-title>Natural Rice Field View</h3>
-                <p class="card-text" data-feature1-desc>Green rice field views that soothe your soul, perfect for healing from city fatigue.</p>
+                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature1-title></h3>
+                <p data-feature1-desc></p>
             </div>
-            <div class="card-bg p-6 rounded-2xl border text-center transition hover:scale-105">
+            <div class="card-bg p-6 rounded-2xl border card-text text-center transform transition hover:scale-105">
                 <i class="fas fa-bed feature-icon"></i>
-                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature2-title>Complete Facilities</h3>
-                <p class="card-text" data-feature2-desc>Comfortable beds, cool AC, and a village atmosphere that makes you want to stay forever.</p>
+                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature2-title></h3>
+                <p data-feature2-desc></p>
             </div>
-            <div class="card-bg p-6 rounded-2xl border text-center transition hover:scale-105">
+            <div class="card-bg p-6 rounded-2xl border card-text text-center transform transition hover:scale-105">
                 <i class="fas fa-utensils feature-icon"></i>
-                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature3-title>Local Cuisine</h3>
-                <p class="card-text" data-feature3-desc>Enjoy authentic village cuisine with fresh ingredients from the surrounding rice fields.</p>
+                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature3-title></h3>
+                <p data-feature3-desc></p>
             </div>
         </div>
 
         <div class="text-center pt-8">
             <a href="{{ route('booking') }}" class="btn-primary px-8 py-3 rounded-xl text-white inline-block shadow-lg font-semibold">
-                <i class="fas fa-calendar-check mr-2"></i> <span data-villa-book-now>Book Now</span>
+                <i class="fas fa-calendar-check mr-2"></i> <span data-villa-book-now></span>
             </a>
         </div>
     </div>
@@ -709,8 +681,8 @@
 <section class="px-6 md:px-10 py-16">
     <div class="text-center mb-12">
         <i class="fas fa-camera text-4xl mb-3" style="color: var(--primary-color)"></i>
-        <h2 class="text-3xl font-bold" style="color: var(--text-body)" data-gallery-title>Villa Gallery</h2>
-        <p class="card-text mt-2" data-gallery-desc>Real atmosphere of the villa and surrounding rice field views</p>
+        <h2 class="text-3xl font-bold" style="color: var(--text-body)" data-gallery-title></h2>
+        <p class="card-text mt-2" data-gallery-desc></p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
         <div class="rounded-2xl overflow-hidden h-48 md:h-64 shadow-lg hover:scale-105 transition duration-300">
@@ -735,8 +707,8 @@
 <section class="px-6 md:px-10 py-16 text-center rounded-3xl mx-4 md:mx-6" style="background-color: var(--bg-about)">
     <div class="max-w-4xl mx-auto">
         <i class="fas fa-tags text-4xl mb-4" style="color: var(--primary-color)"></i>
-        <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--text-body)" data-promo-title>🎉 Special Year-End Promo! 🎉</h2>
-        <p class="card-text max-w-2xl mx-auto mb-6 text-base md:text-lg" data-promo-desc>Get 30% discount for booking 3 nights or more! Don't miss out, limited promo!</p>
+        <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--text-body)" data-promo-title></h2>
+        <p class="card-text max-w-2xl mx-auto mb-6 text-base md:text-lg" data-promo-desc></p>
         <div class="flex justify-center gap-3 md:gap-4 flex-wrap">
             <div class="bg-green-500 text-white px-4 md:px-6 py-3 rounded-xl inline-flex items-center gap-2 shadow-lg">
                 <i class="fab fa-whatsapp fa-xl"></i>
@@ -754,19 +726,19 @@
 <section id="contact" class="px-6 md:px-10 py-16 text-center">
     <div class="max-w-4xl mx-auto">
         <i class="fas fa-leaf text-4xl mb-4" style="color: var(--primary-color)"></i>
-        <h2 class="text-3xl font-bold mb-4" style="color: var(--text-body)" data-about-title>About Villa Umo Dewi</h2>
-        <p class="card-text max-w-3xl mx-auto text-base md:text-lg leading-relaxed" data-about-desc>Villa Umo Dewi is a villa located in the middle of lush rice fields. Enjoy fresh air, green views, and calming natural sounds. Perfect for a staycation with family, friends, or your partner 💚</p>
+        <h2 class="text-3xl font-bold mb-4" style="color: var(--text-body)" data-about-title></h2>
+        <p class="card-text max-w-3xl mx-auto text-base md:text-lg leading-relaxed" data-about-desc></p>
         
         <div class="grid md:grid-cols-2 gap-6 mt-12 text-left">
             <div class="card-bg p-6 rounded-2xl border">
                 <i class="fas fa-map-marker-alt text-green-500 text-2xl mb-3"></i>
-                <h3 class="font-bold text-lg mb-2" data-address-title>Address</h3>
-                <p class="card-text" data-address-desc>Umo Dewi Tourism Village, Tegallalang District, Gianyar, Bali</p>
+                <h3 class="font-bold text-lg mb-2" data-address-title></h3>
+                <p class="card-text" data-address-desc></p>
             </div>
             <div class="card-bg p-6 rounded-2xl border">
                 <i class="fas fa-clock text-green-500 text-2xl mb-3"></i>
-                <h3 class="font-bold text-lg mb-2" data-hours-title>Operating Hours</h3>
-                <p class="card-text" data-hours-desc>Check-in: 02:00 PM WITA | Check-out: 12:00 PM WITA</p>
+                <h3 class="font-bold text-lg mb-2" data-hours-title></h3>
+                <p class="card-text" data-hours-desc></p>
             </div>
         </div>
     </div>
@@ -781,34 +753,27 @@
                 <i class="fab fa-facebook text-xl md:text-2xl hover:text-green-500 cursor-pointer transition"></i>
                 <i class="fab fa-tiktok text-xl md:text-2xl hover:text-green-500 cursor-pointer transition"></i>
             </div>
-            <p class="text-sm" data-footer-copyright>© 2026 Villa Umo Dewi | Developed by Kelompok Cihuyy</p>
-            <p class="text-xs" data-footer-address>Jl. Raya Umo Dewi No. 88, Bali, Indonesia</p>
+            <p class="text-sm" data-footer-copyright></p>
+            <p class="text-xs" data-footer-address></p>
         </div>
     </div>
 </footer>
 
 <script>
+    // ========== SCROLL FUNCTIONS ==========
     function scrollToTop() { 
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
     }
     
-    // PERBAIKAN: Fungsi scroll ke villa-page dengan posisi tepat
     function scrollToVillaPage() { 
-        const villaSection = document.getElementById('villa-page');
-        const navbar = document.getElementById('mainNav');
-        const navbarHeight = navbar.offsetHeight;
-        
-        // Dapatkan posisi elemen villa-page
-        const villaPosition = villaSection.getBoundingClientRect().top + window.pageYOffset;
-        
-        // Scroll ke posisi villa dengan offset navbar
-        window.scrollTo({
-            top: villaPosition - navbarHeight,
-            behavior: 'smooth'
-        });
+        const element = document.getElementById('villa-page');
+        const offset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
     
-    // Slideshow - 5 gambar
+    // ========== SLIDESHOW ==========
     let currentBgIndex = 0;
     const backgrounds = document.querySelectorAll('.hero-background');
     const bgDots = document.querySelectorAll('.bg-dot');
@@ -843,11 +808,14 @@
     }
     startSlideshow();
     
-    // Full height hero
+    // ========== FULL HEIGHT HERO ==========
     function setHeroFullHeight() {
         const hero = document.querySelector('.hero-section');
         if (hero) {
-            hero.style.height = window.innerHeight + 'px';
+            const windowHeight = window.innerHeight;
+            hero.style.height = windowHeight + 'px';
+            hero.style.minHeight = windowHeight + 'px';
+            hero.style.maxHeight = windowHeight + 'px';
         }
     }
     
@@ -857,7 +825,7 @@
         setTimeout(setHeroFullHeight, 100);
     });
     
-    // Theme
+    // ========== THEME ==========
     function setTheme(theme) {
         const html = document.documentElement;
         if (theme === 'dark') html.classList.add('dark-mode');
@@ -872,7 +840,19 @@
         setTheme(isDark ? 'light' : 'dark');
     }
     
-    // Translations
+    // ========== FUNGSI UPDATE BUNGALOW DESKRIPSI ==========
+    function updateBungalowDescriptions(lang) {
+        document.querySelectorAll('.room-card').forEach(card => {
+            const descEl = card.querySelector('.bungalow-desc');
+            if (descEl) {
+                const descId = card.dataset.descId || '';
+                const descEn = card.dataset.descEn || '';
+                descEl.innerText = lang === 'en' ? descEn : descId;
+            }
+        });
+    }
+    
+    // ========== TRANSLATIONS ==========
     const translations = {
         id: {
             home: "Home",
@@ -907,10 +887,6 @@
             villa_rooms_title: "Kamar yang Tersedia",
             villa_rooms_desc: "Status kamar dapat berubah sewaktu-waktu",
             villa_book_now: "Booking Sekarang",
-            room_desc_1: "Kamar luas dengan view sawah",
-            room_desc_2: "Cocok untuk keluarga",
-            room_desc_3: "Kamar premium dengan balkon",
-            room_desc_4: "Kamar ekonomis nyaman",
         },
         en: {
             home: "Home",
@@ -945,13 +921,10 @@
             villa_rooms_title: "Available Rooms",
             villa_rooms_desc: "Room status may change at any time",
             villa_book_now: "Book Now",
-            room_desc_1: "Spacious room with rice field view",
-            room_desc_2: "Perfect for family",
-            room_desc_3: "Premium room with balcony",
-            room_desc_4: "Comfortable economy room",
         }
     };
     
+    // ========== APPLY LANGUAGE ==========
     function applyLang(lang) {
         const t = translations[lang];
         if (!t) return;
@@ -988,34 +961,12 @@
         document.querySelector('[data-villa-rooms-title]').innerText = t.villa_rooms_title;
         document.querySelector('[data-villa-rooms-desc]').innerText = t.villa_rooms_desc;
         document.querySelector('[data-villa-book-now]').innerText = t.villa_book_now;
-
-        if (document.querySelector('[data-room-desc-1]')) {
-            document.querySelector('[data-room-desc-1]').innerText = t.room_desc_1;
-            document.querySelector('[data-room-desc-2]').innerText = t.room_desc_2;
-            document.querySelector('[data-room-desc-3]').innerText = t.room_desc_3;
-            document.querySelector('[data-room-desc-4]').innerText = t.room_desc_4;
-        }
         
-        updateRoomStatusText(lang);
+        // Update deskripsi bungalow
+        updateBungalowDescriptions(lang);
     }
     
-    function updateRoomStatusText(lang) {
-        const roomCards = document.querySelectorAll('.room-card');
-        roomCards.forEach(card => {
-            const status = card.dataset.roomStatus;
-            const statusText = card.querySelector('.room-status-text');
-            const icon = card.querySelector('.room-icon');
-            
-            if (status === 'available') {
-                statusText.innerText = lang === 'id' ? 'Tersedia' : 'Available';
-                if (icon) icon.style.color = 'var(--available-color)';
-            } else {
-                statusText.innerText = lang === 'id' ? 'Terisi' : 'Occupied';
-                if (icon) icon.style.color = 'var(--occupied-color)';
-            }
-        });
-    }
-    
+    // ========== LANGUAGE UI ==========
     function updateLangUI(lang) {
         document.querySelectorAll('.lang-option').forEach(option => {
             if (option.dataset.lang === lang) {
@@ -1032,7 +983,7 @@
         updateLangUI(lang);
     }
     
-    // Mobile menu
+    // ========== MOBILE MENU ==========
     const menuBtn = document.getElementById('menuBtn');
     const navLinksElem = document.getElementById('navLinks');
     if (menuBtn) {
@@ -1060,7 +1011,6 @@
         });
     });
 
-    // Perbaikan: Handle semua anchor link dengan scroll yang tepat
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -1068,15 +1018,10 @@
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                const navbar = document.getElementById('mainNav');
-                const navbarHeight = navbar.offsetHeight;
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-                
-                window.scrollTo({
-                    top: targetPosition - navbarHeight,
-                    behavior: "smooth"
-                });
-                
+                const offset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
                 if (navLinksElem) navLinksElem.classList.remove('active');
                 if (menuBtn) {
                     const icon = menuBtn.querySelector('i');
@@ -1087,6 +1032,7 @@
         });
     });
     
+    // ========== NAVBAR SCROLL ==========
     window.addEventListener('scroll', function() {
         const nav = document.getElementById('mainNav');
         if (window.scrollY > 50) {
@@ -1096,13 +1042,17 @@
         }
     });
     
+    // ========== INITIALIZE ==========
     window.addEventListener('DOMContentLoaded', () => {
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
-        const savedLang = localStorage.getItem('lang') || 'en';
+        
+        const savedLang = localStorage.getItem('lang') || 'id';
         setLang(savedLang);
+        
         const toggle = document.getElementById('themeToggle');
         if (toggle) toggle.addEventListener('change', toggleTheme);
+        
         document.querySelectorAll('.lang-option').forEach(option => {
             option.addEventListener('click', () => setLang(option.dataset.lang));
         });
