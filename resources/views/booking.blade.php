@@ -54,7 +54,6 @@
             padding-top: 80px;
         }
         
-        /* ========== NAVBAR ========== */
         nav {
             background-color: var(--nav-bg);
             backdrop-filter: blur(10px);
@@ -95,7 +94,6 @@
             color: white;
         }
         
-        /* ========== SWITCHER - UKURAN KECIL ========== */
         .lang-switch {
             display: inline-flex;
             align-items: center;
@@ -194,7 +192,6 @@
             color: var(--text-body);
         }
         
-        /* ========== RESPONSIVE MOBILE ========== */
         @media (max-width: 768px) {
             nav {
                 padding: 12px 20px !important;
@@ -257,18 +254,6 @@
             .theme-slider i {
                 font-size: 9px !important;
             }
-            
-            /* Fix date range di mobile */
-            .date-range-group {
-                flex-direction: column !important;
-                gap: 12px !important;
-            }
-            .date-range-group .date-field {
-                width: 100% !important;
-            }
-            .date-separator {
-                display: none !important;
-            }
         }
 
         @media (max-width: 480px) {
@@ -281,7 +266,6 @@
             }
         }
         
-        /* ========== DARK MODE DATE PICKER ========== */
         .dark-mode input[type="date"] {
             color-scheme: dark;
             background-color: #0a3b1e;
@@ -310,7 +294,6 @@
             box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.3);
         }
         
-        /* Dark mode bungalow icon */
         .dark-mode .bungalow-card .room-icon {
             color: #ffffff !important;
         }
@@ -318,7 +301,6 @@
             color: #ffffff !important;
         }
         
-        /* ========== FORM STYLES ========== */
         .form-card, .sidebar-bg {
             background-color: var(--bg-card);
             border-color: var(--border-color);
@@ -365,7 +347,6 @@
             transform: scale(1.02);
         }
         
-        /* BUNGALOW CARD STYLES */
         .bungalow-card {
             cursor: pointer;
             transition: all 0.3s;
@@ -386,23 +367,6 @@
         .bungalow-card.selected .font-bold,
         .bungalow-card.selected .room-icon {
             color: white !important;
-        }
-        
-        /* Date range styling */
-        .date-range-group {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-        .date-range-group .date-field {
-            flex: 1;
-        }
-        .date-range-group .date-field label {
-            display: block;
-            font-size: 12px;
-            margin-bottom: 4px;
-            color: var(--text-card);
-            font-weight: 500;
         }
         
         .alert-success {
@@ -528,7 +492,6 @@
                     @error('phone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
                 
-                <!-- Date Range: Check-in di atas, Check-out di bawah -->
                 <div class="form-group">
                     <label class="form-label">
                         <i class="fas fa-calendar-alt"></i> <span data-label-dates>Tanggal Menginap</span> <span class="text-red-500">*</span>
@@ -549,79 +512,34 @@
         </div>
         
         <div>
+            <!-- Pilih Bungalow - Dynamic dari Database -->
             <div class="sidebar-bg rounded-2xl border p-8 mb-6" style="border-color: var(--border-color)">
                 <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
                     <i class="fas fa-bed" style="color: var(--primary-color)"></i> <span data-package-title>Pilih Bungalow</span>
                 </h2>
                 
                 <div class="space-y-3" id="bungalowContainer">
-                    <!-- Bungalow 1 - Rp250.000 -->
-                    <div class="bungalow-card p-3" data-bungalow="b1" data-price="250000">
+                    @foreach($bungalows as $bungalow)
+                    <div class="bungalow-card p-3" 
+                        data-bungalow="{{ $bungalow->code }}" 
+                        data-price="{{ $bungalow->price }}"
+                        data-desc-id="{{ $bungalow->description_id }}"
+                        data-desc-en="{{ $bungalow->description_en }}">
                         <div class="flex justify-between items-center">
                             <div>
                                 <div class="flex items-center gap-2">
                                     <i class="fas fa-bed room-icon" style="color: var(--primary-color); font-size: 16px;"></i>
-                                    <h3 class="font-semibold text-base" style="color: var(--text-body)">Bungalow 1</h3>
+                                    <h3 class="font-semibold text-base" style="color: var(--text-body)">{{ $bungalow->name }}</h3>
                                 </div>
-                                <p class="text-xs mt-1" style="color: var(--text-card)">Kamar dengan view sawah</p>
+                                <p class="text-xs mt-1 bungalow-desc" style="color: var(--text-card)"></p>
                             </div>
                             <div class="text-right">
-                                <div class="font-bold" style="color: var(--primary-color)">Rp 250.000</div>
+                                <div class="font-bold" style="color: var(--primary-color)">Rp {{ number_format($bungalow->price, 0, ',', '.') }}</div>
                                 <div class="text-xs" style="color: var(--text-card)">/malam</div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Bungalow 2 - Rp250.000 -->
-                    <div class="bungalow-card p-3" data-bungalow="b2" data-price="250000">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-bed room-icon" style="color: var(--primary-color); font-size: 16px;"></i>
-                                    <h3 class="font-semibold text-base" style="color: var(--text-body)">Bungalow 2</h3>
-                                </div>
-                                <p class="text-xs mt-1" style="color: var(--text-card)">Cocok untuk keluarga</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold" style="color: var(--primary-color)">Rp 250.000</div>
-                                <div class="text-xs" style="color: var(--text-card)">/malam</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Bungalow 3 - Rp500.000 -->
-                    <div class="bungalow-card p-3" data-bungalow="b3" data-price="500000">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-bed room-icon" style="color: var(--primary-color); font-size: 16px;"></i>
-                                    <h3 class="font-semibold text-base" style="color: var(--text-body)">Bungalow 3</h3>
-                                </div>
-                                <p class="text-xs mt-1" style="color: var(--text-card)">Kamar dengan balkon</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold" style="color: var(--primary-color)">Rp 500.000</div>
-                                <div class="text-xs" style="color: var(--text-card)">/malam</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Bungalow 4 - Rp500.000 -->
-                    <div class="bungalow-card p-3" data-bungalow="b4" data-price="500000">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-bed room-icon" style="color: var(--primary-color); font-size: 16px;"></i>
-                                    <h3 class="font-semibold text-base" style="color: var(--text-body)">Bungalow 4</h3>
-                                </div>
-                                <p class="text-xs mt-1" style="color: var(--text-card)">Kamar standar nyaman</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold" style="color: var(--primary-color)">Rp 500.000</div>
-                                <div class="text-xs" style="color: var(--text-card)">/malam</div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             
@@ -677,7 +595,6 @@
     if (checkIn) checkIn.min = today;
     if (checkOut) checkOut.min = today;
     
-    // Update check-out min date when check-in changes
     if (checkIn) {
         checkIn.addEventListener('change', function() {
             if (checkOut) {
@@ -717,27 +634,6 @@
                 if (durationInput) durationInput.value = 0;
             }
             
-            // Pastikan hidden fields check_in dan check_out selalu terisi sebelum submit
-            if (bookingForm) {
-                bookingForm.addEventListener('submit', function(e) {
-                    // Pastikan check_in dan check_out terisi
-                    if (checkIn && checkIn.value) {
-                        document.getElementById('checkInHidden').value = checkIn.value;
-                    }
-                    if (checkOut && checkOut.value) {
-                        document.getElementById('checkOutHidden').value = checkOut.value;
-                    }
-                    
-                    // Debugging - buka console browser untuk lihat
-                    console.log('Submitting booking:');
-                    console.log('Check-in:', document.getElementById('checkInHidden').value);
-                    console.log('Check-out:', document.getElementById('checkOutHidden').value);
-                    console.log('Selected bungalows:', document.getElementById('selectedBungalowsInput').value);
-                    console.log('Total price:', document.getElementById('totalPriceInput').value);
-                    console.log('Duration:', document.getElementById('durationInput').value);
-                });
-            }
-
             updateSummary();
         } else {
             const durationInput = document.getElementById('durationInput');
@@ -748,21 +644,47 @@
     
     let currentLang = 'id';
     let selectedBungalows = [];
+    let bungalowPrices = {};
+
+    // Ambil harga dari database via AJAX
+    function loadPrices() {
+        fetch('{{ route("booking.prices") }}')
+            .then(response => response.json())
+            .then(data => {
+                bungalowPrices = data;
+                updateSummary();
+            })
+            .catch(error => {
+                console.error('Error loading prices:', error);
+            });
+    }
+
+    // Panggil saat halaman dimuat
+    loadPrices();
     
-    // Bungalow prices
-    const bungalowPrices = {
-        b1: 250000,
-        b2: 250000,
-        b3: 500000,
-        b4: 500000
-    };
-    
+    // ========== BUNGALOW NAMES & DESCRIPTIONS ==========
     const bungalowNames = {
-        b1: { id: 'Bungalow 1', en: 'Bungalow 1' },
-        b2: { id: 'Bungalow 2', en: 'Bungalow 2' },
-        b3: { id: 'Bungalow 3', en: 'Bungalow 3' },
-        b4: { id: 'Bungalow 4', en: 'Bungalow 4' }
+        @foreach($bungalows as $bungalow)
+        '{{ $bungalow->code }}': { 
+            id: '{{ $bungalow->name }}', 
+            en: '{{ $bungalow->name }}',
+            desc_id: '{{ $bungalow->description_id }}',
+            desc_en: '{{ $bungalow->description_en }}'
+        },
+        @endforeach
     };
+    
+    // ========== UPDATE BUNGALOW DESCRIPTIONS ==========
+    function updateBungalowDescriptions(lang) {
+        document.querySelectorAll('.bungalow-card').forEach(card => {
+            const descEl = card.querySelector('.bungalow-desc');
+            if (descEl) {
+                const descId = card.dataset.descId || '';
+                const descEn = card.dataset.descEn || '';
+                descEl.innerText = lang === 'en' ? descEn : descId;
+            }
+        });
+    }
     
     function formatPrice(price) {
         if (currentLang === 'id') {
@@ -794,10 +716,10 @@
         
         let html = '';
         selectedBungalows.forEach(bungalow => {
-            const pricePerNight = bungalowPrices[bungalow];
+            const pricePerNight = bungalowPrices[bungalow] || 0;
             const subtotal = pricePerNight * duration;
             total += subtotal;
-            const name = currentLang === 'id' ? bungalowNames[bungalow].id : bungalowNames[bungalow].en;
+            const name = currentLang === 'id' ? (bungalowNames[bungalow]?.id || bungalow) : (bungalowNames[bungalow]?.en || bungalow);
             html += `
                 <div class="flex justify-between items-center" data-bungalow="${bungalow}">
                     <div>
@@ -830,11 +752,9 @@
         }
     }
     
-    // Bungalow selection
     const bungalowCards = document.querySelectorAll('.bungalow-card');
     bungalowCards.forEach(card => {
         card.addEventListener('click', (e) => {
-            // Prevent if clicking on remove button
             if (e.target.closest('.fa-times-circle')) return;
             
             const bungalowId = card.dataset.bungalow;
@@ -852,7 +772,6 @@
         });
     });
     
-    // Theme functions
     function setTheme(theme) {
         const html = document.documentElement;
         if (theme === 'dark') {
@@ -870,7 +789,6 @@
         setTheme(isDark ? 'light' : 'dark');
     }
     
-    // Translations
     const translations = {
         id: {
             booking_title: "Booking Villa Umo Dewi",
@@ -934,6 +852,9 @@
         document.querySelector('[data-booking]').innerText = t.nav_booking;
         document.querySelector('[data-contact]').innerText = t.nav_contact;
         
+        // Update deskripsi bungalow
+        updateBungalowDescriptions(lang);
+        
         calculateDuration();
         updateSummary();
     }
@@ -955,7 +876,6 @@
         updateLangUI(lang);
     }
     
-    // Update lang input before submit
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', function() {
@@ -963,7 +883,6 @@
         });
     }
     
-    // Mobile menu
     const menuBtn = document.getElementById('menuBtn');
     const navLinksElem = document.getElementById('navLinks');
     if (menuBtn) {
@@ -992,7 +911,6 @@
         });
     });
     
-    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
