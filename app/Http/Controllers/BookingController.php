@@ -3,18 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\BungalowSetting;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
     public function index()
     {
-        return view('booking');
+        $bungalows = BungalowSetting::where('status', 'active')->get();
+        $lang = session('lang', 'id');
+        return view('booking', compact('bungalows', 'lang'));
+    }
+
+    public function getPrices()
+    {
+        $bungalows = BungalowSetting::where('status', 'active')->get();
+        $prices = [];
+        foreach ($bungalows as $bungalow) {
+            $prices[$bungalow->code] = $bungalow->price;
+        }
+        return response()->json($prices);
     }
 
     public function store(Request $request)
     {
-        // Validasi
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -27,10 +39,14 @@ class BookingController extends Controller
             'lang' => 'nullable|string'
         ]);
 
-        // Konversi selected_bungalows ke array
         $selectedBungalows = explode(',', $validated['selected_bungalows']);
 
-        // Simpan ke database
+        $bungalows = BungalowSetting::whereIn('code', $selectedBungalows)->get();
+        $totalPrice = 0;
+        foreach ($bungalows as $bungalow) {
+            $totalPrice += $bungalow->price * $validated['duration'];
+        }
+
         $booking = Booking::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -39,11 +55,10 @@ class BookingController extends Controller
             'check_out' => $validated['check_out'],
             'duration' => $validated['duration'],
             'selected_bungalows' => json_encode($selectedBungalows),
-            'total_price' => $validated['total_price'],
+            'total_price' => $totalPrice,
             'status' => 'pending',
         ]);
 
-        // Pesan sukses berdasarkan bahasa
         $lang = $validated['lang'] ?? 'id';
         $message = $lang === 'id' 
             ? 'Booking berhasil! Terima kasih telah memesan di Villa Umo Dewi.' 

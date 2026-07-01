@@ -1,0 +1,43 @@
+﻿# Villa Umo Dewi
+
+## Cara Install di Local
+
+1. Clone repository
+\\\bash
+git clone https://github.com/ekomplitz/villa-umo-dewi.git
+cd villa-umo-dewi
+\\\
+
+2. Install dependencies
+\\\bash
+composer install
+\\\
+
+3. Copy .env
+\\\bash
+copy .env.example .env
+\\\
+(atau buat file .env manual)
+
+4. Generate key
+\\\bash
+php artisan key:generate
+\\\
+
+5. Setup database di file .env, lalu migrate
+\\\bash
+php artisan migrate
+\\\
+
+6. Jalankan server
+\\\bash
+php artisan serve
+\\\
+
+## Fitur
+- Booking bungalow (B1: Rp250.000, B2-4: Rp500.000)
+- Check-in / Check-out dengan hitung durasi
+- Dark mode & Light mode
+- Bahasa Indonesia & Inggris
+- Responsive mobile
+
