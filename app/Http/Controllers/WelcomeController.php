@@ -9,7 +9,8 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        $bungalows = BungalowSetting::where('status', 'active')->get();
+        // Ambil SEMUA bungalow (termasuk inactive)
+        $bungalows = BungalowSetting::all();
         $lang = session('lang', 'id');
         return view('welcome', compact('bungalows', 'lang'));
     }

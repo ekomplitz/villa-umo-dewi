@@ -10,7 +10,7 @@ class BookingController extends Controller
 {
     public function index()
     {
-        $bungalows = BungalowSetting::where('status', 'active')->get();
+        $bungalows = BungalowSetting::all();
         $lang = session('lang', 'id');
         return view('booking', compact('bungalows', 'lang'));
     }
@@ -29,14 +29,15 @@ class BookingController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
             'phone' => 'required|string|max:20',
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'selected_bungalows' => 'required|string',
             'total_price' => 'required|integer|min:0',
             'duration' => 'required|integer|min:1',
-            'lang' => 'nullable|string'
+            'lang' => 'nullable|string',
+            'payment_status' => 'pending',
         ]);
 
         $selectedBungalows = explode(',', $validated['selected_bungalows']);
@@ -64,6 +65,7 @@ class BookingController extends Controller
             ? 'Booking berhasil! Terima kasih telah memesan di Villa Umo Dewi.' 
             : 'Booking successful! Thank you for booking at Villa Umo Dewi.';
 
-        return redirect()->back()->with('success', $message);
+        return redirect()->route('payment.index', ['bookingId' => $booking->id])
+                     ->with('success', 'Booking berhasil dibuat! Silakan lanjutkan ke pembayaran.');
     }
 }

@@ -18,7 +18,10 @@ class Booking extends Model
         'duration',
         'selected_bungalows',
         'total_price',
-        'status'
+        'status',
+        'payment_status',
+        'transaction_id',
+        'order_id',
     ];
 
     protected $casts = [
