@@ -13,7 +13,6 @@ class BungalowSeeder extends Seeder
             [
                 'code' => 'b1',
                 'name' => 'Bungalow 1',
-                'description' => 'Kamar luas dengan view sawah',
                 'description_id' => 'Kamar luas dengan view sawah',
                 'description_en' => 'Spacious room with rice field view',
                 'price' => 250000,
@@ -22,7 +21,6 @@ class BungalowSeeder extends Seeder
             [
                 'code' => 'b2',
                 'name' => 'Bungalow 2',
-                'description' => 'Cocok untuk keluarga',
                 'description_id' => 'Cocok untuk keluarga',
                 'description_en' => 'Perfect for family',
                 'price' => 250000,
@@ -31,7 +29,6 @@ class BungalowSeeder extends Seeder
             [
                 'code' => 'b3',
                 'name' => 'Bungalow 3',
-                'description' => 'Kamar premium dengan balkon',
                 'description_id' => 'Kamar premium dengan balkon',
                 'description_en' => 'Premium room with balcony',
                 'price' => 500000,
@@ -40,7 +37,6 @@ class BungalowSeeder extends Seeder
             [
                 'code' => 'b4',
                 'name' => 'Bungalow 4',
-                'description' => 'Kamar standar nyaman',
                 'description_id' => 'Kamar standar nyaman',
                 'description_en' => 'Comfortable economy room',
                 'price' => 500000,
@@ -49,10 +45,9 @@ class BungalowSeeder extends Seeder
         ];
 
         foreach ($bungalows as $bungalow) {
-            // Update atau create berdasarkan code
             BungalowSetting::updateOrCreate(
-                ['code' => $bungalow['code']], // cari berdasarkan code
-                $bungalow // data yang akan diupdate/insert
+                ['code' => $bungalow['code']],
+                $bungalow
             );
         }
     }

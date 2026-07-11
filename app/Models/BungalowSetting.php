@@ -10,10 +10,9 @@ class BungalowSetting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code', 'name', 'description_en', 'description_id', 'price', 'image', 'status'
+        'code', 'name', 'description_id', 'description_en', 'price', 'image', 'status'
     ];
 
-    // Fungsi helper untuk ambil deskripsi sesuai bahasa
     public function getDescription($lang = 'id')
     {
         if ($lang === 'en' && $this->description_en) {

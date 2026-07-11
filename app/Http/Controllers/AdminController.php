@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\BungalowSetting;
 use App\Models\OfflineBooking;
+use App\Models\Report;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -101,7 +102,7 @@ class AdminController extends Controller
         );
     }
 
-    // ==================== BUNGALOW SETTINGS ====================
+    // Bungalow Settings
     public function bungalowSettings()
     {
         $bungalows = BungalowSetting::all();
@@ -131,18 +132,34 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Bungalow berhasil diupdate!');
     }
 
-    // ==================== OFFLINE BOOKINGS ====================
-    public function offlineBookings()
+    // Offline Bookings
+    public function offlineBookings(Request $request)
     {
-        $offlineBookings = OfflineBooking::orderBy('created_at', 'desc')->paginate(10);
+        $query = OfflineBooking::orderBy('created_at', 'desc');
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where(function($q) use ($request) {
+                $q->where('customer_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('customer_phone', 'like', '%' . $request->search . '%')
+                  ->orWhere('customer_email', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('payment_status') && $request->payment_status != '') {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        $offlineBookings = $query->paginate(10);
         $bungalows = BungalowSetting::where('status', 'active')->get();
         return view('admin.offline_bookings', compact('offlineBookings', 'bungalows'));
     }
 
     public function storeOffline(Request $request)
     {
-
-        dd($request->all());
         $request->validate([
             'customer_name' => 'required|string|max:255',
             'customer_phone' => 'required|string|max:20',
@@ -155,27 +172,17 @@ class AdminController extends Controller
             'status' => 'required|in:pending,confirmed,cancelled',
         ]);
 
-        // Hitung durasi
         $checkIn = new \DateTime($request->check_in);
         $checkOut = new \DateTime($request->check_out);
         $duration = $checkIn->diff($checkOut)->days;
 
-        // PASTIKAN selected_bungalows adalah array
-        $selectedBungalows = $request->selected_bungalows;
-        if (!is_array($selectedBungalows)) {
-            $selectedBungalows = explode(',', $selectedBungalows);
-        }
+        $bungalows = BungalowSetting::whereIn('code', $request->selected_bungalows)->get();
 
-        // Ambil data bungalows dari database
-        $bungalows = BungalowSetting::whereIn('code', $selectedBungalows)->get();
-
-        // Hitung total harga
         $totalPrice = 0;
         foreach ($bungalows as $bungalow) {
             $totalPrice += $bungalow->price * $duration;
         }
 
-        // Simpan ke database
         $offline = OfflineBooking::create([
             'customer_name' => $request->customer_name,
             'customer_phone' => $request->customer_phone,
@@ -183,7 +190,7 @@ class AdminController extends Controller
             'check_in' => $request->check_in,
             'check_out' => $request->check_out,
             'duration' => $duration,
-            'selected_bungalows' => json_encode($selectedBungalows),
+            'selected_bungalows' => json_encode($request->selected_bungalows),
             'total_price' => $totalPrice,
             'notes' => $request->notes,
             'payment_status' => $request->payment_status,
@@ -219,5 +226,56 @@ class AdminController extends Controller
         $offline->delete();
 
         return redirect()->back()->with('success', 'Booking offline berhasil dihapus!');
+    }
+
+    // Reports
+    public function adminIndex(Request $request)
+    {
+        $query = Report::orderBy('created_at', 'desc');
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $reports = $query->paginate(20)->appends($request->query());
+        return view('admin.reports', compact('reports'));
+    }
+
+    public function adminUpdate(Request $request, $id)
+    {
+        $report = Report::findOrFail($id);
+        
+        $request->validate([
+            'status' => 'required|in:pending,read,replied',
+            'admin_reply' => 'nullable|string',
+        ]);
+        
+        $report->update([
+            'status' => $request->status,
+            'admin_reply' => $request->admin_reply,
+        ]);
+        
+        return redirect()->back()->with('success', 'Report berhasil diupdate!');
+    }
+
+    public function getReportDetail($id)
+    {
+        $report = Report::findOrFail($id);
+        return response()->json($report);
+    }
+
+    public function destroyReport($id)
+    {
+        $report = Report::findOrFail($id);
+        $report->delete();
+        
+        return redirect()->back()->with('success', 'Laporan berhasil dihapus!');
     }
 }

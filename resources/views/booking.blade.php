@@ -9,420 +9,787 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <style>
-        * { 
-            font-family: 'Plus Jakarta Sans', system-ui, sans-serif; 
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<style>
+    * { 
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif; 
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* ========== WARNA LIGHT MODE ========== */
+    :root {
+        --bg-body: #EFE9E3;
+        --text-body: #9D6638;
+        --bg-card: #F3F4F4;
+        --text-card: #9D6638;
+        --border-color: #EFE9E3;
+        --bg-about: #F3F4F4;
+        --primary-color: #9D6638;
+        --primary-hover: #7A4F2A;
+        --available-color: #22c55e;
+        --occupied-color: #ef4444;
+        --text-white: #9D6638;
+        --sidebar-bg: rgba(243, 244, 244, 0.98);
+        --sidebar-text: #9D6638;
+        --hero-overlay: rgba(157, 102, 56, 0.6);
+        --nav-bg: rgba(243, 244, 244, 0.1);
+        --nav-border: rgba(157, 102, 56, 0.08);
+        --nav-text: #9D6638;
+        --input-bg: #F3F4F4;
+        --input-border: #EFE9E3;
+        --package-unselected-bg: #F3F4F4;
+        --footer-bg: #9D6638;
+        --footer-text: #EFE9E3;
+    }
+    
+    /* ========== WARNA DARK MODE ========== */
+    .dark-mode {
+        --bg-body: #153448;
+        --text-body: #DFD0B8;
+        --bg-card: #3C5B6F;
+        --text-card: #DFD0B8;
+        --border-color: #948979;
+        --bg-about: #3C5B6F;
+        --primary-color: #DFD0B8;
+        --primary-hover: #948979;
+        --available-color: #22c55e;
+        --occupied-color: #ef4444;
+        --text-white: #DFD0B8;
+        --sidebar-bg: rgba(21, 52, 72, 0.98);
+        --sidebar-text: #DFD0B8;
+        --hero-overlay: rgba(21, 52, 72, 0.6);
+        --nav-bg: rgba(21, 52, 72, 0.1);
+        --nav-border: rgba(223, 208, 184, 0.08);
+        --nav-text: #DFD0B8;
+        --input-bg: #3C5B6F;
+        --input-border: #948979;
+        --package-unselected-bg: #3C5B6F;
+        --footer-bg: #0F2A4A;
+        --footer-text: #DFD0B8;
+    }
+    
+    body {
+        background-color: var(--bg-body);
+        color: var(--text-body);
+        transition: all 0.3s ease;
+        padding-top: 80px;
+        overflow-x: hidden;
+    }
+
+    /* ========== SIDEBAR OVERLAY ========== */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* ========== SIDEBAR ========== */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 320px;
+        height: 100vh;
+        background-color: var(--sidebar-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 1000;
+        padding: 30px 24px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        overflow-x: hidden;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: rgba(157, 102, 56, 0.1);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: #9D6638;
+        border-radius: 10px;
+    }
+
+    .dark-mode .sidebar::-webkit-scrollbar-track {
+        background: rgba(223, 208, 184, 0.1);
+    }
+
+    .dark-mode .sidebar::-webkit-scrollbar-thumb {
+        background: #DFD0B8;
+    }
+
+    .sidebar-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        color: var(--sidebar-text);
+        cursor: pointer;
+        background: none;
+        border: none;
+        transition: transform 0.3s ease;
+        z-index: 10;
+    }
+
+    .sidebar-close:hover {
+        transform: rotate(90deg);
+    }
+
+    .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(157, 102, 56, 0.15);
+    }
+
+    .sidebar-logo span {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--sidebar-text);
+        letter-spacing: 0.5px;
+    }
+
+    .dark-mode .sidebar-logo {
+        border-bottom: 1px solid rgba(223, 208, 184, 0.15);
+    }
+
+    /* ========== SIDEBAR LINKS ========== */
+    .sidebar-links {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+    }
+
+    .sidebar-links a {
+        color: var(--sidebar-text);
+        text-decoration: none;
+        font-size: 1.05rem;
+        font-weight: 500;
+        padding: 12px 16px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: 0.3px;
+    }
+
+    .sidebar-links a i {
+        width: 24px;
+        font-size: 1.1rem;
+        color: #9D6638;
+    }
+
+    .sidebar-links a:hover {
+        background-color: rgba(157, 102, 56, 0.1);
+        color: #9D6638;
+    }
+
+    .sidebar-links a.active {
+        background-color: rgba(157, 102, 56, 0.15);
+        color: #9D6638;
+    }
+
+    .dark-mode .sidebar-links a i {
+        color: #DFD0B8;
+    }
+
+    .dark-mode .sidebar-links a:hover {
+        background-color: rgba(223, 208, 184, 0.1);
+        color: #DFD0B8;
+    }
+
+    .dark-mode .sidebar-links a.active {
+        background-color: rgba(223, 208, 184, 0.15);
+        color: #DFD0B8;
+    }
+
+    /* ========== SIDEBAR SWITCHERS ========== */
+    .sidebar-switchers {
+        display: flex;
+        gap: 12px;
+        padding: 16px 0;
+        border-top: 1px solid rgba(157, 102, 56, 0.1);
+        margin-top: 16px;
+        align-items: center;
+    }
+
+    .dark-mode .sidebar-switchers {
+        border-top: 1px solid rgba(223, 208, 184, 0.1);
+    }
+
+    .sidebar-switchers .lang-switch {
+        background-color: rgba(157, 102, 56, 0.06);
+        border: 1px solid rgba(157, 102, 56, 0.1);
+        border-radius: 30px;
+        padding: 3px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        cursor: pointer;
+    }
+
+    .dark-mode .sidebar-switchers .lang-switch {
+        background-color: rgba(223, 208, 184, 0.06);
+        border: 1px solid rgba(223, 208, 184, 0.1);
+    }
+
+    .sidebar-switchers .lang-switch .lang-option {
+        color: var(--sidebar-text);
+        padding: 0 10px;
+        border-radius: 24px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-switchers .lang-switch .lang-option.active {
+        background-color: #9D6638;
+        color: #fff;
+    }
+
+    .dark-mode .sidebar-switchers .lang-switch .lang-option.active {
+        background-color: #DFD0B8;
+        color: #153448;
+    }
+
+    /* ===== THEME SWITCH - UKURAN SAMA DENGAN LANGUAGE ===== */
+    .sidebar-switchers .theme-switch {
+        position: relative;
+        display: inline-block;
+        width: 56px;
+        height: 34px;
+    }
+
+    .sidebar-switchers .theme-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .sidebar-switchers .theme-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(157, 102, 56, 0.3);
+        transition: 0.3s ease;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 6px;
+        border: 1px solid rgba(157, 102, 56, 0.1);
+    }
+
+    .sidebar-switchers .theme-switch input:checked + .theme-slider {
+        background-color: rgba(157, 102, 56, 0.5);
+    }
+
+    .dark-mode .sidebar-switchers .theme-slider {
+        background-color: rgba(223, 208, 184, 0.3);
+        border: 1px solid rgba(223, 208, 184, 0.1);
+    }
+
+    .dark-mode .sidebar-switchers .theme-switch input:checked + .theme-slider {
+        background-color: rgba(223, 208, 184, 0.5);
+    }
+
+    .sidebar-switchers .theme-slider i {
+        font-size: 15px;
+        color: white;
+        z-index: 1;
+    }
+
+    .sidebar-switchers .theme-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.3s ease;
+        border-radius: 50%;
+        z-index: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-switchers .theme-switch input:checked + .theme-slider:before {
+        transform: translateX(24px);
+    }
+
+    @media (max-width: 480px) {
+        .sidebar {
+            width: 280px;
+            padding: 20px 16px;
         }
-        
-        :root {
-            --bg-body: #f0fdf4;
-            --text-body: #14532d;
-            --bg-card: #dcfce7;
-            --text-card: #166534;
-            --border-color: #86efac;
-            --nav-bg: rgba(240, 253, 244, 0.95);
-            --nav-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --primary-color: #22c55e;
-            --primary-hover: #16a34a;
-            --input-bg: #ffffff;
-            --input-border: #86efac;
-            --package-unselected-bg: #ffffff;
+        .sidebar-logo span {
+            font-size: 1.1rem;
         }
-        
-        .dark-mode {
-            --bg-body: #052e16;
-            --text-body: #dcfce7;
-            --bg-card: #064e3b;
-            --text-card: #a7f3d0;
-            --border-color: #166534;
-            --nav-bg: rgba(5, 46, 22, 0.95);
-            --nav-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            --primary-color: #059669;
-            --primary-hover: #047857;
-            --input-bg: #0a3b1e;
-            --input-border: #10b981;
-            --package-unselected-bg: #052e16;
+        .sidebar-links a {
+            font-size: 0.95rem;
+            padding: 10px 14px;
         }
-        
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-body);
-            transition: all 0.3s ease;
-            padding-top: 80px;
-        }
-        
+    }
+
+    /* ========== MAIN NAVBAR ========== */
+    nav {
+        background-color: var(--nav-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        transition: all 0.4s ease;
+        border-bottom: 1px solid var(--nav-border);
+        padding: 16px 32px;
+    }
+
+    nav.scrolled {
+        background-color: var(--nav-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    }
+
+    .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: 1;
+    }
+
+    .menu-btn {
+        color: var(--nav-text);
+        font-size: 1.5rem;
+        cursor: pointer;
+        background: none;
+        border: none;
+        transition: all 0.3s ease;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu-btn:hover {
+        color: var(--primary-color);
+    }
+
+    .nav-center {
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-center h1 {
+        color: var(--nav-text);
+        font-weight: 600;
+        font-size: 1.15rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .nav-center h1:hover {
+        color: var(--primary-color);
+    }
+
+    .nav-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .btn-book-now-nav {
+        background: #9D6638;
+        color: #fff;
+        padding: 10px 28px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(157, 102, 56, 0.25);
+        white-space: nowrap;
+    }
+
+    .btn-book-now-nav:hover {
+        background: #7A4F2A;
+        transform: translateY(-2px);
+    }
+
+    .dark-mode .btn-book-now-nav {
+        background: #DFD0B8;
+        color: #153448;
+    }
+
+    .dark-mode .btn-book-now-nav:hover {
+        background: #948979;
+    }
+
+    @media (max-width: 768px) {
         nav {
-            background-color: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            box-shadow: var(--nav-shadow);
-            padding: 16px 32px;
-        }
-
-        nav .nav-links a,
-        nav h1,
-        nav h1 i,
-        nav .menu-btn {
-            color: var(--text-body);
-            transition: color 0.3s ease;
-            text-decoration: none;
-        }
-        
-        nav .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        nav .lang-switch {
-            background-color: rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        nav .lang-option {
-            color: var(--text-body);
-        }
-
-        nav .lang-option.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .lang-switch {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            border-radius: 30px;
-            padding: 3px;
-            height: 32px;
-            cursor: pointer;
-        }
-        
-        .lang-option {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 0 8px;
-            border-radius: 24px;
-            transition: all 0.2s;
-            font-size: 11px;
-            font-weight: 500;
-            cursor: pointer;
-            height: 26px;
-        }
-        
-        .lang-option i {
-            font-size: 11px;
-        }
-
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 52px;
-            height: 32px;
-        }
-        
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .theme-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #86efac;
-            transition: 0.3s;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 6px;
-        }
-
-        .theme-switch input:checked + .theme-slider {
-            background-color: #059669;
-        }
-        
-        .theme-slider i {
-            font-size: 10px;
-            color: white;
-            z-index: 1;
-        }
-        
-        .theme-slider:before {
-            position: absolute;
-            content: "";
-            height: 24px;
-            width: 24px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-            z-index: 0;
-        }
-        
-        .theme-switch input:checked + .theme-slider:before {
-            transform: translateX(20px);
-        }
-        
-        .nav-links { 
-            display: flex; 
-            align-items: center; 
-            gap: 1.5rem; 
-        }
-        
-        .menu-btn { 
-            display: none; 
-            font-size: 1.5rem; 
-            cursor: pointer; 
-            background: none; 
-            border: none; 
-            color: var(--text-body);
-        }
-        
-        @media (max-width: 768px) {
-            nav {
-                padding: 12px 20px !important;
-            }
-            
-            nav h1 {
-                font-size: 1rem !important;
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 60px;
-                left: -100%;
-                width: 70%;
-                height: 100vh;
-                background-color: var(--nav-bg);
-                backdrop-filter: blur(20px);
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 2rem;
-                transition: 0.3s ease;
-                gap: 1.5rem;
-                border-right: 1px solid var(--border-color);
-                z-index: 999;
-            }
-            .nav-links.active { left: 0; }
-            .menu-btn { display: block; }
-            
-            .lang-switch {
-                height: 28px !important;
-                padding: 2px !important;
-            }
-            
-            .lang-option {
-                padding: 0 6px !important;
-                height: 24px !important;
-                font-size: 10px !important;
-            }
-
-            .lang-option i {
-                font-size: 10px !important;
-            }
-            
-            .theme-switch {
-                width: 48px !important;
-                height: 28px !important;
-            }
-            
-            .theme-slider:before {
-                height: 20px !important;
-                width: 20px !important;
-                left: 4px !important;
-                bottom: 4px !important;
-            }
-            
-            .theme-switch input:checked + .theme-slider:before {
-                transform: translateX(20px) !important;
-            }
-
-            .theme-slider i {
-                font-size: 9px !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .lang-option span {
-                display: none !important;
-            }
-            
-            .lang-option i {
-                margin: 0 !important;
-            }
-        }
-        
-        .dark-mode input[type="date"] {
-            color-scheme: dark;
-            background-color: #0a3b1e;
-            color: #dcfce7;
-            border-color: #10b981;
-        }
-        
-        .dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: brightness(0) invert(1);
-            cursor: pointer;
-            opacity: 1;
-        }
-        
-        .dark-mode input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            filter: brightness(0) invert(0.8);
-        }
-        
-        .dark-mode .form-input {
-            background-color: #0a3b1e;
-            color: #dcfce7;
-            border-color: #10b981;
-        }
-        
-        .dark-mode .form-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.3);
-        }
-        
-        .dark-mode .bungalow-card .room-icon {
-            color: #ffffff !important;
-        }
-        .dark-mode .bungalow-card.selected .room-icon {
-            color: #ffffff !important;
-        }
-        
-        .form-card, .sidebar-bg {
-            background-color: var(--bg-card);
-            border-color: var(--border-color);
-        }
-        
-        .form-group { margin-bottom: 1.5rem; }
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-body);
-        }
-        .form-label i { margin-right: 8px; color: var(--primary-color); }
-        .form-input, .form-select {
-            width: 100%;
             padding: 12px 16px;
-            border: 2px solid var(--input-border);
-            border-radius: 12px;
-            background-color: var(--input-bg);
-            color: var(--text-body);
-            transition: all 0.3s;
-            font-size: 16px;
         }
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+        .nav-center h1 {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
-        
-        .booking-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+        .btn-book-now-nav {
+            padding: 8px 16px;
+            font-size: 0.75rem;
         }
-        .booking-btn:hover {
-            background-color: var(--primary-hover);
-            transform: scale(1.02);
+        .btn-book-now-nav span {
+            display: none;
         }
-        
-        .bungalow-card {
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid var(--border-color);
-            background-color: var(--package-unselected-bg);
-            border-radius: 12px;
+    }
+
+    @media (max-width: 480px) {
+        .nav-center h1 {
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
         }
-        .bungalow-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
+        .btn-book-now-nav {
+            padding: 6px 12px;
+            font-size: 0.7rem;
         }
-        .bungalow-card.selected {
-            border-color: var(--primary-color);
-            background-color: var(--primary-color);
+        .menu-btn {
+            font-size: 1.2rem;
         }
-        .bungalow-card.selected h3,
-        .bungalow-card.selected p,
-        .bungalow-card.selected .font-bold,
-        .bungalow-card.selected .room-icon {
-            color: white !important;
-        }
-        
-        .alert-success {
-            background-color: #22c55e;
-            color: white;
-        }
-        .alert-error {
-            background-color: #ef4444;
-            color: white;
-        }
-        
-        html { scroll-behavior: smooth; }
-    </style>
+    }
+
+    .dark-mode nav {
+        border-bottom: 1px solid rgba(223, 208, 184, 0.08);
+    }
+
+    .dark-mode .menu-btn {
+        color: #DFD0B8;
+    }
+
+    .dark-mode .menu-btn:hover {
+        color: #948979;
+    }
+
+    .dark-mode .nav-center h1 {
+        color: #DFD0B8;
+    }
+
+    .dark-mode .nav-center h1:hover {
+        color: #948979;
+    }
+
+    /* ========== FORM STYLES ========== */
+    .form-card, .sidebar-bg {
+        background-color: var(--bg-card);
+        border-color: var(--border-color);
+    }
+    
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-body);
+    }
+    .form-label i { margin-right: 8px; color: var(--primary-color); }
+    .form-input, .form-select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--input-border);
+        border-radius: 12px;
+        background-color: var(--input-bg);
+        color: var(--text-body);
+        transition: all 0.3s;
+        font-size: 16px;
+    }
+    .form-input:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(157, 102, 56, 0.2);
+    }
+    
+    .booking-btn {
+        width: 100%;
+        padding: 14px;
+        background-color: #9D6638;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .booking-btn:hover {
+        background-color: #7A4F2A;
+        transform: scale(1.02);
+    }
+
+    .dark-mode .booking-btn {
+        background-color: #DFD0B8;
+        color: #153448;
+    }
+    .dark-mode .booking-btn:hover {
+        background-color: #948979;
+    }
+    
+    .bungalow-card {
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid var(--border-color);
+        background-color: var(--package-unselected-bg);
+        border-radius: 12px;
+    }
+    .bungalow-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-color);
+    }
+    .bungalow-card.selected {
+        border-color: var(--primary-color);
+        background-color: var(--primary-color);
+    }
+    .bungalow-card.selected h3,
+    .bungalow-card.selected p,
+    .bungalow-card.selected .font-bold,
+    .bungalow-card.selected .room-icon {
+        color: #fff !important;
+    }
+
+    .dark-mode .bungalow-card.selected {
+        background-color: #DFD0B8;
+    }
+    .dark-mode .bungalow-card.selected h3,
+    .dark-mode .bungalow-card.selected p,
+    .dark-mode .bungalow-card.selected .font-bold,
+    .dark-mode .bungalow-card.selected .room-icon {
+        color: #153448 !important;
+    }
+
+    .bungalow-card.inactive {
+        opacity: 0.6;
+        border-color: #ef4444 !important;
+    }
+    
+    .alert-success {
+        background-color: #9D6638;
+        color: #fff;
+    }
+    .alert-error {
+        background-color: #ef4444;
+        color: white;
+    }
+
+    /* Dark mode date picker */
+    .dark-mode input[type="date"] {
+        color-scheme: dark;
+        background-color: #3C5B6F;
+        color: #DFD0B8;
+        border-color: #948979;
+    }
+    
+    .dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: brightness(0) invert(1);
+        cursor: pointer;
+        opacity: 1;
+    }
+    
+    .dark-mode input[type="date"]::-webkit-calendar-picker-indicator:hover {
+        filter: brightness(0) invert(0.8);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+        background-color: var(--footer-bg);
+        color: var(--footer-text);
+        transition: all 0.3s ease;
+        margin-top: 60px;
+    }
+
+    .footer a {
+        color: var(--footer-text);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .footer a:hover {
+        opacity: 0.7;
+    }
+
+    .dark-mode .footer a:hover {
+        opacity: 0.7;
+    }
+
+    .footer .border-t {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .dark-mode .footer .border-t {
+        border-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .footer .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+        color: var(--footer-text);
+        text-decoration: none;
+        font-size: 1.1rem;
+    }
+
+    .footer .social-icon:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+    }
+
+    .dark-mode .footer .social-icon {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .dark-mode .footer .social-icon:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    html { scroll-behavior: smooth; }
+</style>
 </head>
 
 <body>
 
-<nav class="flex justify-between items-center px-8 py-5 border-b" style="border-color: var(--border-color)">
-    <h1 class="text-xl font-bold cursor-pointer hover:text-green-600 transition flex items-center gap-2" onclick="window.location.href='{{ url('/') }}'">
-        <i class="fas fa-leaf text-green-500"></i>
-        Villa Umo Dewi
-    </h1>
+<!-- ========== SIDEBAR OVERLAY ========== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <button class="menu-btn" id="menuBtn">
-        <i class="fas fa-bars"></i>
+<!-- ========== SIDEBAR ========== -->
+<div class="sidebar" id="sidebar">
+    <button class="sidebar-close" id="sidebarClose">
+        <i class="fas fa-times"></i>
     </button>
 
-    <div class="nav-links" id="navLinks">
-        <a href="{{ url('/') }}" data-home>Home</a>
-        <a href="{{ url('/#villa-page') }}" data-villa>Villa</a>
-        <a href="{{ route('booking') }}" data-booking class="text-green-600 font-semibold">Booking</a>
-        <a href="{{ url('/#contact') }}" data-contact>Kontak</a>
+    <div class="sidebar-logo">
+        <span>Villa Umo Dewi</span>
+    </div>
 
-        <div class="flex items-center gap-3">
-            <div class="lang-switch" id="langSwitch">
-                <div class="lang-option" data-lang="id">
-                    <i class="fas fa-flag"></i>
-                    <span>ID</span>
-                </div>
-                <div class="lang-option" data-lang="en">
-                    <i class="fas fa-flag-usa"></i>
-                    <span>EN</span>
-                </div>
+    <div class="sidebar-links">
+        <a href="{{ route('home') }}" data-page="home">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="{{ route('booking') }}" data-page="booking" class="active">
+            <i class="fas fa-calendar-check"></i> Booking
+        </a>
+        <a href="{{ route('report') }}" data-page="report">
+            <i class="fas fa-flag"></i> Report
+        </a>
+        <a href="{{ route('gallery') }}" data-page="gallery">
+            <i class="fas fa-images"></i> Gallery
+        </a>
+    </div>
+
+    <!-- SIDEBAR SWITCHERS -->
+    <div class="sidebar-switchers">
+        <div class="lang-switch" id="langSwitchSidebar">
+            <div class="lang-option" data-lang="id">
+                <i class="fas fa-flag"></i>
+                <span>ID</span>
             </div>
+            <div class="lang-option" data-lang="en">
+                <i class="fas fa-flag-usa"></i>
+                <span>EN</span>
+            </div>
+        </div>
 
-            <label class="theme-switch">
-                <input type="checkbox" id="themeToggle">
-                <span class="theme-slider">
-                    <i class="fas fa-sun"></i>
-                    <i class="fas fa-moon"></i>
-                </span>
-            </label>
+        <label class="theme-switch">
+            <input type="checkbox" id="themeToggleSidebar">
+            <span class="theme-slider">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </span>
+        </label>
+    </div>
+</div>
+
+<!-- ========== NAVBAR ========== -->
+<nav id="mainNav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="nav-center">
+            <h1 onclick="window.location.href='{{ url('/') }}'">Villa Umo Dewi</h1>
+        </div>
+
+        <div class="nav-right">
+            <a href="{{ route('booking') }}" class="btn-book-now-nav">
+                <i class="fas fa-calendar-check"></i><span data-i18n="book_now">Book Now</span>
+            </a>
         </div>
     </div>
 </nav>
 
+<!-- ========== NOTIFICATIONS ========== -->
 @if(session('success'))
 <div class="fixed top-24 right-4 z-50 animate-slide-in">
     <div class="alert-success px-6 py-4 rounded-xl shadow-lg flex items-center gap-3">
@@ -447,6 +814,7 @@
 </div>
 @endif
 
+<!-- ========== CONTENT ========== -->
 <div class="max-w-4xl mx-auto px-4 py-12">
     <div class="text-center mb-12">
         <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-body)" data-booking-title>Booking Villa Umo Dewi</h1>
@@ -454,6 +822,7 @@
     </div>
 
     <div class="grid md:grid-cols-2 gap-8">
+        <!-- ========== FORM ========== -->
         <div class="form-card rounded-2xl border p-8" style="border-color: var(--border-color)">
             <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
                 <i class="fas fa-calendar-check" style="color: var(--primary-color)"></i> <span data-form-title>Informasi Booking</span>
@@ -511,8 +880,8 @@
             </form>
         </div>
         
+        <!-- ========== BUNGALOW SELECTION ========== -->
         <div>
-            <!-- Pilih Bungalow - Dynamic dari Database -->
             <div class="sidebar-bg rounded-2xl border p-8 mb-6" style="border-color: var(--border-color)">
                 <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
                     <i class="fas fa-bed" style="color: var(--primary-color)"></i> <span data-package-title>Pilih Bungalow</span>
@@ -520,22 +889,27 @@
                 
                 <div class="space-y-3" id="bungalowContainer">
                     @foreach($bungalows as $bungalow)
-                    <div class="bungalow-card p-3" 
+                    <div class="bungalow-card p-3 {{ $bungalow->status == 'inactive' ? 'inactive' : '' }}" 
                         data-bungalow="{{ $bungalow->code }}" 
                         data-price="{{ $bungalow->price }}"
                         data-desc-id="{{ $bungalow->description_id }}"
-                        data-desc-en="{{ $bungalow->description_en }}">
+                        data-desc-en="{{ $bungalow->description_en }}"
+                        data-status="{{ $bungalow->status }}">
                         <div class="flex justify-between items-center">
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <i class="fas fa-bed room-icon" style="color: var(--primary-color); font-size: 16px;"></i>
+                                    <i class="fas fa-bed room-icon" 
+                                    style="color: {{ $bungalow->status == 'active' ? 'var(--primary-color)' : '#ef4444' }}; font-size: 16px;"></i>
                                     <h3 class="font-semibold text-base" style="color: var(--text-body)">{{ $bungalow->name }}</h3>
+                                    @if($bungalow->status == 'inactive')
+                                    <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full status-unavailable">Tidak Tersedia</span>
+                                    @endif
                                 </div>
                                 <p class="text-xs mt-1 bungalow-desc" style="color: var(--text-card)"></p>
                             </div>
                             <div class="text-right">
                                 <div class="font-bold" style="color: var(--primary-color)">Rp {{ number_format($bungalow->price, 0, ',', '.') }}</div>
-                                <div class="text-xs" style="color: var(--text-card)">/malam</div>
+                                <div class="text-xs price-night-label" style="color: var(--text-card)">/malam</div>
                             </div>
                         </div>
                     </div>
@@ -543,6 +917,7 @@
                 </div>
             </div>
             
+            <!-- ========== SUMMARY ========== -->
             <div class="sidebar-bg rounded-2xl border p-8 sticky top-24" style="border-color: var(--border-color)">
                 <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
                     <i class="fas fa-receipt"></i> <span data-summary-title>Ringkasan</span>
@@ -569,23 +944,124 @@
     </div>
 </div>
 
-<footer class="text-center py-10 border-t" style="color: #6b7280; border-color: var(--border-color)">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="flex justify-between items-center flex-wrap gap-4 mb-6">
-            <div class="flex gap-6 justify-center">
-                <i class="fab fa-instagram text-2xl hover:text-green-500 cursor-pointer transition"></i>
-                <i class="fab fa-facebook text-2xl hover:text-green-500 cursor-pointer transition"></i>
-                <i class="fab fa-tiktok text-2xl hover:text-green-500 cursor-pointer transition"></i>
-                <i class="fab fa-youtube text-2xl hover:text-green-500 cursor-pointer transition"></i>
+<!-- ========== FOOTER (3 KOLOM) ========== -->
+<footer class="footer py-16">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- 3 KOLOM -->
+        <div class="grid md:grid-cols-3 gap-12">
+
+            <!-- KOLOM 1: Nama + Deskripsi -->
+            <div>
+                <h3 class="text-4xl font-bold mb-4" data-footer-name>
+                    Villa Umo Dewi
+                </h3>
+                <p class="leading-relaxed opacity-80 max-w-sm" data-footer-desc>
+                    Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri.
+                </p>
             </div>
-            <p class="text-sm" data-footer-copyright>© 2026 Villa Umo Dewi | Developed by Kelompok Cihuyy</p>
-            <p class="text-xs" data-footer-address>Jl. Raya Umo Dewi No. 88, Bali, Indonesia</p>
+
+            <!-- KOLOM 2: LEGAL -->
+            <div>
+                <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
+                    LEGAL
+                </h4>
+                <div class="flex flex-col gap-3 opacity-80">
+                    <a href="#" data-footer-privacy>Privacy Policy</a>
+                    <a href="#" data-footer-terms>Terms of Service</a>
+                    <a href="#" data-footer-contact>Contact Us</a>
+                    <a href="#" data-footer-press>Press Kit</a>
+                </div>
+            </div>
+
+            <!-- KOLOM 3: FOLLOW US -->
+            <div>
+                <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
+                    FOLLOW US
+                </h4>
+                <div class="flex gap-4">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <!-- DIVIDER -->
+        <div class="border-t border-white/10 my-10"></div>
+
+        <!-- BOTTOM: Copyright + Indonesia -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="opacity-70 text-sm" data-footer-copyright>
+                © 2026 Villa Umo Dewi. All rights reserved.
+            </p>
+            <p class="opacity-60 text-sm" data-footer-country>
+                Indonesia
+            </p>
+        </div>
+
     </div>
 </footer>
 
 <script>
-    // Set min date to today
+    // ========== SIDEBAR ==========
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    function openSidebar() {
+        sidebar.classList.add('active');
+        sidebarOverlay.classList.add('active');
+        document.body.classList.add('sidebar-open');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
+    }
+
+    menuBtn.addEventListener('click', openSidebar);
+    sidebarClose.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.sidebar-links a').forEach(link => {
+        link.addEventListener('click', closeSidebar);
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+            closeSidebar();
+        }
+    });
+
+    // ========== SIDEBAR ACTIVE MENU ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = window.location.pathname.split('/')[1] || '';
+        const pageMap = {
+            '': 'home',
+            'booking': 'booking',
+            'report': 'report',
+            'gallery': 'gallery'
+        };
+        const activePage = pageMap[currentPage] || 'home';
+        
+        document.querySelectorAll('.sidebar-links a').forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.page === activePage) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // ========== DATE PICKER ==========
     const today = new Date().toISOString().split('T')[0];
     const checkIn = document.getElementById('checkIn');
     const checkOut = document.getElementById('checkOut');
@@ -614,7 +1090,19 @@
             calculateDuration();
         });
     }
-    
+
+    // Di booking.blade.php
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        const email = document.getElementById('inputEmail').value;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            alert('Email tidak valid. Contoh: nama@domain.com');
+            return false;
+        }
+    });
+        
     function calculateDuration() {
         if (checkIn && checkOut && checkIn.value && checkOut.value) {
             const start = new Date(checkIn.value);
@@ -646,7 +1134,7 @@
     let selectedBungalows = [];
     let bungalowPrices = {};
 
-    // Ambil harga dari database via AJAX
+    // ========== LOAD PRICES ==========
     function loadPrices() {
         fetch('{{ route("booking.prices") }}')
             .then(response => response.json())
@@ -659,17 +1147,16 @@
             });
     }
 
-    // Panggil saat halaman dimuat
     loadPrices();
     
     // ========== BUNGALOW NAMES & DESCRIPTIONS ==========
     const bungalowNames = {
         @foreach($bungalows as $bungalow)
         '{{ $bungalow->code }}': { 
-            id: '{{ $bungalow->name }}', 
-            en: '{{ $bungalow->name }}',
-            desc_id: '{{ $bungalow->description_id }}',
-            desc_en: '{{ $bungalow->description_en }}'
+            id: '{{ addslashes($bungalow->name) }}', 
+            en: '{{ addslashes($bungalow->name) }}',
+            desc_id: '{{ addslashes($bungalow->description_id) }}',
+            desc_en: '{{ addslashes($bungalow->description_en) }}'
         },
         @endforeach
     };
@@ -707,7 +1194,7 @@
         let total = 0;
         
         if (selectedBungalows.length === 0 || duration === 0) {
-            summaryList.innerHTML = '<div class="text-center text-gray-500" id="emptySummary">Belum ada bungalow dipilih atau tanggal belum lengkap</div>';
+            summaryList.innerHTML = `<div class="text-center text-gray-500" id="emptySummary">${currentLang === 'id' ? 'Belum ada bungalow dipilih atau tanggal belum lengkap' : 'No bungalow selected or dates incomplete'}</div>`;
             totalPriceDisplay.innerHTML = formatPrice(0);
             totalPriceInput.value = 0;
             selectedBungalowsInput.value = '';
@@ -720,11 +1207,12 @@
             const subtotal = pricePerNight * duration;
             total += subtotal;
             const name = currentLang === 'id' ? (bungalowNames[bungalow]?.id || bungalow) : (bungalowNames[bungalow]?.en || bungalow);
+            const perNight = currentLang === 'id' ? 'malam' : 'nights';
             html += `
                 <div class="flex justify-between items-center" data-bungalow="${bungalow}">
                     <div>
                         <span style="color: var(--text-card)">${name}</span>
-                        <div class="text-xs" style="color: var(--primary-color)">${formatPrice(pricePerNight)} × ${duration} malam</div>
+                        <div class="text-xs" style="color: var(--primary-color)">${formatPrice(pricePerNight)} × ${duration} ${perNight}</div>
                     </div>
                     <div class="flex items-center gap-3">
                         <span class="font-semibold" style="color: var(--text-body)">${formatPrice(subtotal)}</span>
@@ -752,9 +1240,16 @@
         }
     }
     
+    // ========== BUNGALOW SELECTION ==========
     const bungalowCards = document.querySelectorAll('.bungalow-card');
     bungalowCards.forEach(card => {
         card.addEventListener('click', (e) => {
+            if (card.classList.contains('inactive')) {
+                const msg = currentLang === 'id' ? 'Maaf, bungalow ini sedang tidak tersedia.' : 'Sorry, this bungalow is currently unavailable.';
+                alert(msg);
+                return;
+            }
+            
             if (e.target.closest('.fa-times-circle')) return;
             
             const bungalowId = card.dataset.bungalow;
@@ -772,6 +1267,7 @@
         });
     });
     
+    // ========== THEME ==========
     function setTheme(theme) {
         const html = document.documentElement;
         if (theme === 'dark') {
@@ -780,15 +1276,13 @@
             html.classList.remove('dark-mode');
         }
         localStorage.setItem('theme', theme);
-        const toggle = document.getElementById('themeToggle');
-        if (toggle) toggle.checked = (theme === 'dark');
+        
+        document.querySelectorAll('.theme-switch input[type="checkbox"]').forEach(toggle => {
+            if (toggle) toggle.checked = (theme === 'dark');
+        });
     }
     
-    function toggleTheme() {
-        const isDark = document.documentElement.classList.contains('dark-mode');
-        setTheme(isDark ? 'light' : 'dark');
-    }
-    
+    // ========== TRANSLATIONS ==========
     const translations = {
         id: {
             booking_title: "Booking Villa Umo Dewi",
@@ -802,12 +1296,24 @@
             total_title: "Total Harga:",
             book_now: "Booking Sekarang",
             guarantee: '<i class="fas fa-lock"></i> Data Anda aman & terenkripsi',
-            footer_copyright: "© 2026 Villa Umo Dewi | Developed by Kelompok Cihuyy",
-            footer_address: "Jl. Raya Umo Dewi No. 88, Bali, Indonesia",
             nav_home: "Home",
             nav_villa: "Villa",
             nav_booking: "Booking",
-            nav_contact: "Kontak"
+            nav_contact: "Kontak",
+            unavailable_msg: "Maaf, bungalow ini sedang tidak tersedia.",
+            available: "Tersedia",
+            unavailable: "Tidak Tersedia",
+            per_night: "/malam",
+            price_format: "id",
+            // FOOTER
+            footer_name: "Villa Umo Dewi",
+            footer_desc: "Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri, dikelilingi keindahan alam Bali.",
+            footerPrivacy: "Privacy Policy",
+            footerTerms: "Terms of Service",
+            footerContact: "Contact Us",
+            footerPress: "Press Kit",
+            footerCopyright: "© 2026 Villa Umo Dewi. All rights reserved.",
+            footer_country: "Indonesia"
         },
         en: {
             booking_title: "Book Villa Umo Dewi",
@@ -821,44 +1327,81 @@
             total_title: "Total Price:",
             book_now: "Book Now",
             guarantee: '<i class="fas fa-lock"></i> Your data is safe & encrypted',
-            footer_copyright: "© 2026 Villa Umo Dewi | Developed by Kelompok Cihuyy",
-            footer_address: "Jl. Raya Umo Dewi No. 88, Bali, Indonesia",
             nav_home: "Home",
             nav_villa: "Villa",
             nav_booking: "Booking",
-            nav_contact: "Contact"
+            nav_contact: "Contact",
+            unavailable_msg: "Sorry, this bungalow is currently unavailable.",
+            available: "Available",
+            unavailable: "Unavailable",
+            per_night: "/night",
+            price_format: "en",
+            // FOOTER
+            footer_name: "Villa Umo Dewi",
+            footer_desc: "Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali.",
+            footerPrivacy: "Privacy Policy",
+            footerTerms: "Terms of Service",
+            footerContact: "Contact Us",
+            footerPress: "Press Kit",
+            footerCopyright: "© 2026 Villa Umo Dewi. All rights reserved.",
+            footer_country: "Indonesia"
         }
     };
     
+    // ========== APPLY LANGUAGE ==========
     function applyLang(lang) {
         const t = translations[lang];
         if (!t) return;
         
-        document.querySelector('[data-booking-title]').innerText = t.booking_title;
-        document.querySelector('[data-booking-desc]').innerText = t.booking_desc;
+        const elements = {
+            '[data-booking-title]': 'booking_title',
+            '[data-booking-desc]': 'booking_desc',
+            '[data-label-name]': 'label_name',
+            '[data-label-phone]': 'label_phone',
+            '[data-label-dates]': 'label_dates',
+            '[data-package-title]': 'package_title',
+            '[data-summary-title]': 'summary_title',
+            '[data-total-title]': 'total_title',
+            '[data-home]': 'nav_home',
+            '[data-villa]': 'nav_villa',
+            '[data-booking]': 'nav_booking',
+            '[data-contact]': 'nav_contact',
+            // FOOTER
+            '[data-footer-name]': 'footer_name',
+            '[data-footer-desc]': 'footer_desc',
+            '[data-footer-privacy]': 'footerPrivacy',
+            '[data-footer-terms]': 'footerTerms',
+            '[data-footer-contact]': 'footerContact',
+            '[data-footer-press]': 'footerPress',
+            '[data-footer-copyright]': 'footerCopyright',
+            '[data-footer-country]': 'footer_country'
+        };
+        
+        for (const [selector, key] of Object.entries(elements)) {
+            const el = document.querySelector(selector);
+            if (el) el.innerText = t[key];
+        }
+        
         document.querySelector('[data-form-title]').innerHTML = `<i class="fas fa-calendar-check" style="color: var(--primary-color)"></i> ${t.form_title}`;
-        document.querySelector('[data-label-name]').innerText = t.label_name;
-        document.querySelector('[data-label-phone]').innerText = t.label_phone;
-        document.querySelector('[data-label-dates]').innerText = t.label_dates;
         document.querySelector('[data-package-title]').innerHTML = `<i class="fas fa-bed" style="color: var(--primary-color)"></i> ${t.package_title}`;
         document.querySelector('[data-summary-title]').innerHTML = `<i class="fas fa-receipt"></i> ${t.summary_title}`;
-        document.querySelector('[data-total-title]').innerText = t.total_title;
         document.querySelector('[data-book-now]').innerHTML = `<i class="fas fa-check-circle"></i> ${t.book_now}`;
         document.querySelector('[data-guarantee]').innerHTML = t.guarantee;
-        document.querySelector('[data-footer-copyright]').innerText = t.footer_copyright;
-        document.querySelector('[data-footer-address]').innerText = t.footer_address;
-        document.querySelector('[data-home]').innerText = t.nav_home;
-        document.querySelector('[data-villa]').innerText = t.nav_villa;
-        document.querySelector('[data-booking]').innerText = t.nav_booking;
-        document.querySelector('[data-contact]').innerText = t.nav_contact;
         
-        // Update deskripsi bungalow
+        document.querySelectorAll('.price-night-label').forEach(el => {
+            el.innerText = t.per_night;
+        });
+        
+        document.querySelectorAll('.status-unavailable').forEach(el => {
+            el.innerText = t.unavailable;
+        });
+        
         updateBungalowDescriptions(lang);
-        
         calculateDuration();
         updateSummary();
     }
     
+    // ========== UPDATE LANGUAGE UI ==========
     function updateLangUI(lang) {
         document.querySelectorAll('.lang-option').forEach(option => {
             if (option.dataset.lang === lang) {
@@ -869,6 +1412,7 @@
         });
     }
     
+    // ========== SET LANGUAGE ==========
     function setLang(lang) {
         localStorage.setItem('lang', lang);
         currentLang = lang;
@@ -876,6 +1420,7 @@
         updateLangUI(lang);
     }
     
+    // ========== BOOKING FORM ==========
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', function() {
@@ -883,47 +1428,48 @@
         });
     }
     
-    const menuBtn = document.getElementById('menuBtn');
-    const navLinksElem = document.getElementById('navLinks');
-    if (menuBtn) {
-        menuBtn.addEventListener('click', () => {
-            navLinksElem.classList.toggle('active');
-            const icon = menuBtn.querySelector('i');
-            if (navLinksElem.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-    }
-    
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navLinksElem.classList.remove('active');
-            if (menuBtn) {
-                const icon = menuBtn.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
+    // ========== THEME TOGGLE ==========
+    document.querySelectorAll('.theme-switch input[type="checkbox"]').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            const isDark = this.checked;
+            document.querySelectorAll('.theme-switch input[type="checkbox"]').forEach(t => {
+                if (t !== this) t.checked = isDark;
+            });
+            setTheme(isDark ? 'dark' : 'light');
         });
     });
     
-    window.addEventListener('DOMContentLoaded', () => {
+    // ========== SYNC LANGUAGE ==========
+    document.querySelectorAll('.lang-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const lang = this.dataset.lang;
+            document.querySelectorAll('.lang-option').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll(`.lang-option[data-lang="${lang}"]`).forEach(el => {
+                el.classList.add('active');
+            });
+            setLang(lang);
+        });
+    });
+    
+    // ========== INITIALIZE ==========
+    window.addEventListener('DOMContentLoaded', function() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
         
         const savedLang = localStorage.getItem('lang') || 'id';
-        setLang(savedLang);
+        currentLang = savedLang;
+        applyLang(savedLang);
+        updateLangUI(savedLang);
         
-        const toggle = document.getElementById('themeToggle');
-        if (toggle) toggle.addEventListener('change', toggleTheme);
-        
-        const langOptions = document.querySelectorAll('.lang-option');
-        langOptions.forEach(option => {
-            option.addEventListener('click', () => setLang(option.dataset.lang));
+        // Pastikan semua lang-option sesuai dengan bahasa yang disimpan
+        document.querySelectorAll('.lang-option').forEach(el => {
+            if (el.dataset.lang === savedLang) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
         });
     });
 </script>
