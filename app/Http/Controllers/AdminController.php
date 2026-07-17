@@ -118,16 +118,32 @@ class AdminController extends Controller
             'description_id' => 'nullable|string',
             'description_en' => 'nullable|string',
             'price' => 'required|integer|min:0',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $bungalow->update([
+        $data = [
             'name' => $request->name,
             'description_id' => $request->description_id,
             'description_en' => $request->description_en,
             'price' => $request->price,
             'status' => $request->status,
-        ]);
+        ];
+
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama
+            if ($bungalow->image && file_exists(storage_path('app/public/' . $bungalow->image))) {
+                unlink(storage_path('app/public/' . $bungalow->image));
+            }
+            
+            $image = $request->file('image');
+            $filename = time() . '_' . $image->getClientOriginalName();
+            $path = $image->storeAs('bungalows', $filename, 'public');
+            // Simpan path tanpa 'storage/'
+            $data['image'] = $path;
+        }
+
+        $bungalow->update($data);
 
         return redirect()->back()->with('success', 'Bungalow berhasil diupdate!');
     }

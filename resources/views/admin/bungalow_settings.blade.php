@@ -294,7 +294,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             @foreach($bungalows as $bungalow)
             <div class="bg-card rounded-xl shadow-md p-4 border" style="border-color: var(--border-color);">
-                <form method="POST" action="{{ route('admin.bungalow.update', $bungalow->id) }}">
+                <form method="POST" action="{{ route('admin.bungalow.update', $bungalow->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     
@@ -310,6 +310,18 @@
                     <div class="mb-3">
                         <label class="form-label">Nama</label>
                         <input type="text" name="name" value="{{ $bungalow->name }}" class="form-input">
+                    </div>
+
+                    <!-- Tambahkan di form update bungalow -->
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Gambar Bungalow</label>
+                        @if($bungalow->image)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $bungalow->image) }}" alt="{{ $bungalow->name }}" class="w-32 h-32 object-cover rounded">
+                            </div>
+                        @endif
+                        <input type="file" name="image" accept="image/*" class="w-full px-3 py-2 border rounded-lg">
+                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Maks: 2MB</p>
                     </div>
 
                     <div class="mb-3">
