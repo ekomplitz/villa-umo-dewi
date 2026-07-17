@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
     
 <style>
         * { 
@@ -56,7 +57,7 @@
             --nav-bg: rgba(21, 52, 72, 0.1);
             --nav-border: rgba(223, 208, 184, 0.08);
             --nav-text: #DFD0B8;
-            --footer-bg: #0F2A4A;
+            --footer-bg: #3C5B6F;
             --footer-text: #DFD0B8;
         }
         
@@ -1095,7 +1096,14 @@
                         data-desc-id="{{ $bungalow->description_id }}"
                         data-desc-en="{{ $bungalow->description_en }}"
                         data-status="{{ $bungalow->status }}">
-                        <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow->name }}">
+                        @php
+                            // Cek apakah gambar ada
+                            $imagePath = $bungalow->image ? asset('storage/' . $bungalow->image) : asset('images/image_4.jpg');
+                        @endphp
+                        <img src="{{ $imagePath }}" 
+                            class="w-full h-48 object-cover" 
+                            alt="{{ $bungalow->name }}"
+                            onerror="this.src='{{ asset('images/image_4.jpg') }}'">
                         <div class="p-4 text-center">
                             <i class="fas fa-bed text-2xl mb-2 room-icon" 
                             style="color: {{ $bungalow->status == 'active' ? '#22c55e' : '#ef4444' }}"></i>
@@ -1170,7 +1178,7 @@
         </div>
 
         <!-- FEATURES -->
-        <div class="grid md:grid-cols-3 gap-6 py-8">
+        <div class="grid md:grid-cols-4 gap-6 py-8">
             <div class="card-bg p-6 rounded-2xl border card-text text-center transform transition hover:scale-105">
                 <i class="fas fa-tree feature-icon"></i>
                 <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature1-title></h3>
@@ -1185,6 +1193,11 @@
                 <i class="fas fa-utensils feature-icon"></i>
                 <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature3-title></h3>
                 <p data-feature3-desc></p>
+            </div>
+            <div class="card-bg p-6 rounded-2xl border card-text text-center transform transition hover:scale-105">
+                <i class="fas fa-wifi feature-icon"></i>
+                <h3 class="text-xl font-semibold mb-2" style="color: var(--text-body)" data-feature4-title></h3>
+                <p data-feature4-desc></p>
             </div>
         </div>
 
@@ -1245,7 +1258,7 @@
             </div>
         </div>
 
-        <!-- PROMO -->
+        {{-- <!-- PROMO -->
         <div class="mt-12 text-center rounded-3xl p-8" style="background-color: var(--bg-about)">
             <div class="max-w-3xl mx-auto">
                 <i class="fas fa-tags text-4xl mb-4" style="color: var(--primary-color)"></i>
@@ -1255,7 +1268,7 @@
                     <i class="fas fa-calendar-check mr-2"></i> <span data-villa-book-now></span>
                 </a>
             </div>
-        </div>
+        </div> --}}
     </div>
 </section>
 
@@ -1263,21 +1276,21 @@
 <footer class="footer py-16">
     <div class="max-w-7xl mx-auto px-6">
 
-        <!-- 3 KOLOM -->
+        <!-- 3 KOLOM - Semua di tengah -->
         <div class="grid md:grid-cols-3 gap-12">
 
-            <!-- KOLOM 1: Nama + Deskripsi -->
-            <div>
+            <!-- KOLOM 1: Nama + Deskripsi (Rata Kiri) -->
+            <div class="text-center md:text-left">
                 <h3 class="text-4xl font-bold mb-4" data-footer-name>
                     Villa Umo Dewi
                 </h3>
-                <p class="leading-relaxed opacity-80 max-w-sm" data-footer-desc>
+                <p class="leading-relaxed opacity-80 max-w-sm mx-auto md:mx-0" data-footer-desc>
                     Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri.
                 </p>
             </div>
 
-            <!-- KOLOM 2: LEGAL -->
-            <div>
+            <!-- KOLOM 2: LEGAL (Tengah) -->
+            <div class="text-center">
                 <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
                     LEGAL
                 </h4>
@@ -1289,12 +1302,12 @@
                 </div>
             </div>
 
-            <!-- KOLOM 3: FOLLOW US -->
-            <div>
+            <!-- KOLOM 3: FOLLOW US (Tengah) -->
+            <div class="text-center">
                 <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
                     FOLLOW US
                 </h4>
-                <div class="flex gap-4">
+                <div class="flex justify-center gap-4">
                     <a href="#" class="social-icon">
                         <i class="fab fa-facebook-f"></i>
                     </a>
@@ -1494,8 +1507,8 @@
             feature3Desc: "Nikmati masakan khas desa dengan bahan segar dari sawah sekitar villa.",
             galleryTitle: "Galeri Villa",
             galleryDesc: "Suasana asli villa dan pemandangan sawah sekitarnya",
-            promoTitle: "🎉 Promo Spesial Akhir Tahun! 🎉",
-            promoDesc: "Dapatkan diskon 30% untuk booking 3 malam atau lebih! Jangan sampai kelewatan, promo terbatas!",
+            // promoTitle: "🎉 Promo Spesial Akhir Tahun! 🎉",
+            // promoDesc: "Dapatkan diskon 30% untuk booking 3 malam atau lebih! Jangan sampai kelewatan, promo terbatas!",
             aboutTitle: "Tentang Villa Umo Dewi",
             aboutDesc: "Villa Umo Dewi adalah villa yang terletak di tengah hamparan sawah yang asri. Nikmati udara segar, pemandangan hijau, dan suara alam yang menenangkan. Cocok buat staycation bareng keluarga, teman, atau pasangan 💚",
             addressTitle: "Alamat",
@@ -1534,7 +1547,9 @@
             footer_name: "Villa Umo Dewi",
             footer_follow: "Follow Us",
             footer_country: "Indonesia",
-            footer_desc: "Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri."
+            footer_desc: "Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri.",
+            feature4Title: "Free WiFi",
+            feature4Desc: "Nikmati akses internet cepat dan gratis selama menginap, cocok untuk workcation.",
         },
         en: {
             home: "Home",
@@ -1552,8 +1567,8 @@
             feature3Desc: "Enjoy authentic village cuisine with fresh ingredients from the surrounding rice fields.",
             galleryTitle: "Villa Gallery",
             galleryDesc: "Real atmosphere of the villa and surrounding rice field views",
-            promoTitle: "🎉 Special Year-End Promo! 🎉",
-            promoDesc: "Get 30% discount for booking 3 nights or more! Don't miss out, limited promo!",
+            // promoTitle: "🎉 Special Year-End Promo! 🎉",
+            // promoDesc: "Get 30% discount for booking 3 nights or more! Don't miss out, limited promo!",
             aboutTitle: "About Villa Umo Dewi",
             aboutDesc: "Villa Umo Dewi is a villa located in the middle of lush rice fields. Enjoy fresh air, green views, and calming natural sounds. Perfect for a staycation with family, friends, or your partner 💚",
             addressTitle: "Address",
@@ -1592,7 +1607,9 @@
             footer_name: "Villa Umo Dewi",
             footer_follow: "Follow Us",
             footer_country: "Indonesia",
-            footer_desc: "Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali."
+            footer_desc: "Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali.",
+            feature4Title: "Free WiFi",
+            feature4Desc: "Enjoy fast and free internet access during your stay, perfect for workcation.",
         }
     };
     
@@ -1650,7 +1667,9 @@
             '[data-footer-name]': 'footer_name',
             '[data-footer-follow]': 'footer_follow',
             '[data-footer-country]': 'footer_country',
-            '[data-footer-desc]': 'footer_desc'
+            '[data-footer-desc]': 'footer_desc',
+            '[data-feature4-title]': 'feature4Title',
+            '[data-feature4-desc]': 'feature4Desc',
         };
         
         for (const [selector, key] of Object.entries(elements)) {

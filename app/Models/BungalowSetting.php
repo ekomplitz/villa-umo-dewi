@@ -10,7 +10,7 @@ class BungalowSetting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code', 'name', 'description_id', 'description_en', 'price', 'image', 'status'
+        'name', 'code', 'description_id', 'description_en', 'image', 'price', 'status'
     ];
 
     public function getDescription($lang = 'id')

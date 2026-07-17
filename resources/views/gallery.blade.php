@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
     
     <style>
         * { 
@@ -57,7 +58,7 @@
             --nav-bg: rgba(21, 52, 72, 0.1);
             --nav-border: rgba(223, 208, 184, 0.08);
             --nav-text: #DFD0B8;
-            --footer-bg: #0F2A4A;
+            --footer-bg: #3C5B6F;
             --footer-text: #DFD0B8;
             --modal-bg: rgba(0, 0, 0, 0.9);
         }

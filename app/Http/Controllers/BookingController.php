@@ -68,4 +68,30 @@ class BookingController extends Controller
         return redirect()->route('payment.index', ['bookingId' => $booking->id])
                      ->with('success', 'Booking berhasil dibuat! Silakan lanjutkan ke pembayaran.');
     }
+
+    public function checkAvailability(Request $request)
+    {
+        $bungalowCode = $request->bungalow_code;
+        $checkIn = $request->check_in;
+        $checkOut = $request->check_out;
+
+        // Cek apakah ada booking yang overlap dengan tanggal yang diminta
+        $isBooked = Booking::where('selected_bungalows', 'LIKE', '%' . $bungalowCode . '%')
+            ->where(function($query) use ($checkIn, $checkOut) {
+                $query->where(function($q) use ($checkIn, $checkOut) {
+                    // Booking yang sudah ada: check_in < check_out_request AND check_out > check_in_request
+                    $q->where('check_in', '<', $checkOut)
+                    ->where('check_out', '>', $checkIn);
+                });
+            })
+            ->whereIn('status', ['pending', 'confirmed']) // Hanya booking yang pending/confirmed
+            ->exists();
+
+        return response()->json([
+            'available' => !$isBooked,
+            'bungalow_code' => $bungalowCode,
+            'check_in' => $checkIn,
+            'check_out' => $checkOut
+        ]);
+    }
 }
