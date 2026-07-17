@@ -6,21 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('bungalow_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique(); // b1, b2, b3, b4
+            $table->string('code')->unique();
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->integer('price');
+            $table->text('description_id')->nullable();
+            $table->text('description_en')->nullable();
             $table->string('image')->nullable();
+            $table->integer('price');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('bungalow_settings');
     }
