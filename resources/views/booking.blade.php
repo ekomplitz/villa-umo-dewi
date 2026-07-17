@@ -65,7 +65,7 @@
         --input-bg: #3C5B6F;
         --input-border: #948979;
         --package-unselected-bg: #3C5B6F;
-        --footer-bg: #0F2A4A;
+        --footer-bg: #3C5B6F;
         --footer-text: #DFD0B8;
     }
     
@@ -625,15 +625,36 @@
     .bungalow-card.inactive {
         opacity: 0.6;
         border-color: #ef4444 !important;
+        cursor: not-allowed;
+    }
+
+    /* ========== BUNGALOW BOOKED ========== */
+    .bungalow-card.booked {
+        border-color: #ef4444 !important;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .bungalow-card.booked .room-icon {
+        color: #ef4444 !important;
+    }
+
+    .bungalow-card.booked:hover {
+        transform: none !important;
+        border-color: #ef4444 !important;
     }
     
     .alert-success {
         background-color: #9D6638;
         color: #fff;
+        padding: 12px 16px;
+        border-radius: 8px;
     }
     .alert-error {
         background-color: #ef4444;
         color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
     }
 
     /* Dark mode date picker */
@@ -901,9 +922,11 @@
                                     <i class="fas fa-bed room-icon" 
                                     style="color: {{ $bungalow->status == 'active' ? 'var(--primary-color)' : '#ef4444' }}; font-size: 16px;"></i>
                                     <h3 class="font-semibold text-base" style="color: var(--text-body)">{{ $bungalow->name }}</h3>
-                                    @if($bungalow->status == 'inactive')
-                                    <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full status-unavailable">Tidak Tersedia</span>
-                                    @endif
+                                    <!-- Status Default (Tersedia / Tidak Tersedia) -->
+                                    <span class="status-default text-xs px-2 py-0.5 rounded-full" 
+                                        style="background: {{ $bungalow->status == 'active' ? '#22c55e' : '#ef4444' }}; color: #fff;">
+                                        {{ $bungalow->status == 'active' ? 'Tersedia' : 'Tidak Tersedia' }}
+                                    </span>
                                 </div>
                                 <p class="text-xs mt-1 bungalow-desc" style="color: var(--text-card)"></p>
                             </div>
@@ -1081,6 +1104,8 @@
             }
             if (checkInHidden) checkInHidden.value = this.value;
             calculateDuration();
+            // Reset selected bungalows when date changes
+            resetSelectedBungalows();
         });
     }
     
@@ -1088,17 +1113,107 @@
         checkOut.addEventListener('change', function() {
             if (checkOutHidden) checkOutHidden.value = this.value;
             calculateDuration();
+            // Reset selected bungalows when date changes
+            resetSelectedBungalows();
         });
     }
 
-    // Di booking.blade.php
+    // ========== RESET SELECTED BUNGALOWS ==========
+    function resetSelectedBungalows() {
+        selectedBungalows = [];
+        document.querySelectorAll('.bungalow-card.selected').forEach(card => {
+            card.classList.remove('selected');
+        });
+        updateSummary();
+        // Re-check availability for all bungalows
+        checkAllBungalowsAvailability();
+    }
+
+    // ========== CHECK ALL BUNGALOWS AVAILABILITY ==========
+    async function checkAllBungalowsAvailability() {
+        const checkInVal = document.getElementById('checkIn').value;
+        const checkOutVal = document.getElementById('checkOut').value;
+        
+        if (!checkInVal || !checkOutVal) {
+            // Jika belum pilih tanggal, tampilkan status default
+            document.querySelectorAll('.bungalow-card').forEach(card => {
+                const bookedBadge = card.querySelector('.status-booked');
+                if (bookedBadge) bookedBadge.remove();
+                card.classList.remove('booked');
+                
+                const statusBadge = card.querySelector('.status-default');
+                if (statusBadge) {
+                    statusBadge.style.display = 'inline-block';
+                }
+            });
+            return;
+        }
+
+        document.querySelectorAll('.bungalow-card').forEach(async (card) => {
+            // Skip jika bungalow inactive
+            if (card.classList.contains('inactive')) return;
+            
+            const bungalowCode = card.dataset.bungalow;
+            const isAvailable = await checkBungalowAvailability(bungalowCode);
+            
+            // Hapus badge booked lama
+            const oldBookedBadge = card.querySelector('.status-booked');
+            if (oldBookedBadge) oldBookedBadge.remove();
+            
+            // Sembunyikan status default
+            const statusBadge = card.querySelector('.status-default');
+            
+            if (!isAvailable) {
+                card.classList.add('booked');
+                if (statusBadge) statusBadge.style.display = 'none';
+                
+                // Tambahkan badge "Booked"
+                const badge = document.createElement('span');
+                badge.className = 'status-booked text-xs px-2 py-0.5 rounded-full ml-2';
+                badge.style.cssText = 'background: #ef4444; color: #fff;';
+                badge.textContent = currentLang === 'id' ? 'Dipesan' : 'Booked';
+                card.querySelector('.flex.items-center.gap-2').appendChild(badge);
+            } else {
+                card.classList.remove('booked');
+                if (statusBadge) {
+                    statusBadge.style.display = 'inline-block';
+                    // Update teks status default sesuai bahasa
+                    const isActive = card.dataset.status === 'active';
+                    statusBadge.textContent = isActive ? (currentLang === 'id' ? 'Tersedia' : 'Available') : (currentLang === 'id' ? 'Tidak Tersedia' : 'Unavailable');
+                    statusBadge.style.background = isActive ? '#22c55e' : '#ef4444';
+                }
+            }
+        });
+    }
+
+    // ========== CHECK BUNGALOW AVAILABILITY ==========
+    async function checkBungalowAvailability(bungalowCode) {
+        const checkInVal = document.getElementById('checkIn').value;
+        const checkOutVal = document.getElementById('checkOut').value;
+        
+        if (!checkInVal || !checkOutVal) {
+            return true;
+        }
+
+        try {
+            const response = await fetch(`/booking/check-availability?bungalow_code=${bungalowCode}&check_in=${checkInVal}&check_out=${checkOutVal}`);
+            const data = await response.json();
+            return data.available;
+        } catch (error) {
+            console.error('Error checking availability:', error);
+            return true;
+        }
+    }
+
+    // ========== BOOKING FORM VALIDATION ==========
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
         const email = document.getElementById('inputEmail').value;
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         
         if (!emailRegex.test(email)) {
             e.preventDefault();
-            alert('Email tidak valid. Contoh: nama@domain.com');
+            const msg = currentLang === 'id' ? 'Email tidak valid. Contoh: nama@domain.com' : 'Invalid email. Example: name@domain.com';
+            alert(msg);
             return false;
         }
     });
@@ -1243,9 +1358,15 @@
     // ========== BUNGALOW SELECTION ==========
     const bungalowCards = document.querySelectorAll('.bungalow-card');
     bungalowCards.forEach(card => {
-        card.addEventListener('click', (e) => {
+        card.addEventListener('click', async (e) => {
             if (card.classList.contains('inactive')) {
                 const msg = currentLang === 'id' ? 'Maaf, bungalow ini sedang tidak tersedia.' : 'Sorry, this bungalow is currently unavailable.';
+                alert(msg);
+                return;
+            }
+            
+            if (card.classList.contains('booked')) {
+                const msg = currentLang === 'id' ? 'Maaf, bungalow ini sudah dipesan untuk tanggal tersebut.' : 'Sorry, this bungalow is already booked for those dates.';
                 alert(msg);
                 return;
             }
@@ -1255,7 +1376,24 @@
             const bungalowId = card.dataset.bungalow;
             const index = selectedBungalows.indexOf(bungalowId);
             
+            // Cek ketersediaan sebelum menambah
             if (index === -1) {
+                const isAvailable = await checkBungalowAvailability(bungalowId);
+                if (!isAvailable) {
+                    const msg = currentLang === 'id' ? 'Maaf, bungalow ini sudah dipesan untuk tanggal tersebut.' : 'Sorry, this bungalow is already booked for those dates.';
+                    alert(msg);
+                    // Update status card
+                    card.classList.add('booked');
+                    const statusBadge = card.querySelector('.status-default');
+                    if (statusBadge) statusBadge.style.display = 'none';
+                    
+                    const badge = document.createElement('span');
+                    badge.className = 'status-booked text-xs px-2 py-0.5 rounded-full ml-2';
+                    badge.style.cssText = 'background: #ef4444; color: #fff;';
+                    badge.textContent = currentLang === 'id' ? 'Dipesan' : 'Booked';
+                    card.querySelector('.flex.items-center.gap-2').appendChild(badge);
+                    return;
+                }
                 selectedBungalows.push(bungalowId);
                 card.classList.add('selected');
             } else {
@@ -1305,7 +1443,6 @@
             unavailable: "Tidak Tersedia",
             per_night: "/malam",
             price_format: "id",
-            // FOOTER
             footer_name: "Villa Umo Dewi",
             footer_desc: "Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri, dikelilingi keindahan alam Bali.",
             footerPrivacy: "Privacy Policy",
@@ -1313,7 +1450,8 @@
             footerContact: "Contact Us",
             footerPress: "Press Kit",
             footerCopyright: "© 2026 Villa Umo Dewi. All rights reserved.",
-            footer_country: "Indonesia"
+            footer_country: "Indonesia",
+            booked: "Dipesan"
         },
         en: {
             booking_title: "Book Villa Umo Dewi",
@@ -1336,7 +1474,6 @@
             unavailable: "Unavailable",
             per_night: "/night",
             price_format: "en",
-            // FOOTER
             footer_name: "Villa Umo Dewi",
             footer_desc: "Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali.",
             footerPrivacy: "Privacy Policy",
@@ -1344,7 +1481,8 @@
             footerContact: "Contact Us",
             footerPress: "Press Kit",
             footerCopyright: "© 2026 Villa Umo Dewi. All rights reserved.",
-            footer_country: "Indonesia"
+            footer_country: "Indonesia",
+            booked: "Booked"
         }
     };
     
@@ -1396,6 +1534,11 @@
             el.innerText = t.unavailable;
         });
         
+        // Update booked badges
+        document.querySelectorAll('.status-booked').forEach(el => {
+            el.textContent = t.booked;
+        });
+        
         updateBungalowDescriptions(lang);
         calculateDuration();
         updateSummary();
@@ -1418,6 +1561,8 @@
         currentLang = lang;
         applyLang(lang);
         updateLangUI(lang);
+        // Re-check availability after language change
+        checkAllBungalowsAvailability();
     }
     
     // ========== BOOKING FORM ==========
@@ -1471,6 +1616,9 @@
                 el.classList.remove('active');
             }
         });
+        
+        // Check availability for all bungalows when page loads
+        setTimeout(checkAllBungalowsAvailability, 500);
     });
 </script>
 

@@ -1,0 +1,740 @@
+/* ========================================
+   MOBILE RESPONSIVE CSS
+   Villa Umo Dewi - Frontend
+   ======================================== */
+
+/* ========== GLOBAL MOBILE FRIENDLY ========== */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-body);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* ========================================
+   TABLET & HP (max-width: 768px)
+   ======================================== */
+@media (max-width: 768px) {
+    
+    /* ---------- NAVBAR ---------- */
+    nav {
+        padding: 10px 16px !important;
+    }
+    .nav-center h1 {
+        font-size: 0.85rem !important;
+        letter-spacing: 1px !important;
+    }
+    .btn-book-now-nav {
+        padding: 6px 14px !important;
+        font-size: 0.7rem !important;
+    }
+    .btn-book-now-nav span {
+        display: none !important;
+    }
+    .nav-right {
+        gap: 8px !important;
+    }
+    
+    /* ---------- HERO ---------- */
+    .hero-content > div {
+        padding: 20px 24px !important;
+    }
+    .hero-content h2 {
+        font-size: 1.5rem !important;
+    }
+    .hero-content p {
+        font-size: 0.85rem !important;
+    }
+    .hero-content .btn-primary {
+        padding: 10px 24px !important;
+        font-size: 0.85rem !important;
+    }
+    .bg-dot {
+        width: 8px !important;
+        height: 8px !important;
+    }
+    .bg-dot.active {
+        width: 20px !important;
+    }
+    .scroll-indicator i {
+        font-size: 1.2rem !important;
+    }
+    
+    /* ---------- BUNGALOW GRID ---------- */
+    .grid.md\:grid-cols-2.lg\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    .room-card img {
+        height: 160px !important;
+    }
+    .room-card .p-4 {
+        padding: 12px !important;
+    }
+    .room-card .text-lg {
+        font-size: 0.95rem !important;
+    }
+    .room-card .text-sm {
+        font-size: 0.7rem !important;
+    }
+    .room-card .font-bold {
+        font-size: 0.85rem !important;
+    }
+    .room-icon {
+        font-size: 1.2rem !important;
+    }
+    .status-badge {
+        width: 10px !important;
+        height: 10px !important;
+    }
+    
+    /* ---------- FEATURES ---------- */
+    .grid.md\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    .grid.md\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    .card-bg.p-6 {
+        padding: 16px !important;
+    }
+    .feature-icon {
+        font-size: 24px !important;
+        margin-bottom: 8px !important;
+    }
+    .card-bg h3 {
+        font-size: 0.95rem !important;
+    }
+    .card-bg p {
+        font-size: 0.8rem !important;
+    }
+    
+    /* ---------- MAPS & RUTE ---------- */
+    .grid.md\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    .map-container {
+        min-height: 250px !important;
+        height: 250px !important;
+        padding-bottom: 0 !important;
+    }
+    .map-container iframe {
+        position: relative !important;
+        height: 250px !important;
+    }
+    .route-card {
+        padding: 20px !important;
+    }
+    .route-card h3 {
+        font-size: 1.1rem !important;
+    }
+    .route-card .route-desc {
+        font-size: 0.85rem !important;
+    }
+    .route-step .step-number {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.75rem !important;
+    }
+    .route-step .step-content h4 {
+        font-size: 0.9rem !important;
+    }
+    .route-step .step-content p {
+        font-size: 0.8rem !important;
+    }
+    .route-time {
+        font-size: 0.85rem !important;
+    }
+    
+    /* ---------- FOOTER ---------- */
+    .grid.md\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        text-align: center !important;
+    }
+    .footer .text-4xl {
+        font-size: 1.8rem !important;
+    }
+    .footer .social-icon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 0.9rem !important;
+    }
+    .footer .border-t {
+        margin: 12px auto !important;
+        max-width: 150px !important;
+    }
+    .footer .flex.flex-col.md\:flex-row {
+        flex-direction: column !important;
+        gap: 8px !important;
+        text-align: center !important;
+    }
+    
+    /* ---------- ABOUT VILLA ---------- */
+    .grid.md\:grid-cols-2.gap-12 {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .rounded-3xl img {
+        height: 250px !important;
+    }
+    .grid.md\:grid-cols-2.gap-12 .text-3xl {
+        font-size: 1.5rem !important;
+    }
+    .grid.md\:grid-cols-2.gap-12 .text-lg {
+        font-size: 0.9rem !important;
+    }
+    
+    /* ---------- PROMO ---------- */
+    .rounded-3xl.p-8 {
+        padding: 20px !important;
+        margin-top: 20px !important;
+    }
+    .rounded-3xl .text-2xl {
+        font-size: 1.2rem !important;
+    }
+    .rounded-3xl .text-base {
+        font-size: 0.85rem !important;
+    }
+    .rounded-3xl .btn-primary {
+        padding: 10px 24px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    /* ---------- BOOKING PAGE ---------- */
+    .grid.md\:grid-cols-2.gap-8 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    .form-card.p-8, .sidebar-bg.p-8 {
+        padding: 16px !important;
+    }
+    .form-card .text-2xl {
+        font-size: 1.2rem !important;
+    }
+    .bungalow-card {
+        padding: 12px !important;
+    }
+    .bungalow-card .flex.justify-between {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+    }
+    .bungalow-card .text-right {
+        text-align: left !important;
+        width: 100% !important;
+    }
+    .bungalow-card .flex.items-center.gap-2 {
+        flex-wrap: wrap !important;
+    }
+    .bungalow-card .text-base {
+        font-size: 0.85rem !important;
+    }
+    .bungalow-card .text-xs {
+        font-size: 0.65rem !important;
+    }
+    .form-label {
+        font-size: 0.85rem !important;
+    }
+    .form-input, .form-select {
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+    }
+    .booking-btn {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+    .sticky.top-24 {
+        position: relative !important;
+        top: 0 !important;
+    }
+    
+    /* ---------- GALLERY PAGE ---------- */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    .gallery-item img {
+        height: 160px !important;
+    }
+    .gallery-item .gallery-info {
+        padding: 12px !important;
+    }
+    .gallery-item .gallery-info h3 {
+        font-size: 0.9rem !important;
+    }
+    .gallery-item .gallery-info p {
+        font-size: 0.75rem !important;
+    }
+    .page-title {
+        font-size: 1.8rem !important;
+    }
+    .page-subtitle {
+        font-size: 0.85rem !important;
+    }
+    .modal-content img {
+        height: 250px !important;
+    }
+    .modal-body {
+        padding: 16px !important;
+    }
+    .modal-body h2 {
+        font-size: 1.2rem !important;
+    }
+    .modal-body p {
+        font-size: 0.85rem !important;
+    }
+    .modal-close-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1.2rem !important;
+        top: 10px !important;
+        right: 12px !important;
+    }
+    
+    /* ---------- PAYMENT PAGE ---------- */
+    .grid.md\:grid-cols-3.gap-8 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    .payment-card {
+        padding: 16px !important;
+    }
+    .payment-card .card-header h3 {
+        font-size: 0.95rem !important;
+    }
+    .payment-method {
+        padding: 12px !important;
+        gap: 12px !important;
+    }
+    .payment-method .method-icon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1rem !important;
+    }
+    .payment-method .method-name {
+        font-size: 0.85rem !important;
+    }
+    .payment-method .method-desc {
+        font-size: 0.7rem !important;
+    }
+    .summary-item {
+        font-size: 0.85rem !important;
+        padding: 6px 0 !important;
+    }
+    .summary-total {
+        font-size: 1rem !important;
+    }
+    .btn-pay {
+        font-size: 0.9rem !important;
+        padding: 12px !important;
+    }
+    
+    /* ---------- SIDEBAR ---------- */
+    .sidebar {
+        width: 280px !important;
+        padding: 20px !important;
+    }
+    .sidebar-logo span {
+        font-size: 1rem !important;
+    }
+    .sidebar-links a {
+        font-size: 0.9rem !important;
+        padding: 10px 12px !important;
+    }
+    .sidebar-links a i {
+        font-size: 0.95rem !important;
+        width: 20px !important;
+    }
+    .sidebar-switchers .lang-switch {
+        height: 30px !important;
+    }
+    .sidebar-switchers .lang-switch .lang-option {
+        font-size: 10px !important;
+        padding: 0 8px !important;
+        height: 24px !important;
+    }
+    .sidebar-switchers .theme-switch {
+        width: 48px !important;
+        height: 30px !important;
+    }
+    .sidebar-switchers .theme-slider:before {
+        height: 22px !important;
+        width: 22px !important;
+    }
+    .sidebar-switchers .theme-switch input:checked + .theme-slider:before {
+        transform: translateX(20px) !important;
+    }
+    
+    /* ---------- TYPOGRAPHY ---------- */
+    h1.text-4xl.md\:text-5xl {
+        font-size: 1.8rem !important;
+    }
+    h2.text-3xl {
+        font-size: 1.5rem !important;
+    }
+    h3.text-xl {
+        font-size: 1.1rem !important;
+    }
+    h2.text-2xl {
+        font-size: 1.3rem !important;
+    }
+    .text-sm {
+        font-size: 0.75rem !important;
+    }
+    .text-base {
+        font-size: 0.85rem !important;
+    }
+    .text-lg {
+        font-size: 0.95rem !important;
+    }
+    
+    /* ---------- SPACING ---------- */
+    .px-4 {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+    .px-6 {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+    .py-12 {
+        padding-top: 30px !important;
+        padding-bottom: 30px !important;
+    }
+    .py-16 {
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+    }
+    .mt-12 {
+        margin-top: 24px !important;
+    }
+    .mb-16 {
+        margin-bottom: 30px !important;
+    }
+    .gap-6 {
+        gap: 12px !important;
+    }
+    .gap-8 {
+        gap: 16px !important;
+    }
+    
+    /* ---------- TOUCH FRIENDLY ---------- */
+    button, 
+    .btn, 
+    .btn-primary, 
+    .booking-btn, 
+    .btn-book-now-nav,
+    .menu-btn,
+    .sidebar-links a,
+    .social-icon,
+    .bungalow-card,
+    .payment-method,
+    .gallery-item {
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: transparent !important;
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    .btn-book-now-nav,
+    .menu-btn {
+        min-height: 40px !important;
+        min-width: 40px !important;
+    }
+    
+    .social-icon {
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+    
+    /* Feedback untuk touch */
+    .bungalow-card:active,
+    .payment-method:active,
+    .btn:active,
+    .gallery-item:active {
+        transform: scale(0.97) !important;
+        transition: transform 0.1s !important;
+    }
+    
+    /* ---------- REPORT PAGE ---------- */
+    .max-w-4xl.mx-auto.px-4.py-12 {
+        padding: 16px !important;
+    }
+    .form-textarea {
+        min-height: 120px !important;
+        font-size: 14px !important;
+    }
+    .rating-star {
+        font-size: 1.5rem !important;
+    }
+    
+    /* ---------- STATUS LEGEND ---------- */
+    .flex.justify-center.gap-6.mt-6 {
+        gap: 12px !important;
+        flex-wrap: wrap !important;
+    }
+    .flex.justify-center.gap-6.mt-6 .text-sm {
+        font-size: 0.7rem !important;
+    }
+    
+    /* ---------- SIDEBAR OVERLAY ---------- */
+    .sidebar-overlay.active {
+        backdrop-filter: blur(2px) !important;
+    }
+}
+
+/* ========================================
+   HP KECIL (max-width: 480px)
+   ======================================== */
+@media (max-width: 480px) {
+    
+    /* ---------- BUNGALOW GRID (1 KOLOM) ---------- */
+    .grid.md\:grid-cols-2.lg\:grid-cols-4 {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* ---------- FEATURES GRID (1 KOLOM) ---------- */
+    .grid.md\:grid-cols-3,
+    .grid.md\:grid-cols-4 {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* ---------- GALLERY GRID (1 KOLOM) ---------- */
+    .gallery-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* ---------- HERO ---------- */
+    .hero-content > div {
+        padding: 16px 20px !important;
+    }
+    .hero-content h2 {
+        font-size: 1.2rem !important;
+    }
+    .hero-content p {
+        font-size: 0.8rem !important;
+    }
+    .hero-content .btn-primary {
+        padding: 8px 20px !important;
+        font-size: 0.8rem !important;
+    }
+    .bg-nav-btn {
+        gap: 8px !important;
+        bottom: 60px !important;
+    }
+    .bg-dot {
+        width: 6px !important;
+        height: 6px !important;
+    }
+    .bg-dot.active {
+        width: 16px !important;
+    }
+    
+    /* ---------- FORM ---------- */
+    .form-input, 
+    .form-select, 
+    .form-textarea {
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+    }
+    .booking-btn, 
+    .btn-primary {
+        padding: 10px !important;
+        font-size: 13px !important;
+    }
+    
+    /* ---------- CARDS ---------- */
+    .room-card img {
+        height: 140px !important;
+    }
+    .card-bg.p-6 {
+        padding: 14px !important;
+    }
+    
+    /* ---------- PAYMENT ---------- */
+    .payment-method {
+        padding: 10px !important;
+        gap: 10px !important;
+    }
+    .payment-method .method-icon {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.85rem !important;
+    }
+    .payment-method .method-name {
+        font-size: 0.8rem !important;
+    }
+    .payment-method .method-desc {
+        font-size: 0.65rem !important;
+    }
+    
+    /* ---------- FOOTER ---------- */
+    .footer .text-4xl {
+        font-size: 1.5rem !important;
+    }
+    .footer .text-sm {
+        font-size: 0.7rem !important;
+    }
+    .footer .gap-4.md\:gap-6 {
+        gap: 12px !important;
+    }
+    
+    /* ---------- SIDEBAR ---------- */
+    .sidebar {
+        width: 260px !important;
+        padding: 16px !important;
+    }
+    
+    /* ---------- TYPOGRAPHY ---------- */
+    h1.text-4xl.md\:text-5xl {
+        font-size: 1.5rem !important;
+    }
+    h2.text-3xl {
+        font-size: 1.3rem !important;
+    }
+    h3.text-xl {
+        font-size: 1rem !important;
+    }
+    .page-title {
+        font-size: 1.5rem !important;
+    }
+    
+    /* ---------- SPACING ---------- */
+    .px-4 {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    .py-12 {
+        padding-top: 24px !important;
+        padding-bottom: 24px !important;
+    }
+    .py-16 {
+        padding-top: 32px !important;
+        padding-bottom: 32px !important;
+    }
+    
+    /* ---------- MODAL ---------- */
+    .modal-content {
+        padding: 16px !important;
+        max-width: 95% !important;
+    }
+    .modal-body h2 {
+        font-size: 1.1rem !important;
+    }
+    .modal-body p {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ========================================
+   FIX UNTUK TABLET (768px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    
+    /* Bungalow grid 2 kolom di tablet */
+    .grid.md\:grid-cols-2.lg\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    /* Features 3 kolom di tablet */
+    .grid.md\:grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    .grid.md\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    /* Gallery 3 kolom di tablet */
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    /* Padding navbar */
+    nav {
+        padding: 12px 24px !important;
+    }
+    
+    /* Map height */
+    .map-container {
+        min-height: 320px !important;
+        height: 320px !important;
+    }
+    .map-container iframe {
+        height: 320px !important;
+    }
+}
+
+/* ========================================
+   DARK MODE MOBILE
+   ======================================== */
+.dark-mode ::-webkit-scrollbar-track {
+    background: var(--bg-body);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+}
+
+/* ========================================
+   NOTIFICATIONS MOBILE
+   ======================================== */
+@media (max-width: 768px) {
+    .fixed.top-24.right-4 {
+        top: 80px !important;
+        right: 8px !important;
+        left: 8px !important;
+        max-width: 100% !important;
+    }
+    .fixed.top-24.right-4 .alert-success,
+    .fixed.top-24.right-4 .alert-error {
+        padding: 12px 16px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* ========================================
+   ANIMASI UNTUK MOBILE (Opsional)
+   ======================================== */
+@media (max-width: 768px) {
+    .room-card,
+    .card-bg,
+    .gallery-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    }
+    
+    .room-card:hover,
+    .card-bg:hover,
+    .gallery-item:hover {
+        transform: translateY(-4px) !important;
+    }
+}
+
+/* ========================================
+   LOADING SPINNER MOBILE
+   ======================================== */
+@media (max-width: 480px) {
+    .spinner-border {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
+}
