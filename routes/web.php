@@ -10,6 +10,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
+
 // ========== HALAMAN UTAMA ==========
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
@@ -68,3 +69,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/galleries', [GalleryController::class, 'adminStore'])->name('admin.galleries.store');
     Route::delete('/galleries/{id}', [GalleryController::class, 'adminDestroy'])->name('admin.galleries.destroy');
 });
+
+
+Route::post('/midtrans/callback', [PaymentController::class, 'callback'])->name('payment.callback');
