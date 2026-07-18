@@ -102,4 +102,105 @@ class PaymentController extends Controller
     {
         return view('payment_failed');
     }
+
+    public function callback(Request $request)
+    {
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
+        try {
+            $notification = new Notification();
+            
+            $orderId = $notification->order_id;
+            $statusCode = $notification->status_code;
+            $grossAmount = $notification->gross_amount;
+            $transactionStatus = $notification->transaction_status;
+            $paymentType = $notification->payment_type;
+            $fraudStatus = $notification->fraud_status;
+            $transactionId = $notification->transaction_id;
+
+            // Validasi Signature Key demi Keamanan
+            $serverKey = config('midtrans.server_key');
+            $localSignatureKey = hash("sha512", $orderId . $statusCode . $grossAmount . $serverKey);
+
+            if ($notification->signature_key !== $localSignatureKey) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid signature key'
+                ], 403);
+            }
+
+            // Cari booking berdasarkan order_id
+            $booking = Booking::where('order_id', $orderId)->first();
+
+            if (!$booking) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Booking not found'
+                ], 404);
+            }
+
+            // Map status Midtrans ke database booking
+            if ($transactionStatus == 'capture') {
+                if ($paymentType == 'credit_card') {
+                    if ($fraudStatus == 'challenge') {
+                        $booking->update([
+                            'payment_status' => 'challenge',
+                            'status' => 'pending',
+                            'transaction_id' => $transactionId
+                        ]);
+                    } else {
+                        $booking->update([
+                            'payment_status' => 'paid',
+                            'status' => 'confirmed',
+                            'transaction_id' => $transactionId
+                        ]);
+                    }
+                }
+            } elseif ($transactionStatus == 'settlement') {
+                $booking->update([
+                    'payment_status' => 'paid',
+                    'status' => 'confirmed',
+                    'transaction_id' => $transactionId
+                ]);
+            } elseif ($transactionStatus == 'pending') {
+                $booking->update([
+                    'payment_status' => 'pending',
+                    'status' => 'pending',
+                    'transaction_id' => $transactionId
+                ]);
+            } elseif ($transactionStatus == 'deny') {
+                $booking->update([
+                    'payment_status' => 'denied',
+                    'status' => 'cancelled',
+                    'transaction_id' => $transactionId
+                ]);
+            } elseif ($transactionStatus == 'expire') {
+                $booking->update([
+                    'payment_status' => 'expired',
+                    'status' => 'cancelled',
+                    'transaction_id' => $transactionId
+                ]);
+            } elseif ($transactionStatus == 'cancel') {
+                $booking->update([
+                    'payment_status' => 'cancelled',
+                    'status' => 'cancelled',
+                    'transaction_id' => $transactionId
+                ]);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Notification handled successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
