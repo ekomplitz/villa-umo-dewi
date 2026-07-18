@@ -1342,7 +1342,7 @@
                 snap.pay(data.snap_token, {
                     onSuccess: function(result) {
                         // ✅ Pembayaran berhasil
-                        window.location.href = '/payment-success';
+                        window.location.href = '/payment/success';
                     },
                     onPending: function(result) {
                         // ⏳ Pembayaran pending (contoh: transfer bank)
@@ -1362,7 +1362,7 @@
                     },
                     onError: function(result) {
                         // ❌ Pembayaran gagal
-                        window.location.href = '/payment-failed';
+                        window.location.href = '/payment/failed';
                     },
                     onClose: function() {
                         // ❌ User menutup popup (klik X) - TETAP DI HALAMAN PAYMENT
