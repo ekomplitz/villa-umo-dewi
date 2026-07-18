@@ -34,10 +34,10 @@ Route::post('/set-language', function (Request $request) {
 })->name('set.language');
 
 // ========== PAYMENT ==========
-Route::get('/payment/{bookingId}', [PaymentController::class, 'index'])->name('payment.index');
-Route::post('/payment/create/{bookingId}', [PaymentController::class, 'createTransaction'])->name('payment.create');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
+Route::get('/payment/{bookingId}', [PaymentController::class, 'index'])->name('payment.index');
+Route::post('/payment/create/{bookingId}', [PaymentController::class, 'createTransaction'])->name('payment.create');
 
 // ========== ADMIN LOGIN ==========
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
