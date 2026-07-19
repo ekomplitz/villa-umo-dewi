@@ -4,19 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     
+    @php
+        $lang = session('lang', 'id');
+        $metaTitle      = $lang === 'en'
+            ? 'Gallery - Facilities and Atmosphere of Villa Umo Dewi'
+            : 'Galeri - Fasilitas dan Suasana Villa Umo Dewi';
+        $metaDesc       = $lang === 'en'
+            ? 'Explore photos of facilities, rooms, and the natural surroundings of Villa Umo Dewi. Feel the comfort of staying with us.'
+            : 'Lihat foto-foto fasilitas, kamar, dan pemandangan alam sekitar Villa Umo Dewi. Rasakan kenyamanan menginap bersama kami.';
+        $metaKeywords   = $lang === 'en'
+            ? 'villa umo dewi gallery, villa photos, villa facilities, rice field views, villa rooms, vacation accommodation, Tabanan Bali'
+            : 'galeri villa umo dewi, foto villa, fasilitas villa, pemandangan sawah, kamar villa, akomodasi liburan, Tabanan Bali';
+        $ogLocale       = $lang === 'en' ? 'en_US' : 'id_ID';
+    @endphp
+
     <!-- SEO Meta Tags -->
-    <title>Galeri - Fasilitas dan Suasana Villa Umo Dewi</title>
-    <meta name="description" content="Lihat foto-foto fasilitas, kamar, dan pemandangan alam sekitar Villa Umo Dewi. Rasakan kenyamanan menginap bersama kami.">
-    <meta name="keywords" content="galeri villa umo dewi, foto villa, fasilitas villa, pemandangan sawah, kamar villa, akomodasi liburan">
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDesc }}">
+    <meta name="keywords" content="{{ $metaKeywords }}">
     <meta name="author" content="Villa Umo Dewi">
     <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Hreflang (Multilingual) -->
+    <link rel="alternate" hreflang="id" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Galeri - Fasilitas dan Suasana Villa Umo Dewi">
-    <meta property="og:description" content="Lihat foto-foto fasilitas, kamar, dan pemandangan alam sekitar Villa Umo Dewi. Rasakan kenyamanan menginap bersama kami.">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="{{ $ogLocale }}">
+    <meta property="og:site_name" content="Villa Umo Dewi">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
+    <meta name="twitter:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">

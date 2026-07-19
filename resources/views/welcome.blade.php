@@ -16,8 +16,52 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah">
     <meta property="og:description" content="Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking sekarang!">
-    <!-- Assuming there's a general image or logo we could use for OG image, fallback to general path for now -->
     <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="Villa Umo Dewi">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah">
+    <meta name="twitter:description" content="Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking sekarang!">
+    <meta name="twitter:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LodgingBusiness",
+        "name": "Villa Umo Dewi",
+        "url": "https://umodewi.my.id",
+        "description": "Villa Umo Dewi adalah penginapan nyaman dengan pemandangan sawah yang indah. Tersedia bungalow pilihan dengan suasana alam yang menenangkan.",
+        "image": "https://umodewi.my.id/images/villa-umo-dewi-tampak-depan.jpg",
+        "telephone": "+628123668896",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Kelating, Kerambitan, Tabanan Regency, Bali",
+            "addressLocality": "Tabanan",
+            "addressRegion": "Bali",
+            "postalCode": "82161",
+            "addressCountry": "ID"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -8.573154,
+            "longitude": 115.061098
+        },
+        "priceRange": "Rp 250.000 - Rp 500.000",
+        "amenityFeature": [
+            { "@type": "LocationFeatureSpecification", "name": "Pemandangan Sawah", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Kamar Nyaman", "value": true }
+        ],
+        "sameAs": [
+            "https://umodewi.my.id"
+        ]
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
