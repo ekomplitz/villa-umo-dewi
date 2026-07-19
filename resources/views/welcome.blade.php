@@ -3,7 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Villa Umo Dewi - Villa dengan Pemandangan Sawah</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah</title>
+    <meta name="description" content="Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking villa dengan harga terbaik.">
+    <meta name="keywords" content="Villa Umo Dewi, villa pemandangan sawah, penginapan nyaman, booking villa, sewa villa, liburan keluarga, akomodasi murah">
+    <meta name="author" content="Villa Umo Dewi">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah">
+    <meta property="og:description" content="Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking sekarang!">
+    <!-- Assuming there's a general image or logo we could use for OG image, fallback to general path for now -->
+    <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1034,11 +1049,11 @@
 
 <!-- ========== HERO ========== -->
 <section id="home" class="hero-section">
-    <div class="hero-background active" style="background-image: url('{{ asset('images/image_1.jpg') }}')"></div>
-    <div class="hero-background" style="background-image: url('{{ asset('images/image_2.jpg') }}')"></div>
-    <div class="hero-background" style="background-image: url('{{ asset('images/image_3.jpg') }}')"></div>
-    <div class="hero-background" style="background-image: url('{{ asset('images/image_4.jpg') }}')"></div>
-    <div class="hero-background" style="background-image: url('{{ asset('images/image_5.jpg') }}')"></div>
+    <div class="hero-background active" style="background-image: url('{{ asset('images/pemandangan-sawah-villa-umo-dewi-1.jpg') }}')"></div>
+    <div class="hero-background" style="background-image: url('{{ asset('images/pemandangan-sawah-villa-umo-dewi-2.jpg') }}')"></div>
+    <div class="hero-background" style="background-image: url('{{ asset('images/pemandangan-sawah-villa-umo-dewi-3.jpg') }}')"></div>
+    <div class="hero-background" style="background-image: url('{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}')"></div>
+    <div class="hero-background" style="background-image: url('{{ asset('images/fasilitas-villa-umo-dewi.jpg') }}')"></div>
 
     <div class="hero-content text-center">
         <div>
@@ -1067,7 +1082,7 @@
         <!-- ABOUT VILLA -->
         <div class="grid md:grid-cols-2 gap-12 items-start mb-16">
             <div class="rounded-3xl overflow-hidden shadow-2xl">
-                <img src="{{ asset('images/about_villa.jpg') }}" alt="Villa Umo Dewi" class="w-full h-[400px] md:h-[500px] object-cover">
+                <img src="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}" alt="Villa Umo Dewi" class="w-full h-[400px] md:h-[500px] object-cover">
             </div>
             <div>
                 <h1 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text-body)" data-villa-page-title></h1>
@@ -1098,12 +1113,12 @@
                         data-status="{{ $bungalow->status }}">
                         @php
                             // Cek apakah gambar ada
-                            $imagePath = $bungalow->image ? asset('storage/' . $bungalow->image) : asset('images/image_4.jpg');
+                            $imagePath = $bungalow->image ? asset('storage/' . $bungalow->image) : asset('images/kamar-penginapan-villa-umo-dewi.jpg');
                         @endphp
                         <img src="{{ $imagePath }}" 
                             class="w-full h-48 object-cover" 
                             alt="{{ $bungalow->name }}"
-                            onerror="this.src='{{ asset('images/image_4.jpg') }}'">
+                            onerror="this.src='{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}'">
                         <div class="p-4 text-center">
                             <i class="fas fa-bed text-2xl mb-2 room-icon" 
                             style="color: {{ $bungalow->status == 'active' ? '#22c55e' : '#ef4444' }}"></i>
@@ -1140,7 +1155,7 @@
                     @foreach($fallbackBungalows as $bungalow)
                     <div class="room-card rounded-2xl overflow-hidden shadow-lg transition duration-300 hover:scale-105" 
                         style="background-color: var(--bg-card); border: 2px solid #22c55e;">
-                        <img src="{{ asset('images/image_4.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow['name'] }}">
+                        <img src="{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow['name'] }}">
                         <div class="p-4 text-center">
                             <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: #22c55e"></i>
                             <h3 class="font-bold text-lg" style="color: var(--text-body)">{{ $bungalow['name'] }}</h3>

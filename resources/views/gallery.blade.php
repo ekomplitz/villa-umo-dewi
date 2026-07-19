@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gallery - Villa Umo Dewi</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Galeri - Fasilitas dan Suasana Villa Umo Dewi</title>
+    <meta name="description" content="Lihat foto-foto fasilitas, kamar, dan pemandangan alam sekitar Villa Umo Dewi. Rasakan kenyamanan menginap bersama kami.">
+    <meta name="keywords" content="galeri villa umo dewi, foto villa, fasilitas villa, pemandangan sawah, kamar villa, akomodasi liburan">
+    <meta name="author" content="Villa Umo Dewi">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Galeri - Fasilitas dan Suasana Villa Umo Dewi">
+    <meta property="og:description" content="Lihat foto-foto fasilitas, kamar, dan pemandangan alam sekitar Villa Umo Dewi. Rasakan kenyamanan menginap bersama kami.">
+    <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
