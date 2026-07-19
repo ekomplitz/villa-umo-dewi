@@ -3,7 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Kritik & Saran - Villa Umo Dewi</title>
+    
+    @php
+        $lang = session('lang', 'id');
+        $metaTitle      = $lang === 'en'
+            ? 'Contact Us & Feedback - Villa Umo Dewi'
+            : 'Hubungi Kami & Kritik Saran - Villa Umo Dewi';
+        $metaDesc       = $lang === 'en'
+            ? 'Send your feedback or questions about Villa Umo Dewi services. We are ready to assist you.'
+            : 'Sampaikan kritik, saran, atau pertanyaan Anda seputar layanan Villa Umo Dewi. Kami siap membantu Anda.';
+        $metaKeywords   = $lang === 'en'
+            ? 'contact villa umo dewi, feedback, villa customer service, reservation help, Tabanan Bali'
+            : 'kontak villa umo dewi, hubungi kami, kritik saran villa, bantuan reservasi, Tabanan Bali';
+        $ogLocale       = $lang === 'en' ? 'en_US' : 'id_ID';
+    @endphp
+
+    <!-- SEO Meta Tags -->
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDesc }}">
+    <meta name="keywords" content="{{ $metaKeywords }}">
+    <meta name="author" content="Villa Umo Dewi">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Hreflang (Multilingual) -->
+    <link rel="alternate" hreflang="id" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
+    <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="{{ $ogLocale }}">
+    <meta property="og:site_name" content="Villa Umo Dewi">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
+    <meta name="twitter:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
