@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Kritik & Saran - Villa Umo Dewi</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Hubungi Kami & Kritik Saran - Villa Umo Dewi</title>
+    <meta name="description" content="Sampaikan kritik, saran, atau pertanyaan Anda seputar layanan Villa Umo Dewi. Kami siap membantu Anda.">
+    <meta name="keywords" content="kontak villa umo dewi, hubungi kami, kritik saran villa, bantuan reservasi">
+    <meta name="author" content="Villa Umo Dewi">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Hubungi Kami & Kritik Saran - Villa Umo Dewi">
+    <meta property="og:description" content="Sampaikan kritik, saran, atau pertanyaan Anda seputar layanan Villa Umo Dewi. Kami siap membantu Anda.">
+    <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">

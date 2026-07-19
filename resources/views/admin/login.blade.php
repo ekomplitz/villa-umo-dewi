@@ -44,7 +44,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            background-image: url('{{ asset('images/image_1.jpg') }}');
+            background-image: url('{{ asset('images/pemandangan-sawah-villa-umo-dewi-1.jpg') }}');
             background-size: cover;
             background-position: center;
             filter: blur(8px);

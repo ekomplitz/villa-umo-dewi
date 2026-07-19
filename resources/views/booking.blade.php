@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Booking - Villa Umo Dewi</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Booking Villa - Villa Umo Dewi</title>
+    <meta name="description" content="Booking penginapan di Villa Umo Dewi dengan mudah. Cek ketersediaan dan harga sewa villa kami sekarang.">
+    <meta name="keywords" content="booking villa, sewa villa bali, reservasi villa umo dewi, cek ketersediaan villa">
+    <meta name="author" content="Villa Umo Dewi">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Booking Villa - Villa Umo Dewi">
+    <meta property="og:description" content="Booking penginapan di Villa Umo Dewi dengan mudah. Cek ketersediaan dan harga sewa villa kami sekarang.">
+    <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

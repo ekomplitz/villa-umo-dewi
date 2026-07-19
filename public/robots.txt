@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /booking/prices
+Disallow: /booking/check-availability
+Disallow: /set-language
+
+Sitemap: /sitemap.xml
