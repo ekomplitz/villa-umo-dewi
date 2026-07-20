@@ -48,7 +48,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            background-image: url('{{ asset('images/pemandangan-sawah-villa-umo-dewi-1.jpg') }}');
+            background-image: url('{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}');
             background-size: cover;
             background-position: center;
             filter: blur(8px);
@@ -259,9 +259,9 @@
         </button>
     </form>
 
-    <div class="login-footer">
+    {{-- <div class="login-footer">
         <p>Username: <strong>admin</strong> | Password: <strong>admin123</strong></p>
-    </div>
+    </div> --}}
 </div>
 
 <script>
