@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AdminAuthController extends Controller
 {
@@ -14,16 +17,23 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string'
+            'username' => 'required',
+            'password' => 'required',
         ]);
 
-        if ($request->username === 'admin' && $request->password === 'admin123') {
+        // Cari user berdasarkan username
+        $user = User::where('username', $request->username)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Set session
             session(['admin_logged_in' => true]);
+            session(['admin_id' => $user->id]);
+            session(['admin_name' => $user->name]);
+
             return redirect()->route('admin.dashboard');
         }
 
-        return back()->withErrors(['login' => 'Username atau password salah!']);
+        return back()->with('error', 'Username atau password salah!');
     }
 
     public function logout()
