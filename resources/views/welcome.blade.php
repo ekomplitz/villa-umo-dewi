@@ -9,6 +9,7 @@
     <meta name="description" content="Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking villa dengan harga terbaik.">
     <meta name="keywords" content="Villa Umo Dewi, villa pemandangan sawah, penginapan nyaman, booking villa, sewa villa, liburan keluarga, akomodasi murah">
     <meta name="author" content="Villa Umo Dewi">
+    <meta name="google-site-verification" content="82_jnNx5OP48QKhnNBBIsAB1qO0DnJUZfwvUR7G26CI" />
     <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Open Graph / Social Media -->
