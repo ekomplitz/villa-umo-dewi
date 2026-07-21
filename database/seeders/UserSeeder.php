@@ -10,19 +10,8 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Hapus semua user yang akan dibuat ulang
+        // Hapus user lama
         User::where('email', 'admin@villamodewi.com')->delete();
-        User::where('email', 'admin@admin.com')->delete();
-        User::where('username', 'adminumo')->delete();
-        User::where('username', 'admin')->delete();
-
-        // Buat user adminumo
-        User::create([
-            'name' => 'Admin Umo',
-            'username' => 'adminumo',
-            'email' => 'admin@villamodewi.com',
-            'password' => Hash::make('100%Tabanan'),
-        ]);
 
         // Buat user admin
         User::create([
@@ -30,6 +19,14 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin123'),
+        ]);
+
+        // Buat user adminumo
+        User::create([
+            'name' => 'Admin Umo',
+            'username' => 'adminumo',
+            'email' => 'admin@villamodewi.com',
+            'password' => Hash::make('Tabanan2025'),
         ]);
     }
 }
