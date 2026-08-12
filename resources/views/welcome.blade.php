@@ -1657,16 +1657,16 @@
                 @else
                     @php
                         $fallbackBungalows = [
-                            ['name' => 'Bungalow 1', 'description_id' => 'Kamar dengan view sawah', 'description_en' => 'Spacious room with rice field view', 'price' => 250000, 'status' => 'active'],
-                            ['name' => 'Bungalow 2', 'description_id' => 'Cocok untuk keluarga', 'description_en' => 'Perfect for family', 'price' => 250000, 'status' => 'active'],
-                            ['name' => 'Bungalow 3', 'description_id' => 'Kamar dengan balkon', 'description_en' => 'Premium room with balcony', 'price' => 500000, 'status' => 'active'],
-                            ['name' => 'Bungalow 4', 'description_id' => 'Kamar standar nyaman', 'description_en' => 'Comfortable economy room', 'price' => 500000, 'status' => 'active'],
+                            ['name' => 'Bungalow 1', 'code' => 'b1', 'description_id' => 'Kamar dengan view sawah', 'description_en' => 'Spacious room with rice field view', 'price' => 250000, 'status' => 'active'],
+                            ['name' => 'Bungalow 2', 'code' => 'b2', 'description_id' => 'Cocok untuk pasangan', 'description_en' => 'Perfect for couples', 'price' => 250000, 'status' => 'active'],
+                            ['name' => 'Bungalow 3', 'code' => 'b3', 'description_id' => 'Kamar dengan balkon', 'description_en' => 'Premium room with balcony', 'price' => 500000, 'status' => 'active'],
+                            ['name' => 'Bungalow 4', 'code' => 'b4', 'description_id' => 'Kamar standar nyaman', 'description_en' => 'Comfortable economy room', 'price' => 500000, 'status' => 'active'],
                         ];
                     @endphp
                     @foreach($fallbackBungalows as $bungalow)
                     <div class="room-card rounded-2xl overflow-hidden shadow-lg transition duration-300 hover:scale-105" 
                         style="background-color: var(--bg-card); border: 2px solid #22c55e;"
-                        onclick="openBungalowModal('{{ $bungalow['name'] }}')">
+                        onclick="openBungalowModal('{{ $bungalow['code'] }}')">
                         <img src="{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow['name'] }}">
                         <div class="p-4 text-center">
                             <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: #22c55e"></i>
@@ -1877,7 +1877,7 @@
             <div class="bungalow-name-wrapper">
                 <h3 class="bungalow-name" id="modalBungalowName">Bungalow Name</h3>
                 <span class="capacity-badge" id="modalCapacityBadge">
-                    <i class="fas fa-users"></i> 2-4 orang
+                    <i class="fas fa-users"></i> <span id="capacityText">2-4 orang</span>
                 </span>
             </div>
             <p class="bungalow-desc" id="modalBungalowDesc">Description here</p>
@@ -1895,6 +1895,12 @@
 </div>
 
 <script>
+    // ========== VARIABLES ==========
+    let currentSlide = 0;
+    let currentImages = [];
+    let slideInterval = null;
+    let currentBungalowData = null;
+
     // ========== BUNGALOW DATA ==========
     const bungalowData = {
         @foreach($bungalows as $bungalow)
@@ -1902,6 +1908,7 @@
             id: {{ $bungalow->id }},
             code: '{{ $bungalow->code }}',
             name: '{{ addslashes($bungalow->name) }}',
+            capacity: '{{ $bungalow->code == 'b1' || $bungalow->code == 'b2' ? '1-2' : '2-4' }}',
             desc_id: '{{ addslashes($bungalow->description_id) }}',
             desc_en: '{{ addslashes($bungalow->description_en) }}',
             price: {{ $bungalow->price }},
@@ -1914,11 +1921,12 @@
         @endforeach
     };
 
-    // Fallback data
+    // ========== FALLBACK DATA ==========
     const fallbackBungalowData = {
-        'Bungalow 1': {
+        'b1': {
             code: 'b1',
             name: 'Bungalow 1',
+            capacity: '1-2',
             desc_id: 'Kamar dengan view sawah',
             desc_en: 'Spacious room with rice field view',
             price: 250000,
@@ -1935,14 +1943,73 @@
                 '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
                 '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'
             ]
+        },
+        'b2': {
+            code: 'b2',
+            name: 'Bungalow 2',
+            capacity: '1-2',
+            desc_id: 'Cocok untuk pasangan',
+            desc_en: 'Perfect for couples',
+            price: 250000,
+            discount_price: 199000,
+            has_discount: true,
+            status: 'active',
+            image: '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+            images: [
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'
+            ]
+        },
+        'b3': {
+            code: 'b3',
+            name: 'Bungalow 3',
+            capacity: '2-4',
+            desc_id: 'Kamar dengan balkon',
+            desc_en: 'Premium room with balcony',
+            price: 500000,
+            discount_price: 399000,
+            has_discount: true,
+            status: 'active',
+            image: '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+            images: [
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'
+            ]
+        },
+        'b4': {
+            code: 'b4',
+            name: 'Bungalow 4',
+            capacity: '2-4',
+            desc_id: 'Kamar standar nyaman',
+            desc_en: 'Comfortable economy room',
+            price: 500000,
+            discount_price: 399000,
+            has_discount: true,
+            status: 'active',
+            image: '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+            images: [
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'
+            ]
         }
     };
 
     // ========== MODAL FUNCTIONS ==========
-    let currentSlide = 0;
-    let currentImages = [];
-    let slideInterval = null;
-
     function openBungalowModal(code) {
         // Get data
         let data = bungalowData[code] || fallbackBungalowData[code];
@@ -1950,6 +2017,9 @@
             console.error('Bungalow not found:', code);
             return;
         }
+
+        // Simpan ke global untuk applyLang
+        currentBungalowData = data;
 
         const lang = localStorage.getItem('lang') || 'id';
         const isEn = lang === 'en';
@@ -1960,8 +2030,9 @@
         
         // ===== SET CAPACITY BADGE =====
         const badge = document.getElementById('modalCapacityBadge');
-        const capacityText = isEn ? '2-4 persons' : '2-4 orang';
-        badge.innerHTML = `<i class="fas fa-users"></i> ${capacityText}`;
+        const capacity = data.capacity || '2-4';
+        const persons = isEn ? 'persons' : 'orang';
+        badge.innerHTML = `<i class="fas fa-users"></i> ${capacity} ${persons}`;
         
         // ===== SET DESCRIPTION =====
         const desc = isEn ? (data.desc_en || data.desc_id) : (data.desc_id || data.desc_en);
@@ -1989,7 +2060,6 @@
         if (images.length === 0) {
             images = [data.image];
         }
-        // Pastikan minimal 7 gambar
         while (images.length < 7) {
             images.push(images[0] || '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}');
         }
@@ -2011,19 +2081,16 @@
         const container = document.getElementById('sliderImages');
         const dotsContainer = document.getElementById('sliderDots');
         
-        // Render images
         container.innerHTML = images.map((img, index) => `
             <div class="slide">
                 <img src="${img}" alt="Bungalow image ${index + 1}" loading="lazy" onerror="this.src='{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}'">
             </div>
         `).join('');
         
-        // Render dots
         dotsContainer.innerHTML = images.map((_, index) => `
             <div class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
         `).join('');
         
-        // Update position
         updateSliderPosition();
     }
 
@@ -2031,7 +2098,6 @@
         const container = document.getElementById('sliderImages');
         container.style.transform = `translateX(-${currentSlide * 100}%)`;
         
-        // Update dots
         document.querySelectorAll('#sliderDots .dot').forEach((dot, index) => {
             dot.classList.toggle('active', index === currentSlide);
         });
@@ -2435,10 +2501,13 @@
         });
 
         // Update capacity badge
-        const badge = document.getElementById('modalCapacityBadge');
-        if (badge) {
-            const persons = t.persons || 'orang';
-            badge.innerHTML = `<i class="fas fa-users"></i> 2-4 ${persons}`;
+        if (currentBungalowData) {
+            const badge = document.getElementById('modalCapacityBadge');
+            if (badge) {
+                const capacity = currentBungalowData.capacity || '2-4';
+                const persons = t.persons || 'orang';
+                badge.innerHTML = `<i class="fas fa-users"></i> ${capacity} ${persons}`;
+            }
         }
 
         updateBungalowDescriptions(lang);
