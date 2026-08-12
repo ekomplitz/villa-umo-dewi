@@ -11,8 +11,60 @@ class BookingController extends Controller
     public function index()
     {
         $bungalows = BungalowSetting::all();
-        $lang = session('lang', 'id');
-        return view('booking', compact('bungalows', 'lang'));
+        return view('booking', compact('bungalows'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'required|string|max:20',
+            'adults' => 'required|integer|min:1|max:10',
+            'children' => 'required|integer|min:0|max:5',
+            'id_type' => 'required|in:ktp,passport',
+            'id_number' => 'required|string|max:50',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'selected_bungalows' => 'required|string',
+            'total_price' => 'required|numeric|min:0',
+            'duration' => 'required|integer|min:1',
+        ]);
+
+        // Simpan data tamu (guests) sebagai JSON
+        $guests = [];
+        $guestCount = $request->guest_count ?? 1;
+        for ($i = 0; $i < $guestCount; $i++) {
+            if (isset($request->guests[$i])) {
+                $guests[] = [
+                    'first_name' => $request->guests[$i]['first_name'] ?? '',
+                    'last_name' => $request->guests[$i]['last_name'] ?? '',
+                ];
+            }
+        }
+
+        $booking = Booking::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'adults' => $request->adults,
+            'children' => $request->children,
+            'id_type' => $request->id_type,
+            'id_number' => $request->id_number,
+            'check_in' => $request->check_in,
+            'check_out' => $request->check_out,
+            'duration' => $request->duration,
+            'selected_bungalows' => $request->selected_bungalows,
+            'total_price' => $request->total_price,
+            'status' => 'pending',
+            'payment_status' => 'pending',
+            'guests' => json_encode($guests),
+        ]);
+
+        return redirect()->route('payment.index', ['bookingId' => $booking->id])
+                        ->with('success', 'Booking berhasil dibuat! Silakan lanjutkan ke pembayaran.');
     }
 
     public function getPrices()
@@ -25,66 +77,19 @@ class BookingController extends Controller
         return response()->json($prices);
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
-            'phone' => 'required|string|max:20',
-            'check_in' => 'required|date|after_or_equal:today',
-            'check_out' => 'required|date|after:check_in',
-            'selected_bungalows' => 'required|string',
-            'total_price' => 'required|integer|min:0',
-            'duration' => 'required|integer|min:1',
-            'lang' => 'nullable|string',
-            'payment_status' => 'pending',
-        ]);
-
-        $selectedBungalows = explode(',', $validated['selected_bungalows']);
-
-        $bungalows = BungalowSetting::whereIn('code', $selectedBungalows)->get();
-        $totalPrice = 0;
-        foreach ($bungalows as $bungalow) {
-            $totalPrice += $bungalow->price * $validated['duration'];
-        }
-
-        $booking = Booking::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'check_in' => $validated['check_in'],
-            'check_out' => $validated['check_out'],
-            'duration' => $validated['duration'],
-            'selected_bungalows' => json_encode($selectedBungalows),
-            'total_price' => $totalPrice,
-            'status' => 'pending',
-        ]);
-
-        $lang = $validated['lang'] ?? 'id';
-        $message = $lang === 'id' 
-            ? 'Booking berhasil! Terima kasih telah memesan di Villa Umo Dewi.' 
-            : 'Booking successful! Thank you for booking at Villa Umo Dewi.';
-
-        return redirect()->route('payment.index', ['bookingId' => $booking->id])
-                     ->with('success', 'Booking berhasil dibuat! Silakan lanjutkan ke pembayaran.');
-    }
-
     public function checkAvailability(Request $request)
     {
         $bungalowCode = $request->bungalow_code;
         $checkIn = $request->check_in;
         $checkOut = $request->check_out;
 
-        // Cek apakah ada booking yang overlap dengan tanggal yang diminta
-        $isBooked = Booking::where('selected_bungalows', 'LIKE', '%' . $bungalowCode . '%')
+        $isBooked = Booking::where('selected_bungalows', 'LIKE', '%"' . $bungalowCode . '"%')
+            ->orWhere('selected_bungalows', 'LIKE', '%' . $bungalowCode . '%')
             ->where(function($query) use ($checkIn, $checkOut) {
-                $query->where(function($q) use ($checkIn, $checkOut) {
-                    // Booking yang sudah ada: check_in < check_out_request AND check_out > check_in_request
-                    $q->where('check_in', '<', $checkOut)
-                    ->where('check_out', '>', $checkIn);
-                });
+                $query->where('check_in', '<', $checkOut)
+                      ->where('check_out', '>', $checkIn);
             })
-            ->whereIn('status', ['pending', 'confirmed']) // Hanya booking yang pending/confirmed
+            ->whereIn('status', ['pending', 'confirmed'])
             ->exists();
 
         return response()->json([

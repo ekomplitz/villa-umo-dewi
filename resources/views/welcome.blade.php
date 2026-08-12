@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ session('lang', 'id') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     
+    @php
+        $lang = session('lang', 'id');
+        $metaTitle      = $lang === 'en'
+            ? 'Villa Umo Dewi - Comfortable Stay with Rice Field View'
+            : 'Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah';
+        $metaDesc       = $lang === 'en'
+            ? 'Welcome to Villa Umo Dewi. Enjoy a comfortable and relaxing stay with beautiful rice field views. Book the best villa at the best price.'
+            : 'Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking villa dengan harga terbaik.';
+        $metaKeywords   = $lang === 'en'
+            ? 'Villa Umo Dewi, rice field view villa, comfortable stay, book villa, villa rental, family vacation, affordable accommodation'
+            : 'Villa Umo Dewi, villa pemandangan sawah, penginapan nyaman, booking villa, sewa villa, liburan keluarga, akomodasi murah';
+        $ogLocale       = $lang === 'en' ? 'en_US' : 'id_ID';
+    @endphp
+
     <!-- SEO Meta Tags -->
-    <title>Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah</title>
-    <meta name="description" content="Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking villa dengan harga terbaik.">
-    <meta name="keywords" content="Villa Umo Dewi, villa pemandangan sawah, penginapan nyaman, booking villa, sewa villa, liburan keluarga, akomodasi murah">
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDesc }}">
+    <meta name="keywords" content="{{ $metaKeywords }}">
     <meta name="author" content="Villa Umo Dewi">
     <meta name="google-site-verification" content="82_jnNx5OP48QKhnNBBIsAB1qO0DnJUZfwvUR7G26CI" />
     <link rel="canonical" href="{{ url()->current() }}">
@@ -15,18 +29,18 @@
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah">
-    <meta property="og:description" content="Selamat datang di Villa Umo Dewi. Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking sekarang!">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="id_ID">
+    <meta property="og:locale" content="{{ $ogLocale }}">
     <meta property="og:site_name" content="Villa Umo Dewi">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Villa Umo Dewi - Penginapan Nyaman dengan Pemandangan Sawah">
-    <meta name="twitter:description" content="Nikmati pengalaman menginap yang nyaman dan menenangkan dengan pemandangan sawah yang indah. Booking sekarang!">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
     <meta name="twitter:image" content="{{ asset('images/villa-umo-dewi-tampak-depan.jpg') }}">
 
     <!-- JSON-LD Structured Data -->
@@ -67,13 +81,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
+    
     <!-- ===== FAVICON ===== -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='leaf' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2333cc55'/%3E%3Cstop offset='100%25' style='stop-color:%23118833'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 C25 25 5 55 50 95 C95 55 75 25 50 5Z' fill='url(%23leaf)'/%3E%3Cpath d='M50 5 L50 75' stroke='%230d6b2e' stroke-width='2.5' fill='none'/%3E%3Cpath d='M50 25 L30 45' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 25 L70 45' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 45 L32 65' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 45 L68 65' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3C/svg%3E">
-    <!-- Fallback -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍃%3C/text%3E%3C/svg%3E">
     
-<style>
+    <style>
         * { 
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif; 
             margin: 0;
@@ -101,6 +114,7 @@
             --nav-text: #9D6638;
             --footer-bg: #9D6638;
             --footer-text: #EFE9E3;
+            --modal-overlay: rgba(0, 0, 0, 0.7);
         }
         
         .dark-mode {
@@ -123,6 +137,7 @@
             --nav-text: #DFD0B8;
             --footer-bg: #3C5B6F;
             --footer-text: #DFD0B8;
+            --modal-overlay: rgba(0, 0, 0, 0.85);
         }
         
         body {
@@ -804,8 +819,9 @@
         .room-card {
             transition: transform 0.3s;
             background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             border-radius: 16px;
+            cursor: pointer;
         }
         
         .room-card:hover {
@@ -864,7 +880,6 @@
             border: 0;
         }
 
-        /* ========== RUTE CARD ========== */
         .route-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -950,17 +965,14 @@
             background: var(--border-color);
         }
 
-        /* Mobile */
         @media (max-width: 768px) {
             .map-container {
                 min-height: 300px;
                 height: 300px;
             }
-            
             .route-card {
                 padding: 20px 24px;
             }
-            
             .route-card h3 {
                 font-size: 1.25rem;
             }
@@ -980,10 +992,6 @@
         }
 
         .footer a:hover {
-            opacity: 0.7;
-        }
-
-        .dark-mode .footer a:hover {
             opacity: 0.7;
         }
 
@@ -1020,6 +1028,405 @@
 
         .dark-mode .footer .social-icon:hover {
             background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ============================================================ */
+        /* ========== BUNGALOW DETAIL MODAL ========== */
+        /* ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-overlay);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            color: var(--text-body);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+            padding: 0;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-close-btn {
+            position: sticky;
+            top: 12px;
+            right: 12px;
+            float: right;
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: rotate(90deg);
+        }
+
+        .dark-mode .modal-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .dark-mode .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== MODAL SLIDER ===== */
+        .modal-slider {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background-color: #1a1a2e;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 640px) {
+            .modal-slider {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-slider {
+                height: 200px;
+            }
+        }
+
+        .modal-slider-images {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .modal-slider-images .slide {
+            min-width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+        }
+
+        .modal-slider-images .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Slider controls */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .slider-btn.prev {
+            left: 12px;
+        }
+
+        .slider-btn.next {
+            right: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .slider-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            .slider-btn.prev {
+                left: 6px;
+            }
+            .slider-btn.next {
+                right: 6px;
+            }
+        }
+
+        /* Slider dots */
+        .slider-dots {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .slider-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .slider-dots .dot.active {
+            background: #fff;
+            width: 28px;
+            border-radius: 6px;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== MODAL BODY ===== */
+        .modal-body {
+            padding: 24px 28px 32px;
+        }
+
+        @media (max-width: 640px) {
+            .modal-body {
+                padding: 16px 18px 24px;
+            }
+        }
+
+        .modal-body .bungalow-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-body);
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .modal-body .bungalow-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        .modal-body .bungalow-desc {
+            font-size: 0.95rem;
+            color: var(--text-card);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        /* ===== PRICE DISPLAY ===== */
+        .price-container {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: rgba(157, 102, 56, 0.08);
+            border-radius: 12px;
+        }
+
+        .dark-mode .price-container {
+            background: rgba(223, 208, 184, 0.08);
+        }
+
+        .price-original {
+            font-size: 1.1rem;
+            color: #ef4444;
+            text-decoration: line-through;
+            text-decoration-color: #ef4444;
+            text-decoration-thickness: 2px;
+        }
+
+        .price-discount {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #22c55e;
+            animation: pricePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pricePulse {
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 0 0 0 rgba(34, 197, 94, 0);
+            }
+            50% {
+                transform: scale(1.05);
+                text-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+            }
+        }
+
+        .price-normal {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .price-per-night {
+            font-size: 0.85rem;
+            color: var(--text-card);
+            font-weight: 400;
+        }
+
+        .discount-badge {
+            display: inline-block;
+            background: #ef4444;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 4px;
+            animation: discountGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes discountGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+            }
+        }
+
+        /* ===== BOOK BUTTON IN MODAL ===== */
+        .modal-book-btn {
+            width: 100%;
+            padding: 14px;
+            background: #9D6638;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .modal-book-btn:hover {
+            background: #7A4F2A;
+            transform: scale(1.02);
+        }
+
+        .dark-mode .modal-book-btn {
+            background: #DFD0B8;
+            color: #153448;
+        }
+
+        .dark-mode .modal-book-btn:hover {
+            background: #948979;
+        }
+
+        /* ============================================================ */
+        /* ========== RESPONSIVE FIXES ========== */
+        /* ============================================================ */
+        @media (max-width: 768px) {
+            .room-card {
+                cursor: pointer;
+            }
+            .room-card:hover {
+                transform: none;
+            }
+            .modal-content {
+                max-height: 98vh;
+                border-radius: 16px;
+            }
+            .modal-slider {
+                height: 250px;
+                border-radius: 16px 16px 0 0;
+            }
+            .price-discount,
+            .price-normal {
+                font-size: 1.4rem;
+            }
+            .price-original {
+                font-size: 0.95rem;
+            }
+            .modal-body .bungalow-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-slider {
+                height: 200px;
+            }
+            .modal-body {
+                padding: 12px 14px 20px;
+            }
+            .price-discount,
+            .price-normal {
+                font-size: 1.2rem;
+            }
+            .price-original {
+                font-size: 0.85rem;
+            }
+            .price-container {
+                padding: 8px 12px;
+            }
+            .modal-book-btn {
+                font-size: 0.95rem;
+                padding: 12px;
+            }
+            .slider-dots .dot {
+                width: 8px;
+                height: 8px;
+            }
+            .slider-dots .dot.active {
+                width: 20px;
+            }
         }
     </style>
 </head>
@@ -1159,9 +1566,9 @@
                         data-bungalow="{{ $bungalow->code }}"
                         data-desc-id="{{ $bungalow->description_id }}"
                         data-desc-en="{{ $bungalow->description_en }}"
-                        data-status="{{ $bungalow->status }}">
+                        data-status="{{ $bungalow->status }}"
+                        onclick="openBungalowModal('{{ $bungalow->code }}')">
                         @php
-                            // Cek apakah gambar ada
                             $imagePath = $bungalow->image ? asset('storage/' . $bungalow->image) : asset('images/kamar-penginapan-villa-umo-dewi.jpg');
                         @endphp
                         <img src="{{ $imagePath }}" 
@@ -1176,10 +1583,19 @@
                             
                             <p class="text-sm mt-1 bungalow-desc" style="color: var(--text-card)"></p>
                             
-                            <p class="font-bold mt-2" style="color: var(--primary-color)">
-                                Rp {{ number_format($bungalow->price, 0, ',', '.') }}
-                                <span class="text-sm font-normal price-night-label" style="color: var(--primary-color)">/malam</span>
-                            </p>
+                            <div class="mt-2">
+                                @if($bungalow->has_discount)
+                                    <p class="text-sm">
+                                        <span class="line-through text-red-500">Rp {{ number_format($bungalow->price, 0, ',', '.') }}</span>
+                                        <span class="font-bold text-green-600 text-lg ml-2">Rp {{ number_format($bungalow->discount_price, 0, ',', '.') }}</span>
+                                    </p>
+                                @else
+                                    <p class="font-bold" style="color: var(--primary-color)">
+                                        Rp {{ number_format($bungalow->price, 0, ',', '.') }}
+                                    </p>
+                                @endif
+                                <span class="text-xs price-night-label" style="color: var(--text-card)">/malam</span>
+                            </div>
                             
                             <div class="mt-3 flex items-center justify-center gap-2">
                                 <span class="status-badge {{ $bungalow->status == 'active' ? 'available' : 'occupied' }}"></span>
@@ -1203,7 +1619,8 @@
                     @endphp
                     @foreach($fallbackBungalows as $bungalow)
                     <div class="room-card rounded-2xl overflow-hidden shadow-lg transition duration-300 hover:scale-105" 
-                        style="background-color: var(--bg-card); border: 2px solid #22c55e;">
+                        style="background-color: var(--bg-card); border: 2px solid #22c55e;"
+                        onclick="openBungalowModal('{{ $bungalow['name'] }}')">
                         <img src="{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}" class="w-full h-48 object-cover" alt="{{ $bungalow['name'] }}">
                         <div class="p-4 text-center">
                             <i class="fas fa-bed text-2xl mb-2 room-icon" style="color: #22c55e"></i>
@@ -1277,7 +1694,8 @@
                 <!-- MAP -->
                 <div class="map-container">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126247.59591881638!2d114.98126983906249!3d-8.573160199999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd230cec883c3b1%3A0xd9316dbf6ac4e259!2sUmo%20Dewi%20-%20Two-Bedroom%20Villa!5e0!3m2!1sen!2sus!4v1783588304119!5m2!1sen!2sus"                      allowfullscreen="" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126247.59591881638!2d114.98126983906249!3d-8.573160199999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd230cec883c3b1%3A0xd9316dbf6ac4e259!2sUmo%20Dewi%20-%20Two-Bedroom%20Villa!5e0!3m2!1sen!2sus!4v1783588304119!5m2!1sen!2sus"
+                        allowfullscreen="" 
                         loading="lazy" 
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
@@ -1321,29 +1739,13 @@
                 </div>
             </div>
         </div>
-
-        {{-- <!-- PROMO -->
-        <div class="mt-12 text-center rounded-3xl p-8" style="background-color: var(--bg-about)">
-            <div class="max-w-3xl mx-auto">
-                <i class="fas fa-tags text-4xl mb-4" style="color: var(--primary-color)"></i>
-                <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--text-body)" data-promo-title></h2>
-                <p class="card-text max-w-2xl mx-auto mb-8 text-base md:text-lg" data-promo-desc></p>
-                <a href="{{ route('booking') }}" class="btn-primary inline-block shadow-lg">
-                    <i class="fas fa-calendar-check mr-2"></i> <span data-villa-book-now></span>
-                </a>
-            </div>
-        </div> --}}
     </div>
 </section>
 
-<!-- ========== FOOTER (3 KOLOM) ========== -->
+<!-- ========== FOOTER ========== -->
 <footer class="footer py-16">
     <div class="max-w-7xl mx-auto px-6">
-
-        <!-- 3 KOLOM - Semua di tengah -->
         <div class="grid md:grid-cols-3 gap-12">
-
-            <!-- KOLOM 1: Nama + Deskripsi (Rata Kiri) -->
             <div class="text-center md:text-left">
                 <h3 class="text-4xl font-bold mb-4" data-footer-name>
                     Villa Umo Dewi
@@ -1353,7 +1755,6 @@
                 </p>
             </div>
 
-            <!-- KOLOM 2: LEGAL (Tengah) -->
             <div class="text-center">
                 <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
                     LEGAL
@@ -1366,7 +1767,6 @@
                 </div>
             </div>
 
-            <!-- KOLOM 3: FOLLOW US (Tengah) -->
             <div class="text-center">
                 <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
                     FOLLOW US
@@ -1385,10 +1785,8 @@
             </div>
         </div>
 
-        <!-- DIVIDER -->
         <div class="border-t border-white/10 my-10"></div>
 
-        <!-- BOTTOM: Copyright + Indonesia -->
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="opacity-70 text-sm" data-footer-copyright>
                 © 2026 Villa Umo Dewi. All rights reserved.
@@ -1397,11 +1795,231 @@
                 Indonesia
             </p>
         </div>
-
     </div>
 </footer>
 
+<!-- ============================================================ -->
+<!-- ========== BUNGALOW DETAIL MODAL ========== -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="bungalowModal" onclick="event.target === this && closeModal()">
+    <div class="modal-content" id="modalContent">
+        <!-- Close Button -->
+        <button class="modal-close-btn" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Slider -->
+        <div class="modal-slider" id="modalSlider">
+            <div class="modal-slider-images" id="sliderImages">
+                <!-- Images will be inserted by JavaScript -->
+            </div>
+            
+            <button class="slider-btn prev" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-btn next" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <div class="slider-dots" id="sliderDots">
+                <!-- Dots will be inserted by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <h3 class="bungalow-name" id="modalBungalowName">Bungalow Name</h3>
+            <p class="bungalow-desc" id="modalBungalowDesc">Description here</p>
+            
+            <div class="price-container" id="modalPriceContainer">
+                <!-- Price will be inserted by JavaScript -->
+            </div>
+            
+            <a href="{{ route('booking') }}" class="modal-book-btn">
+                <i class="fas fa-calendar-check"></i> 
+                <span data-i18n="book_now">Booking Sekarang</span>
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
+    // ========== BUNGALOW DATA ==========
+    const bungalowData = {
+        @foreach($bungalows as $bungalow)
+        '{{ $bungalow->code }}': {
+            id: {{ $bungalow->id }},
+            code: '{{ $bungalow->code }}',
+            name: '{{ addslashes($bungalow->name) }}',
+            desc_id: '{{ addslashes($bungalow->description_id) }}',
+            desc_en: '{{ addslashes($bungalow->description_en) }}',
+            price: {{ $bungalow->price }},
+            discount_price: {{ $bungalow->discount_price ?? 0 }},
+            has_discount: {{ $bungalow->has_discount ? 'true' : 'false' }},
+            status: '{{ $bungalow->status }}',
+            image: '{{ $bungalow->image ? asset('storage/' . $bungalow->image) : asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}',
+            images: @json($bungalow->getAllImagesAttribute())
+        },
+        @endforeach
+    };
+
+    // Fallback data jika tidak ada bungalow dari database
+    const fallbackBungalowData = {
+        'Bungalow 1': {
+            code: 'b1',
+            name: 'Bungalow 1',
+            desc_id: 'Kamar dengan view sawah',
+            desc_en: 'Spacious room with rice field view',
+            price: 250000,
+            discount_price: 199000,
+            has_discount: true,
+            status: 'active',
+            image: '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+            images: [
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}',
+                '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'
+            ]
+        }
+    };
+
+    // ========== MODAL FUNCTIONS ==========
+    let currentSlide = 0;
+    let currentImages = [];
+    let slideInterval = null;
+
+    function openBungalowModal(code) {
+        // Get data
+        let data = bungalowData[code] || fallbackBungalowData[code];
+        if (!data) {
+            console.error('Bungalow not found:', code);
+            return;
+        }
+
+        const lang = localStorage.getItem('lang') || 'id';
+        const isEn = lang === 'en';
+        
+        // Set name
+        document.getElementById('modalBungalowName').textContent = data.name;
+        
+        // Set description
+        const desc = isEn ? (data.desc_en || data.desc_id) : (data.desc_id || data.desc_en);
+        document.getElementById('modalBungalowDesc').textContent = desc || 'No description available';
+        
+        // Set price
+        const priceContainer = document.getElementById('modalPriceContainer');
+        if (data.has_discount && data.discount_price > 0) {
+            const discountPercent = Math.round((1 - data.discount_price / data.price) * 100);
+            priceContainer.innerHTML = `
+                <span class="price-original">Rp ${formatNumber(data.price)}</span>
+                <span class="price-discount">Rp ${formatNumber(data.discount_price)}</span>
+                <span class="price-per-night">/malam</span>
+                <span class="discount-badge">-${discountPercent}%</span>
+            `;
+        } else {
+            priceContainer.innerHTML = `
+                <span class="price-normal">Rp ${formatNumber(data.price)}</span>
+                <span class="price-per-night">/malam</span>
+            `;
+        }
+        
+        // Set images
+        let images = data.images || [];
+        if (images.length === 0) {
+            images = [data.image];
+        }
+        // Pastikan minimal 7 gambar (pakai gambar yang sama jika kurang)
+        while (images.length < 7) {
+            images.push(images[0]);
+        }
+        currentImages = images;
+        currentSlide = 0;
+        
+        // Render slider
+        renderSlider(images);
+        
+        // Show modal
+        document.getElementById('bungalowModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Start auto-slide
+        startAutoSlide();
+    }
+
+    function renderSlider(images) {
+        const container = document.getElementById('sliderImages');
+        const dotsContainer = document.getElementById('sliderDots');
+        
+        // Render images
+        container.innerHTML = images.map((img, index) => `
+            <div class="slide">
+                <img src="${img}" alt="Bungalow image ${index + 1}" loading="lazy" onerror="this.src='{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'">
+            </div>
+        `).join('');
+        
+        // Render dots
+        dotsContainer.innerHTML = images.map((_, index) => `
+            <div class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+        `).join('');
+        
+        // Update position
+        updateSliderPosition();
+    }
+
+    function updateSliderPosition() {
+        const container = document.getElementById('sliderImages');
+        container.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // Update dots
+        document.querySelectorAll('#sliderDots .dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function changeSlide(direction) {
+        const total = currentImages.length;
+        currentSlide = (currentSlide + direction + total) % total;
+        updateSliderPosition();
+        resetAutoSlide();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSliderPosition();
+        resetAutoSlide();
+    }
+
+    function startAutoSlide() {
+        if (slideInterval) clearInterval(slideInterval);
+        slideInterval = setInterval(() => {
+            changeSlide(1);
+        }, 4000);
+    }
+
+    function resetAutoSlide() {
+        if (slideInterval) {
+            clearInterval(slideInterval);
+            startAutoSlide();
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('bungalowModal').classList.remove('active');
+        document.body.style.overflow = '';
+        if (slideInterval) {
+            clearInterval(slideInterval);
+            slideInterval = null;
+        }
+    }
+
+    function formatNumber(num) {
+        return num.toLocaleString('id-ID');
+    }
+
     // ========== SIDEBAR ==========
     const menuBtn = document.getElementById('menuBtn');
     const sidebar = document.getElementById('sidebar');
@@ -1437,8 +2055,13 @@
     });
 
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-            closeSidebar();
+        if (e.key === 'Escape') {
+            if (sidebar.classList.contains('active')) {
+                closeSidebar();
+            }
+            if (document.getElementById('bungalowModal').classList.contains('active')) {
+                closeModal();
+            }
         }
     });
 
@@ -1569,10 +2192,10 @@
             feature2Desc: "Kasur empuk, AC dingin, dan suasana pedesaan yang bikin kamu males pulang ke kota.",
             feature3Title: "Kuliner Lokal",
             feature3Desc: "Nikmati masakan khas desa dengan bahan segar dari sawah sekitar villa.",
+            feature4Title: "Free WiFi",
+            feature4Desc: "Nikmati akses internet cepat dan gratis selama menginap, cocok untuk workcation.",
             galleryTitle: "Galeri Villa",
             galleryDesc: "Suasana asli villa dan pemandangan sawah sekitarnya",
-            // promoTitle: "🎉 Promo Spesial Akhir Tahun! 🎉",
-            // promoDesc: "Dapatkan diskon 30% untuk booking 3 malam atau lebih! Jangan sampai kelewatan, promo terbatas!",
             aboutTitle: "Tentang Villa Umo Dewi",
             aboutDesc: "Villa Umo Dewi adalah villa yang terletak di tengah hamparan sawah yang asri. Nikmati udara segar, pemandangan hijau, dan suara alam yang menenangkan. Cocok buat staycation bareng keluarga, teman, atau pasangan 💚",
             addressTitle: "Alamat",
@@ -1590,7 +2213,7 @@
             villa_desc_text: "Villa Umo Dewi menawarkan pengalaman menginap unik dengan konsep modern yang menyatu sempurna dengan alam. Terletak di tengah hamparan sawah hijau, villa ini dirancang untuk kenyamanan maksimal. Arsitektur memadukan elemen tradisional Bali dengan desain kontemporer, menciptakan suasana harmonis yang menenangkan.",
             villa_desc_text2: "Setiap detail diperhatikan dengan seksama, dari pemilihan material alami hingga tata letak ruangan yang mengoptimalkan sirkulasi udara dan pencahayaan alami. Desain open-plan memungkinkan udara segar mengalir bebas, sementara jendela besar membingkai pemandangan sawah yang menakjubkan.",
             villa_rooms_title: "Kamar yang Tersedia",
-            villa_rooms_desc: "Status kamar dapat berubah sewaktu-waktu",
+            villa_rooms_desc: "Klik pada kamar untuk melihat detail",
             villa_book_now: "Booking Sekarang",
             available: "Tersedia",
             unavailable: "Tidak Tersedia",
@@ -1612,8 +2235,7 @@
             footer_follow: "Follow Us",
             footer_country: "Indonesia",
             footer_desc: "Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri.",
-            feature4Title: "Free WiFi",
-            feature4Desc: "Nikmati akses internet cepat dan gratis selama menginap, cocok untuk workcation.",
+            book_now: "Booking Sekarang",
         },
         en: {
             home: "Home",
@@ -1629,10 +2251,10 @@
             feature2Desc: "Comfortable beds, cool AC, and a village atmosphere that makes you want to stay forever.",
             feature3Title: "Local Cuisine",
             feature3Desc: "Enjoy authentic village cuisine with fresh ingredients from the surrounding rice fields.",
+            feature4Title: "Free WiFi",
+            feature4Desc: "Enjoy fast and free internet access during your stay, perfect for workcation.",
             galleryTitle: "Villa Gallery",
             galleryDesc: "Real atmosphere of the villa and surrounding rice field views",
-            // promoTitle: "🎉 Special Year-End Promo! 🎉",
-            // promoDesc: "Get 30% discount for booking 3 nights or more! Don't miss out, limited promo!",
             aboutTitle: "About Villa Umo Dewi",
             aboutDesc: "Villa Umo Dewi is a villa located in the middle of lush rice fields. Enjoy fresh air, green views, and calming natural sounds. Perfect for a staycation with family, friends, or your partner 💚",
             addressTitle: "Address",
@@ -1650,7 +2272,7 @@
             villa_desc_text: "Villa Umo Dewi offers a unique stay experience with a modern concept that blends perfectly with nature. Located in the middle of green rice fields, this villa is designed to provide maximum comfort for all guests. The architecture combines traditional Balinese elements with contemporary design, creating a harmonious atmosphere that soothes the soul.",
             villa_desc_text2: "Every detail is carefully considered, from the selection of natural materials to the room layout that optimizes air circulation and natural lighting. The open-plan design allows fresh air to flow freely, while large windows frame stunning views of the surrounding rice paddies.",
             villa_rooms_title: "Available Rooms",
-            villa_rooms_desc: "Room status may change at any time",
+            villa_rooms_desc: "Click on the room to see details",
             villa_book_now: "Book Now",
             available: "Available",
             unavailable: "Unavailable",
@@ -1672,8 +2294,7 @@
             footer_follow: "Follow Us",
             footer_country: "Indonesia",
             footer_desc: "Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali.",
-            feature4Title: "Free WiFi",
-            feature4Desc: "Enjoy fast and free internet access during your stay, perfect for workcation.",
+            book_now: "Book Now",
         }
     };
     
@@ -1696,6 +2317,8 @@
             '[data-feature2-desc]': 'feature2Desc',
             '[data-feature3-title]': 'feature3Title',
             '[data-feature3-desc]': 'feature3Desc',
+            '[data-feature4-title]': 'feature4Title',
+            '[data-feature4-desc]': 'feature4Desc',
             '[data-gallery-title]': 'galleryTitle',
             '[data-gallery-desc]': 'galleryDesc',
             '[data-about-title]': 'aboutTitle',
@@ -1732,20 +2355,12 @@
             '[data-footer-follow]': 'footer_follow',
             '[data-footer-country]': 'footer_country',
             '[data-footer-desc]': 'footer_desc',
-            '[data-feature4-title]': 'feature4Title',
-            '[data-feature4-desc]': 'feature4Desc',
         };
         
         for (const [selector, key] of Object.entries(elements)) {
             const el = document.querySelector(selector);
             if (el) el.innerText = t[key];
         }
-        
-        const promoTitle = document.querySelector('[data-promo-title]');
-        if (promoTitle) promoTitle.innerHTML = t.promoTitle;
-        
-        const promoDesc = document.querySelector('[data-promo-desc]');
-        if (promoDesc) promoDesc.innerHTML = t.promoDesc;
         
         document.querySelectorAll('.price-night-label').forEach(el => {
             el.innerText = t.per_night;

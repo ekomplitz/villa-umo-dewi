@@ -50,6 +50,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- ===== FAVICON ===== -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='leaf' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2333cc55'/%3E%3Cstop offset='100%25' style='stop-color:%23118833'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 C25 25 5 55 50 95 C95 55 75 25 50 5Z' fill='url(%23leaf)'/%3E%3Cpath d='M50 5 L50 75' stroke='%230d6b2e' stroke-width='2.5' fill='none'/%3E%3Cpath d='M50 25 L30 45' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 25 L70 45' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 45 L32 65' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 45 L68 65' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3C/svg%3E">
     <!-- Fallback -->
@@ -729,26 +730,50 @@
         margin-top: 60px;
     }
 
-    .footer a {
-        color: var(--footer-text);
-        transition: all 0.3s ease;
-        text-decoration: none;
+    .footer .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
     }
 
-    .footer a:hover {
+    @media (min-width: 768px) {
+        .footer .footer-grid {
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: start;
+        }
+    }
+
+    .footer .footer-col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer .footer-col h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .footer .footer-col h4 {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
         opacity: 0.7;
     }
 
-    .dark-mode .footer a:hover {
-        opacity: 0.7;
+    .footer .footer-col p {
+        opacity: 0.8;
+        line-height: 1.6;
+        font-size: 0.95rem;
     }
 
-    .footer .border-t {
-        border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .dark-mode .footer .border-t {
-        border-color: rgba(255, 255, 255, 0.05) !important;
+    .footer .social-icons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .footer .social-icon {
@@ -777,8 +802,67 @@
     .dark-mode .footer .social-icon:hover {
         background-color: rgba(255, 255, 255, 0.15);
     }
+
+    .footer .footer-divider {
+        border: 0;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 30px 0;
+    }
+
+    .dark-mode .footer .footer-divider {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .footer .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        opacity: 0.6;
+    }
+
+    @media (min-width: 768px) {
+        .footer .footer-bottom {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .footer .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-size: 0.85rem;
+        opacity: 0.7;
+    }
+
+    .footer .footer-links a {
+        color: var(--footer-text);
+        text-decoration: none;
+        transition: opacity 0.3s;
+    }
+
+    .footer .footer-links a:hover {
+        opacity: 1;
+    }
     
     html { scroll-behavior: smooth; }
+
+    /* ========== MAX CAPACITY NOTICE ========== */
+    .capacity-notice {
+        font-size: 0.7rem;
+        color: var(--text-card);
+        opacity: 0.7;
+        margin-top: 4px;
+        padding-left: 4px;
+    }
+    .capacity-notice i {
+        margin-right: 4px;
+        color: var(--primary-color);
+        font-size: 0.6rem;
+    }
 </style>
 </head>
 
@@ -884,15 +968,15 @@
 <!-- ========== CONTENT ========== -->
 <div class="max-w-4xl mx-auto px-4 py-12">
     <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-body)" data-booking-title>Booking Villa Umo Dewi</h1>
-        <p class="text-lg" style="color: var(--text-card)" data-booking-desc>Isi form di bawah untuk memesan villa impianmu</p>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-body)" data-i18n="booking_title">Booking Villa Umo Dewi</h1>
+        <p class="text-lg" style="color: var(--text-card)" data-i18n="booking_desc">Isi form di bawah untuk memesan villa impianmu</p>
     </div>
 
     <div class="grid md:grid-cols-2 gap-8">
         <!-- ========== FORM ========== -->
         <div class="form-card rounded-2xl border p-8" style="border-color: var(--border-color)">
             <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
-                <i class="fas fa-calendar-check" style="color: var(--primary-color)"></i> <span data-form-title>Informasi Booking</span>
+                <i class="fas fa-calendar-check" style="color: var(--primary-color)"></i> <span data-i18n="form_title">Informasi Booking</span>
             </h2>
             
             <form id="bookingForm" method="POST" action="{{ route('booking.store') }}">
@@ -904,33 +988,132 @@
                 <input type="hidden" name="check_in" id="checkInHidden" value="">
                 <input type="hidden" name="check_out" id="checkOutHidden" value="">
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-user"></i> <span data-label-name>Nama Lengkap</span> <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="name" id="inputName" class="form-input" placeholder="Contoh: John Doe" value="{{ old('name') }}" required>
-                    @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                <!-- Nama Depan & Belakang -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> <span data-i18n="first_name">Nama Depan</span> <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="first_name" id="inputFirstName" class="form-input" placeholder="John" value="{{ old('first_name') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> <span data-i18n="last_name">Nama Belakang</span>
+                        </label>
+                        <input type="text" name="last_name" id="inputLastName" class="form-input" placeholder="Doe" value="{{ old('last_name') }}">
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-envelope"></i> Email <span class="text-red-500">*</span>
-                    </label>
-                    <input type="email" name="email" id="inputEmail" class="form-input" placeholder="contoh: email@domain.com" value="{{ old('email') }}" required>
-                    @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+
+                <!-- Guest Detail Form (Dynamic) -->
+                <div id="guestContainer">
+                    <div class="guest-form border-t pt-4 mt-4" style="border-color: var(--border-color);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="font-semibold" style="color: var(--text-body);" data-i18n="guest_label">Tamu 1</h4>
+                            <button type="button" onclick="addGuestForm()" class="text-xs bg-[#9D6638] text-white px-3 py-1 rounded-full hover:bg-[#7A4F2A]">
+                                <i class="fas fa-plus"></i> <span data-i18n="add_guest">Tambah Tamu</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="form-group">
+                                <label class="form-label text-sm"><span data-i18n="guest_first">Nama Depan</span> <span class="text-red-500">*</span></label>
+                                <input type="text" name="guests[0][first_name]" class="form-input" placeholder="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label text-sm"><span data-i18n="guest_last">Nama Belakang</span></label>
+                                <input type="text" name="guests[0][last_name]" class="form-input" placeholder="Doe">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+                <input type="hidden" name="guest_count" id="guestCount" value="1">
+
+                <!-- Email (Opsional) -->
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fas fa-phone"></i> <span data-label-phone>No Handphone</span> <span class="text-red-500">*</span>
+                        <i class="fas fa-envelope"></i> <span data-i18n="email">Email</span> <span style="color: var(--text-card); font-weight: 400;">(Opsional)</span>
                     </label>
-                    <input type="tel" name="phone" id="inputPhone" class="form-input" placeholder="0812-3456-7890" value="{{ old('phone') }}" required>
-                    @error('phone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    <input type="email" name="email" id="inputEmail" class="form-input" placeholder="contoh: email@domain.com" value="{{ old('email') }}">
                 </div>
-                
+
+                <!-- Phone dengan Pilihan Kode Negara -->
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fas fa-calendar-alt"></i> <span data-label-dates>Tanggal Menginap</span> <span class="text-red-500">*</span>
+                        <i class="fas fa-phone"></i> <span data-i18n="phone">No Handphone</span> <span class="text-red-500">*</span>
+                    </label>
+                    <div class="flex">
+                        <select id="countryCode" class="form-select rounded-r-none" style="max-width: 100px; padding: 12px 8px; border-right: none;">
+                            <option value="+62">🇮🇩 +62</option>
+                            <option value="+60">🇲🇾 +60</option>
+                            <option value="+65">🇸🇬 +65</option>
+                            <option value="+61">🇦🇺 +61</option>
+                            <option value="+63">🇵🇭 +63</option>
+                            <option value="+66">🇹🇭 +66</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+81">🇯🇵 +81</option>
+                            <option value="+82">🇰🇷 +82</option>
+                            <option value="+86">🇨🇳 +86</option>
+                            <option value="+91">🇮🇳 +91</option>
+                        </select>
+                        <input type="tel" name="phone" id="inputPhone" class="form-input rounded-l-none" placeholder="812-3456-7890" value="{{ old('phone') }}" required>
+                    </div>
+                    <input type="hidden" name="phone_full" id="phoneFull" value="">
+                    <p class="text-xs mt-1" style="color: var(--text-card);" data-i18n="phone_hint">* Pilih kode negara, lalu masukkan nomor telepon</p>
+                </div>
+
+                <!-- ===== Jumlah Dewasa & Anak - MAKSIMAL 2 ===== -->
+                <div class="form-group">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="form-label">
+                                <i class="fas fa-user"></i> <span data-i18n="adults">Dewasa</span> <span class="text-red-500">*</span>
+                            </label>
+                            <select name="adults" id="inputAdults" class="form-select" required>
+                                @for($i = 1; $i <= 2; $i++)
+                                    <option value="{{ $i }}" {{ old('adults', 2) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">
+                                <i class="fas fa-child"></i> <span data-i18n="children">Anak-anak</span>
+                            </label>
+                            <select name="children" id="inputChildren" class="form-select">
+                                @for($i = 0; $i <= 2; $i++)
+                                    <option value="{{ $i }}" {{ old('children', 0) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                    <!-- ===== CAPACITY NOTICE ===== -->
+                    <div class="capacity-notice" data-i18n="capacity_notice">
+                        <i class="fas fa-info-circle"></i> Maksimal 1 bungalow 2 dewasa dan 2 anak
+                    </div>
+                </div>
+
+                <!-- ID Type: KTP atau Passport -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-id-card"></i> <span data-i18n="id_type">Jenis Identitas</span> <span class="text-red-500">*</span>
+                        </label>
+                        <select name="id_type" id="inputIdType" class="form-select" required>
+                            <option value="ktp" {{ old('id_type', 'ktp') == 'ktp' ? 'selected' : '' }} data-i18n="ktp">KTP (WNI)</option>
+                            <option value="passport" {{ old('id_type') == 'passport' ? 'selected' : '' }} data-i18n="passport">Passport (WNA)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-hashtag"></i> <span data-i18n="id_number">Nomor Identitas</span> <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="id_number" id="inputIdNumber" class="form-input" placeholder="Masukkan nomor KTP/Passport" value="{{ old('id_number') }}" required>
+                    </div>
+                </div>
+
+                <!-- Tanggal -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-alt"></i> <span data-i18n="dates">Tanggal Menginap</span> <span class="text-red-500">*</span>
                     </label>
                     <div class="space-y-3">
                         <div>
@@ -951,7 +1134,7 @@
         <div>
             <div class="sidebar-bg rounded-2xl border p-8 mb-6" style="border-color: var(--border-color)">
                 <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
-                    <i class="fas fa-bed" style="color: var(--primary-color)"></i> <span data-package-title>Pilih Bungalow</span>
+                    <i class="fas fa-bed" style="color: var(--primary-color)"></i> <span data-i18n="package_title">Pilih Bungalow</span>
                 </h2>
                 
                 <div class="space-y-3" id="bungalowContainer">
@@ -989,7 +1172,7 @@
             <!-- ========== SUMMARY ========== -->
             <div class="sidebar-bg rounded-2xl border p-8 sticky top-24" style="border-color: var(--border-color)">
                 <h2 class="text-2xl font-bold mb-6" style="color: var(--text-body)">
-                    <i class="fas fa-receipt"></i> <span data-summary-title>Ringkasan</span>
+                    <i class="fas fa-receipt"></i> <span data-i18n="summary_title">Ringkasan</span>
                 </h2>
                 
                 <div class="space-y-3 mb-6" id="summaryList">
@@ -997,15 +1180,15 @@
                 </div>
                 
                 <div class="flex justify-between border-t pt-3 mt-3" style="border-color: var(--border-color)">
-                    <span class="font-bold text-lg" style="color: var(--text-body)" data-total-title>Total Harga:</span>
+                    <span class="font-bold text-lg" style="color: var(--text-body)" data-i18n="total_title">Total Harga:</span>
                     <span id="totalPriceDisplay" class="font-bold text-2xl" style="color: var(--primary-color)">Rp 0</span>
                 </div>
                 
                 <button type="submit" form="bookingForm" class="booking-btn mt-6">
-                    <i class="fas fa-check-circle"></i> <span data-book-now>Booking Sekarang</span>
+                    <i class="fas fa-check-circle"></i> <span data-i18n="book_now">Booking Sekarang</span>
                 </button>
                 
-                <p class="text-xs text-center mt-4" style="color: var(--text-card)" data-guarantee>
+                <p class="text-xs text-center mt-4" style="color: var(--text-card)" data-i18n="guarantee">
                     <i class="fas fa-lock"></i> Data Anda aman & terenkripsi
                 </p>
             </div>
@@ -1013,29 +1196,22 @@
     </div>
 </div>
 
-<!-- ========== FOOTER (3 KOLOM) ========== -->
+<!-- ========== FOOTER ========== -->
 <footer class="footer py-16">
     <div class="max-w-7xl mx-auto px-6">
-
-        <!-- 3 KOLOM -->
-        <div class="grid md:grid-cols-3 gap-12">
-
+        <div class="footer-grid">
             <!-- KOLOM 1: Nama + Deskripsi -->
-            <div>
-                <h3 class="text-4xl font-bold mb-4" data-footer-name>
-                    Villa Umo Dewi
-                </h3>
-                <p class="leading-relaxed opacity-80 max-w-sm" data-footer-desc>
+            <div class="footer-col">
+                <h3 data-footer-name>Villa Umo Dewi</h3>
+                <p data-footer-desc>
                     Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri.
                 </p>
             </div>
 
             <!-- KOLOM 2: LEGAL -->
-            <div>
-                <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
-                    LEGAL
-                </h4>
-                <div class="flex flex-col gap-3 opacity-80">
+            <div class="footer-col">
+                <h4>LEGAL</h4>
+                <div class="footer-links" style="flex-direction: column; gap: 8px;">
                     <a href="#" data-footer-privacy>Privacy Policy</a>
                     <a href="#" data-footer-terms>Terms of Service</a>
                     <a href="#" data-footer-contact>Contact Us</a>
@@ -1044,37 +1220,28 @@
             </div>
 
             <!-- KOLOM 3: FOLLOW US -->
-            <div>
-                <h4 class="uppercase tracking-widest text-sm mb-4 font-semibold">
-                    FOLLOW US
-                </h4>
-                <div class="flex justify-center gap-4">
-                    <a href="https://www.facebook.com/profile.php?id=61592067392836" class="social-icon">
+            <div class="footer-col">
+                <h4>FOLLOW US</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61592067392836" target="_blank" class="social-icon">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="https://www.instagram.com/umodewi_" class="social-icon">
+                    <a href="https://www.instagram.com/umodewi_" target="_blank" class="social-icon">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://www.tiktok.com/@umodewi" class="social-icon">
+                    <a href="https://www.tiktok.com/@umodewi" target="_blank" class="social-icon">
                         <i class="fab fa-tiktok"></i>
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- DIVIDER -->
-        <div class="border-t border-white/10 my-10"></div>
+        <hr class="footer-divider">
 
-        <!-- BOTTOM: Copyright + Indonesia -->
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="opacity-70 text-sm" data-footer-copyright>
-                © 2026 Villa Umo Dewi. All rights reserved.
-            </p>
-            <p class="opacity-60 text-sm" data-footer-country>
-                Indonesia
-            </p>
+        <div class="footer-bottom">
+            <p data-footer-copyright>© 2026 Villa Umo Dewi. All rights reserved.</p>
+            <p data-footer-country>Indonesia</p>
         </div>
-
     </div>
 </footer>
 
@@ -1175,6 +1342,113 @@
         checkAllBungalowsAvailability();
     }
 
+    // ========== DYNAMIC GUEST FORM ==========
+    let guestCount = 1;
+
+    function addGuestForm() {
+        if (guestCount >= 10) {
+            const msg = currentLang === 'id' ? 'Maksimal 10 tamu' : 'Maximum 10 guests';
+            alert(msg);
+            return;
+        }
+        
+        guestCount++;
+        const container = document.getElementById('guestContainer');
+        
+        const t = translations[currentLang] || translations.id;
+        
+        const newGuest = document.createElement('div');
+        newGuest.className = 'guest-form border-t pt-4 mt-4';
+        newGuest.style.borderColor = 'var(--border-color)';
+        newGuest.innerHTML = `
+            <div class="flex justify-between items-center mb-3">
+                <h4 class="font-semibold" style="color: var(--text-body);">${t.guest_label || 'Tamu'} ${guestCount}</h4>
+                <button type="button" onclick="removeGuestForm(this)" class="text-xs bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600">
+                    <i class="fas fa-times"></i> ${t.remove_guest || 'Hapus'}
+                </button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label class="form-label text-sm"><span data-i18n="guest_first">${t.guest_first || 'Nama Depan'}</span> <span class="text-red-500">*</span></label>
+                    <input type="text" name="guests[${guestCount-1}][first_name]" class="form-input" placeholder="${t.first_name_placeholder || 'John'}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label text-sm"><span data-i18n="guest_last">${t.guest_last || 'Nama Belakang'}</span></label>
+                    <input type="text" name="guests[${guestCount-1}][last_name]" class="form-input" placeholder="${t.last_name_placeholder || 'Doe'}">
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(newGuest);
+        document.getElementById('guestCount').value = guestCount;
+        
+        // Update labels
+        applyLang(currentLang);
+    }
+
+    function removeGuestForm(button) {
+        const guestForm = button.closest('.guest-form');
+        const t = translations[currentLang] || translations.id;
+        
+        if (document.querySelectorAll('.guest-form').length > 1) {
+            guestForm.remove();
+            guestCount--;
+            document.getElementById('guestCount').value = guestCount;
+            // Renumber guest titles
+            document.querySelectorAll('.guest-form').forEach((form, index) => {
+                const title = form.querySelector('h4');
+                if (title) title.textContent = `${t.guest_label || 'Tamu'} ${index + 1}`;
+            });
+        } else {
+            const msg = currentLang === 'id' ? 'Minimal 1 tamu' : 'Minimum 1 guest';
+            alert(msg);
+        }
+    }
+
+    // ========== PHONE FORMATTER ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('inputPhone');
+        const countryCode = document.getElementById('countryCode');
+        
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() {
+                // Hanya angka yang diizinkan
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        }
+        
+        if (countryCode) {
+            countryCode.addEventListener('change', function() {
+                const code = this.value;
+                if (phoneInput) {
+                    if (code === '+62') {
+                        phoneInput.placeholder = '812-3456-7890';
+                    } else if (code === '+60') {
+                        phoneInput.placeholder = '12-345-6789';
+                    } else if (code === '+65') {
+                        phoneInput.placeholder = '8123-4567';
+                    } else {
+                        phoneInput.placeholder = '123-456-7890';
+                    }
+                }
+            });
+        }
+    });
+
+    // ========== UPDATE PHONE FULL ==========
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        const countryCode = document.getElementById('countryCode').value;
+        const phone = document.getElementById('inputPhone').value;
+        const phoneFull = countryCode + phone;
+        document.getElementById('phoneFull').value = phoneFull;
+        
+        // Update hidden input phone
+        const phoneInput = document.querySelector('input[name="phone"]');
+        if (phoneInput) {
+            phoneInput.value = phoneFull;
+        }
+    });
+
     // ========== CHECK ALL BUNGALOWS AVAILABILITY ==========
     async function checkAllBungalowsAvailability() {
         const checkInVal = document.getElementById('checkIn').value;
@@ -1218,7 +1492,8 @@
                 badge.className = 'status-booked text-xs px-2 py-0.5 rounded-full ml-2';
                 badge.style.cssText = 'background: #ef4444; color: #fff;';
                 badge.textContent = currentLang === 'id' ? 'Dipesan' : 'Booked';
-                card.querySelector('.flex.items-center.gap-2').appendChild(badge);
+                const iconContainer = card.querySelector('.flex.items-center.gap-2');
+                if (iconContainer) iconContainer.appendChild(badge);
             } else {
                 card.classList.remove('booked');
                 if (statusBadge) {
@@ -1254,13 +1529,14 @@
     // ========== BOOKING FORM VALIDATION ==========
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
         const email = document.getElementById('inputEmail').value;
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        
-        if (!emailRegex.test(email)) {
-            e.preventDefault();
-            const msg = currentLang === 'id' ? 'Email tidak valid. Contoh: nama@domain.com' : 'Invalid email. Example: name@domain.com';
-            alert(msg);
-            return false;
+        if (email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                const msg = currentLang === 'id' ? 'Email tidak valid. Contoh: nama@domain.com' : 'Invalid email. Example: name@domain.com';
+                alert(msg);
+                return false;
+            }
         }
     });
         
@@ -1437,7 +1713,8 @@
                     badge.className = 'status-booked text-xs px-2 py-0.5 rounded-full ml-2';
                     badge.style.cssText = 'background: #ef4444; color: #fff;';
                     badge.textContent = currentLang === 'id' ? 'Dipesan' : 'Booked';
-                    card.querySelector('.flex.items-center.gap-2').appendChild(badge);
+                    const iconContainer = card.querySelector('.flex.items-center.gap-2');
+                    if (iconContainer) iconContainer.appendChild(badge);
                     return;
                 }
                 selectedBungalows.push(bungalowId);
@@ -1472,9 +1749,24 @@
             booking_title: "Booking Villa Umo Dewi",
             booking_desc: "Isi form di bawah untuk memesan villa impianmu",
             form_title: "Informasi Booking",
-            label_name: "Nama Lengkap",
-            label_phone: "No Handphone",
-            label_dates: "Tanggal Menginap",
+            first_name: "Nama Depan",
+            last_name: "Nama Belakang",
+            email: "Email",
+            phone: "No Handphone",
+            adults: "Dewasa",
+            children: "Anak-anak",
+            id_type: "Jenis Identitas",
+            id_number: "Nomor Identitas",
+            ktp: "KTP (WNI)",
+            passport: "Passport (WNA)",
+            guest_first: "Nama Depan Tamu",
+            guest_last: "Nama Belakang Tamu",
+            guest_label: "Tamu",
+            remove_guest: "Hapus",
+            add_guest: "Tambah Tamu",
+            first_name_placeholder: "John",
+            last_name_placeholder: "Doe",
+            dates: "Tanggal Menginap",
             package_title: "Pilih Bungalow",
             summary_title: "Ringkasan",
             total_title: "Total Harga:",
@@ -1497,15 +1789,32 @@
             footerPress: "Press Kit",
             footerCopyright: "© 2026 Villa Umo Dewi. All rights reserved.",
             footer_country: "Indonesia",
-            booked: "Dipesan"
+            booked: "Dipesan",
+            phone_hint: "* Pilih kode negara, lalu masukkan nomor telepon",
+            capacity_notice: "<i class='fas fa-info-circle'></i> Maksimal 1 bungalow 2 dewasa dan 2 anak"
         },
         en: {
             booking_title: "Book Villa Umo Dewi",
             booking_desc: "Fill out the form below to book your dream villa",
             form_title: "Booking Information",
-            label_name: "Full Name",
-            label_phone: "Phone Number",
-            label_dates: "Stay Dates",
+            first_name: "First Name",
+            last_name: "Last Name",
+            email: "Email",
+            phone: "Phone Number",
+            adults: "Adults",
+            children: "Children",
+            id_type: "ID Type",
+            id_number: "ID Number",
+            ktp: "KTP (Citizen)",
+            passport: "Passport (Foreigner)",
+            guest_first: "Guest First Name",
+            guest_last: "Guest Last Name",
+            guest_label: "Guest",
+            remove_guest: "Remove",
+            add_guest: "Add Guest",
+            first_name_placeholder: "John",
+            last_name_placeholder: "Doe",
+            dates: "Stay Dates",
             package_title: "Select Bungalow",
             summary_title: "Summary",
             total_title: "Total Price:",
@@ -1528,7 +1837,9 @@
             footerPress: "Press Kit",
             footerCopyright: "© 2026 Villa Umo Dewi. All rights reserved.",
             footer_country: "Indonesia",
-            booked: "Booked"
+            booked: "Booked",
+            phone_hint: "* Select country code, then enter phone number",
+            capacity_notice: "<i class='fas fa-info-circle'></i> Maximum 1 bungalow 2 adults and 2 children"
         }
     };
     
@@ -1537,20 +1848,33 @@
         const t = translations[lang];
         if (!t) return;
         
-        const elements = {
-            '[data-booking-title]': 'booking_title',
-            '[data-booking-desc]': 'booking_desc',
-            '[data-label-name]': 'label_name',
-            '[data-label-phone]': 'label_phone',
-            '[data-label-dates]': 'label_dates',
-            '[data-package-title]': 'package_title',
-            '[data-summary-title]': 'summary_title',
-            '[data-total-title]': 'total_title',
-            '[data-home]': 'nav_home',
-            '[data-villa]': 'nav_villa',
-            '[data-booking]': 'nav_booking',
-            '[data-contact]': 'nav_contact',
-            // FOOTER
+        // Update semua elemen dengan data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            if (t[key] !== undefined) {
+                el.innerHTML = t[key];
+            }
+        });
+        
+        // Update guest titles
+        document.querySelectorAll('.guest-form h4').forEach((title, index) => {
+            title.textContent = `${t.guest_label || 'Tamu'} ${index + 1}`;
+        });
+        
+        // Update tombol add guest
+        const addBtns = document.querySelectorAll('.guest-form .flex.justify-between .text-xs');
+        addBtns.forEach(btn => {
+            const span = btn.querySelector('span');
+            if (span) span.textContent = t.add_guest || 'Tambah Tamu';
+        });
+        
+        // Update tombol remove di setiap guest
+        document.querySelectorAll('.guest-form .bg-red-500').forEach(btn => {
+            btn.innerHTML = `<i class="fas fa-times"></i> ${t.remove_guest || 'Hapus'}`;
+        });
+        
+        // Update footer
+        const footerElements = {
             '[data-footer-name]': 'footer_name',
             '[data-footer-desc]': 'footer_desc',
             '[data-footer-privacy]': 'footerPrivacy',
@@ -1561,16 +1885,10 @@
             '[data-footer-country]': 'footer_country'
         };
         
-        for (const [selector, key] of Object.entries(elements)) {
+        for (const [selector, key] of Object.entries(footerElements)) {
             const el = document.querySelector(selector);
-            if (el) el.innerText = t[key];
+            if (el) el.textContent = t[key];
         }
-        
-        document.querySelector('[data-form-title]').innerHTML = `<i class="fas fa-calendar-check" style="color: var(--primary-color)"></i> ${t.form_title}`;
-        document.querySelector('[data-package-title]').innerHTML = `<i class="fas fa-bed" style="color: var(--primary-color)"></i> ${t.package_title}`;
-        document.querySelector('[data-summary-title]').innerHTML = `<i class="fas fa-receipt"></i> ${t.summary_title}`;
-        document.querySelector('[data-book-now]').innerHTML = `<i class="fas fa-check-circle"></i> ${t.book_now}`;
-        document.querySelector('[data-guarantee]').innerHTML = t.guarantee;
         
         document.querySelectorAll('.price-night-label').forEach(el => {
             el.innerText = t.per_night;
@@ -1580,7 +1898,6 @@
             el.innerText = t.unavailable;
         });
         
-        // Update booked badges
         document.querySelectorAll('.status-booked').forEach(el => {
             el.textContent = t.booked;
         });

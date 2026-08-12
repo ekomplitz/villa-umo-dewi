@@ -10,9 +10,15 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'phone',
+        'adults',
+        'children',
+        'id_type',
+        'id_number',
+        'guests',
         'check_in',
         'check_out',
         'duration',
@@ -20,13 +26,16 @@ class Booking extends Model
         'total_price',
         'status',
         'payment_status',
-        'transaction_id',
         'order_id',
+        'transaction_id',
     ];
 
     protected $casts = [
-        'selected_bungalows' => 'array',
-        'check_in' => 'date',
-        'check_out' => 'date',
+        'guests' => 'array',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ($this->last_name ? ' ' . $this->last_name : '');
+    }
 }

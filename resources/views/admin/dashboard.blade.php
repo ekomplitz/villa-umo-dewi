@@ -7,11 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- ===== FAVICON ===== -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='leaf' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2333cc55'/%3E%3Cstop offset='100%25' style='stop-color:%23118833'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 C25 25 5 55 50 95 C95 55 75 25 50 5Z' fill='url(%23leaf)'/%3E%3Cpath d='M50 5 L50 75' stroke='%230d6b2e' stroke-width='2.5' fill='none'/%3E%3Cpath d='M50 25 L30 45' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 25 L70 45' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 45 L32 65' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3Cpath d='M50 45 L68 65' stroke='%230d6b2e' stroke-width='2' fill='none'/%3E%3C/svg%3E">
-    <!-- Fallback -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍃%3C/text%3E%3C/svg%3E">
-
+    
     <style>
         * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -25,6 +21,12 @@
             --primary-hover: #7A4F2A;
             --sidebar-bg: #9D6638;
             --sidebar-text: #EFE9E3;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+            --red: #dc2626;
         }
         
         .dark-mode {
@@ -37,6 +39,12 @@
             --primary-hover: #948979;
             --sidebar-bg: #0F2A4A;
             --sidebar-text: #FFFFFF;
+            --success: #34d399;
+            --danger: #f87171;
+            --warning: #fbbf24;
+            --info: #60a5fa;
+            --purple: #a78bfa;
+            --red: #f87171;
         }
         
         body {
@@ -44,11 +52,27 @@
             color: var(--text-body);
             transition: all 0.3s ease;
             min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .main-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .content-area {
+            flex: 1;
+            padding: 20px 32px;
+            overflow-y: auto;
+            height: 100vh;
         }
         
         .sidebar {
             background-color: var(--sidebar-bg) !important;
             color: var(--sidebar-text) !important;
+            flex-shrink: 0;
         }
         .sidebar a { color: var(--sidebar-text) !important; }
         .sidebar a:hover { background-color: rgba(255,255,255,0.1) !important; }
@@ -84,24 +108,109 @@
         .text-gray-500, .text-gray-600, .text-gray-700 { color: var(--text-card) !important; }
         .border-gray-200, .border-t { border-color: var(--border-color) !important; }
         .shadow-md { box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .bg-gray-100 { background-color: var(--bg-body) !important; }
-        .bg-gray-200 { background-color: var(--border-color) !important; }
         
         .dark-mode .shadow-md { box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .dark-mode .text-blue-600 { color: #60a5fa !important; }
-        .dark-mode .text-yellow-500 { color: #fbbf24 !important; }
-        .dark-mode .text-green-600 { color: #34d399 !important; }
-        .dark-mode .text-green-700 { color: #6ee7b7 !important; }
-        .dark-mode .text-purple-600 { color: #a78bfa !important; }
-        .dark-mode .text-purple-700 { color: #8b5cf6 !important; }
+        
+        .stat-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .dark-mode .stat-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .stat-icon.green { background-color: rgba(34,197,94,0.15); color: #22c55e; }
+        .stat-icon.yellow { background-color: rgba(245,158,11,0.15); color: #f59e0b; }
+        .stat-icon.blue { background-color: rgba(59,130,246,0.15); color: #3b82f6; }
+        .stat-icon.purple { background-color: rgba(139,92,246,0.15); color: #8b5cf6; }
+        .stat-icon.red { background-color: rgba(239,68,68,0.15); color: #ef4444; }
+        .stat-icon.teal { background-color: rgba(20,184,166,0.15); color: #14b8a6; }
+        .stat-icon.orange { background-color: rgba(249,115,22,0.15); color: #f97316; }
+        
+        .dark-mode .stat-icon.green { background-color: rgba(52,211,153,0.2); color: #34d399; }
+        .dark-mode .stat-icon.yellow { background-color: rgba(251,191,36,0.2); color: #fbbf24; }
+        .dark-mode .stat-icon.blue { background-color: rgba(96,165,250,0.2); color: #60a5fa; }
+        .dark-mode .stat-icon.purple { background-color: rgba(167,139,250,0.2); color: #a78bfa; }
+        .dark-mode .stat-icon.red { background-color: rgba(248,113,113,0.2); color: #f87171; }
+        .dark-mode .stat-icon.teal { background-color: rgba(45,212,191,0.2); color: #2dd4bf; }
+        .dark-mode .stat-icon.orange { background-color: rgba(251,146,60,0.2); color: #fb923c; }
+        
+        .stat-number { font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+        .stat-label { font-size: 0.78rem; color: var(--text-card); }
+        
+        .divider { border-color: var(--border-color); }
+        
+        .quick-link {
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+        .quick-link:hover { transform: translateY(-2px); }
+        
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-body);
+        }
+        
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .grid-online-offline {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .grid-quick-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        @media (max-width: 1024px) {
+            .grid-stats { grid-template-columns: repeat(3, 1fr); }
+            .grid-online-offline { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-stats { grid-template-columns: repeat(2, 1fr); }
+            .grid-quick-links { grid-template-columns: 1fr; }
+            .content-area { padding: 16px; }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-stats { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 
 <body>
 
-<div class="min-h-screen flex flex-col md:flex-row">
+<div class="main-container">
     <!-- SIDEBAR -->
-    <div class="sidebar w-full md:w-64 p-4 md:p-6 md:min-h-screen flex flex-col">
+    <div class="sidebar w-64 p-4 md:p-6 flex flex-col min-h-screen">
         <h2 class="text-2xl font-bold mb-6 md:mb-8 flex items-center justify-center md:justify-start">
             <i class="fas fa-leaf mr-2"></i>Admin Panel
         </h2>
@@ -143,57 +252,118 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="flex-1 p-4 md:p-8">
-        <h1 class="text-2xl md:text-3xl font-bold mb-6" style="color: var(--text-body);">Dashboard</h1>
+    <div class="content-area">
+        <h1 class="dashboard-title">Dashboard</h1>
 
-        <!-- STATS -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <div class="text-2xl md:text-3xl font-bold text-blue-600">{{ $totalBookings }}</div>
-                <div class="text-sm text-gray-500">Total Booking</div>
+        <!-- ===== STATS ===== -->
+        <div class="grid-stats">
+            <div class="stat-card">
+                <div class="flex items-center gap-3">
+                    <div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div>
+                    <div>
+                        <div class="stat-number" style="color: var(--text-body);">{{ $grandTotalBookings }}</div>
+                        <div class="stat-label">Total Booking</div>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <div class="text-2xl md:text-3xl font-bold text-yellow-500">{{ $pendingBookings }}</div>
-                <div class="text-sm text-gray-500">Pending</div>
+            <div class="stat-card">
+                <div class="flex items-center gap-3">
+                    <div class="stat-icon yellow"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div class="stat-number" style="color: var(--text-body);">{{ $grandPending }}</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <div class="text-2xl md:text-3xl font-bold text-green-600">{{ $confirmedBookings }}</div>
-                <div class="text-sm text-gray-500">Confirmed</div>
+            <div class="stat-card">
+                <div class="flex items-center gap-3">
+                    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                    <div>
+                        <div class="stat-number" style="color: var(--text-body);">{{ $grandConfirmed }}</div>
+                        <div class="stat-label">Confirmed</div>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <div class="text-2xl md:text-3xl font-bold text-green-700">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
-                <div class="text-sm text-gray-500">Revenue</div>
+            <div class="stat-card">
+                <div class="flex items-center gap-3">
+                    <div class="stat-icon red"><i class="fas fa-times-circle"></i></div>
+                    <div>
+                        <div class="stat-number" style="color: var(--text-body);">{{ $grandCancelled }}</div>
+                        <div class="stat-label">Cancelled</div>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-center gap-3">
+                    <div class="stat-icon teal"><i class="fas fa-money-bill-wave"></i></div>
+                    <div>
+                        <div class="stat-number" style="color: var(--text-body);">Rp {{ number_format($grandRevenue, 0, ',', '.') }}</div>
+                        <div class="stat-label">Revenue</div>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-center gap-3">
+                    <div class="stat-icon orange"><i class="fas fa-times"></i></div>
+                    <div>
+                        <div class="stat-number" style="color: var(--text-body);">Rp {{ number_format($grandCancelledRevenue, 0, ',', '.') }}</div>
+                        <div class="stat-label">Total Cancelled</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <div class="text-2xl md:text-3xl font-bold text-purple-600">{{ $totalOffline ?? 0 }}</div>
-                <div class="text-sm text-gray-500">Offline Booking</div>
+        <!-- ===== ONLINE & OFFLINE ===== -->
+        <div class="grid-online-offline">
+            <!-- ONLINE -->
+            <div class="stat-card">
+                <h3 class="font-bold text-sm mb-3" style="color: var(--text-body);">
+                    <i class="fas fa-globe mr-2" style="color: var(--primary-color);"></i> Online
+                </h3>
+                <div class="grid grid-cols-5 gap-2 text-center">
+                    <div><span class="stat-label">Total</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $totalBookings }}</div></div>
+                    <div><span class="stat-label">Pending</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $pendingBookings }}</div></div>
+                    <div><span class="stat-label">Confirmed</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $confirmedBookings }}</div></div>
+                    <div><span class="stat-label">Cancelled</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $cancelledBookings }}</div></div>
+                    <div><span class="stat-label">Revenue</span><div class="font-bold text-sm" style="color: var(--text-body);">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div></div>
+                </div>
             </div>
-            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
-                <div class="text-2xl md:text-3xl font-bold text-purple-700">Rp {{ number_format($totalRevenueOffline ?? 0, 0, ',', '.') }}</div>
-                <div class="text-sm text-gray-500">Revenue Offline</div>
+
+            <!-- OFFLINE -->
+            <div class="stat-card">
+                <h3 class="font-bold text-sm mb-3" style="color: var(--text-body);">
+                    <i class="fas fa-user-plus mr-2" style="color: var(--primary-color);"></i> Offline
+                </h3>
+                <div class="grid grid-cols-5 gap-2 text-center">
+                    <div><span class="stat-label">Total</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $totalOffline }}</div></div>
+                    <div><span class="stat-label">Pending</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $pendingOffline }}</div></div>
+                    <div><span class="stat-label">Confirmed</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $confirmedOffline }}</div></div>
+                    <div><span class="stat-label">Cancelled</span><div class="font-bold text-sm" style="color: var(--text-body);">{{ $cancelledOffline }}</div></div>
+                    <div><span class="stat-label">Revenue</span><div class="font-bold text-sm" style="color: var(--text-body);">Rp {{ number_format($totalRevenueOffline, 0, ',', '.') }}</div></div>
+                </div>
             </div>
         </div>
 
-        <!-- QUICK LINKS -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="{{ route('admin.bookings') }}" class="bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700 text-center transition">
-                <i class="fas fa-list text-2xl block mb-2"></i> Lihat Booking
+        <!-- ===== QUICK LINKS ===== -->
+        <div class="grid-quick-links">
+            <a href="{{ route('admin.bookings') }}" class="quick-link" style="background-color: #3b82f6; color: #fff;">
+                <i class="fas fa-list text-xl block mb-1"></i>
+                <span class="text-sm font-medium">Lihat Booking</span>
             </a>
-            <a href="{{ route('admin.bungalow.settings') }}" class="bg-green-600 text-white p-4 rounded-lg hover:bg-green-700 text-center transition">
-                <i class="fas fa-bed text-2xl block mb-2"></i> Atur Bungalow
+            <a href="{{ route('admin.bungalow.settings') }}" class="quick-link" style="background-color: #22c55e; color: #fff;">
+                <i class="fas fa-bed text-xl block mb-1"></i>
+                <span class="text-sm font-medium">Atur Bungalow</span>
             </a>
-            <a href="{{ route('admin.offline.bookings') }}" class="bg-purple-600 text-white p-4 rounded-lg hover:bg-purple-700 text-center transition">
-                <i class="fas fa-user-plus text-2xl block mb-2"></i> Offline Booking
+            <a href="{{ route('admin.offline.bookings') }}" class="quick-link" style="background-color: #8b5cf6; color: #fff;">
+                <i class="fas fa-user-plus text-xl block mb-1"></i>
+                <span class="text-sm font-medium">Offline Booking</span>
             </a>
         </div>
     </div>
 </div>
 
 <script>
-    // THEME TOGGLE
+    // ========== THEME TOGGLE ==========
     function toggleAdminTheme() {
         const isDark = document.documentElement.classList.contains('dark-mode');
         const track = document.getElementById('adminThemeTrack');

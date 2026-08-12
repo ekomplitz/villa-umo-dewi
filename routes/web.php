@@ -45,21 +45,29 @@ Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.
 Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 // ========== ADMIN PANEL ==========
+// routes/web.php - bagian admin
 Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
     Route::put('/bookings/{id}/status', [AdminController::class, 'updateStatus'])->name('admin.updateStatus');
     Route::delete('/bookings/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
     Route::get('/bookings/export', [AdminController::class, 'export'])->name('admin.export');
+    Route::get('/bookings/export-pdf', [AdminController::class, 'exportPDF'])->name('admin.bookings.export-pdf');
+    Route::get('/bookings/{id}/detail', [AdminController::class, 'getBookingDetail'])->name('admin.bookings.detail');
 
     Route::get('/bungalow-settings', [AdminController::class, 'bungalowSettings'])->name('admin.bungalow.settings');
     Route::put('/bungalow-settings/{id}', [AdminController::class, 'updateBungalow'])->name('admin.bungalow.update');
+    Route::delete('/bungalow/remove-image/{id}/{index}', [AdminController::class, 'removeImage'])->name('admin.bungalow.remove-image');
 
     Route::get('/offline-bookings', [AdminController::class, 'offlineBookings'])->name('admin.offline.bookings');
     Route::post('/offline-bookings', [AdminController::class, 'storeOffline'])->name('admin.offline.store');
     Route::put('/offline-bookings/{id}', [AdminController::class, 'updateOffline'])->name('admin.offline.update');
     Route::delete('/offline-bookings/{id}', [AdminController::class, 'destroyOffline'])->name('admin.offline.destroy');
+    Route::get('/offline-bookings/export', [AdminController::class, 'exportOffline'])->name('admin.offline.export');
+    Route::get('/offline-bookings/export-pdf', [AdminController::class, 'exportOfflinePDF'])->name('admin.offline.export-pdf');
+    Route::get('/offline-bookings/{id}/detail', [AdminController::class, 'getOfflineBookingDetail'])->name('admin.offline.detail');
 
+    // Reports & Gallery
     Route::get('/reports', [AdminController::class, 'adminIndex'])->name('admin.reports');
     Route::get('/reports/{id}', [AdminController::class, 'getReportDetail'])->name('admin.reports.detail');
     Route::put('/reports/{id}', [AdminController::class, 'adminUpdate'])->name('admin.reports.update');
