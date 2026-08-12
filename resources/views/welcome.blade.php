@@ -1241,16 +1241,62 @@
             }
         }
 
+        /* ===== BUNGALOW NAME WRAPPER ===== */
+        .bungalow-name-wrapper {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
         .modal-body .bungalow-name {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-body);
-            margin-bottom: 4px;
         }
 
         @media (max-width: 480px) {
             .modal-body .bungalow-name {
                 font-size: 1.2rem;
+            }
+        }
+
+        /* ===== CAPACITY BADGE ===== */
+        .capacity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-card);
+            background: rgba(157, 102, 56, 0.1);
+            padding: 2px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .dark-mode .capacity-badge {
+            background: rgba(223, 208, 184, 0.1);
+            color: var(--text-card);
+        }
+
+        .capacity-badge i {
+            font-size: 0.6rem;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .capacity-badge i {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 480px) {
+            .capacity-badge {
+                font-size: 0.6rem;
+                padding: 1px 8px;
+            }
+            .capacity-badge i {
+                font-size: 0.5rem;
             }
         }
 
@@ -1828,7 +1874,12 @@
 
         <!-- Body -->
         <div class="modal-body">
-            <h3 class="bungalow-name" id="modalBungalowName">Bungalow Name</h3>
+            <div class="bungalow-name-wrapper">
+                <h3 class="bungalow-name" id="modalBungalowName">Bungalow Name</h3>
+                <span class="capacity-badge" id="modalCapacityBadge">
+                    <i class="fas fa-users"></i> 2-4 orang
+                </span>
+            </div>
             <p class="bungalow-desc" id="modalBungalowDesc">Description here</p>
             
             <div class="price-container" id="modalPriceContainer">
@@ -1863,7 +1914,7 @@
         @endforeach
     };
 
-    // Fallback data jika tidak ada bungalow dari database
+    // Fallback data
     const fallbackBungalowData = {
         'Bungalow 1': {
             code: 'b1',
@@ -1903,14 +1954,20 @@
         const lang = localStorage.getItem('lang') || 'id';
         const isEn = lang === 'en';
         
-        // Set name
-        document.getElementById('modalBungalowName').textContent = data.name;
+        // ===== SET NAME =====
+        const nameEl = document.getElementById('modalBungalowName');
+        nameEl.textContent = data.name;
         
-        // Set description
+        // ===== SET CAPACITY BADGE =====
+        const badge = document.getElementById('modalCapacityBadge');
+        const capacityText = isEn ? '2-4 persons' : '2-4 orang';
+        badge.innerHTML = `<i class="fas fa-users"></i> ${capacityText}`;
+        
+        // ===== SET DESCRIPTION =====
         const desc = isEn ? (data.desc_en || data.desc_id) : (data.desc_id || data.desc_en);
         document.getElementById('modalBungalowDesc').textContent = desc || 'No description available';
         
-        // Set price
+        // ===== SET PRICE =====
         const priceContainer = document.getElementById('modalPriceContainer');
         if (data.has_discount && data.discount_price > 0) {
             const discountPercent = Math.round((1 - data.discount_price / data.price) * 100);
@@ -1927,14 +1984,14 @@
             `;
         }
         
-        // Set images
+        // ===== SET IMAGES =====
         let images = data.images || [];
         if (images.length === 0) {
             images = [data.image];
         }
-        // Pastikan minimal 7 gambar (pakai gambar yang sama jika kurang)
+        // Pastikan minimal 7 gambar
         while (images.length < 7) {
-            images.push(images[0]);
+            images.push(images[0] || '{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}');
         }
         currentImages = images;
         currentSlide = 0;
@@ -1957,7 +2014,7 @@
         // Render images
         container.innerHTML = images.map((img, index) => `
             <div class="slide">
-                <img src="${img}" alt="Bungalow image ${index + 1}" loading="lazy" onerror="this.src='{{ asset("images/kamar-penginapan-villa-umo-dewi.jpg") }}'">
+                <img src="${img}" alt="Bungalow image ${index + 1}" loading="lazy" onerror="this.src='{{ asset('images/kamar-penginapan-villa-umo-dewi.jpg') }}'">
             </div>
         `).join('');
         
@@ -2236,6 +2293,7 @@
             footer_country: "Indonesia",
             footer_desc: "Nikmati pengalaman menginap yang tak terlupakan di tengah hamparan sawah yang asri.",
             book_now: "Booking Sekarang",
+            persons: "orang",
         },
         en: {
             home: "Home",
@@ -2295,6 +2353,7 @@
             footer_country: "Indonesia",
             footer_desc: "Enjoy an unforgettable stay in the middle of lush rice fields, surrounded by the natural beauty of Bali.",
             book_now: "Book Now",
+            persons: "persons",
         }
     };
     
@@ -2374,6 +2433,13 @@
                 el.innerText = t.unavailable_status;
             }
         });
+
+        // Update capacity badge
+        const badge = document.getElementById('modalCapacityBadge');
+        if (badge) {
+            const persons = t.persons || 'orang';
+            badge.innerHTML = `<i class="fas fa-users"></i> 2-4 ${persons}`;
+        }
 
         updateBungalowDescriptions(lang);
     }
