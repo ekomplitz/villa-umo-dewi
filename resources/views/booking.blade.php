@@ -1,3 +1,4 @@
+{{-- resources/views/booking.blade.php --}}
 <!DOCTYPE html>
 <html lang="{{ session('lang', 'id') }}">
 <head>
@@ -658,6 +659,13 @@
     .bungalow-card.selected .room-icon {
         color: #fff !important;
     }
+    .bungalow-card.selected .line-through {
+        color: #ff6b6b !important;
+    }
+    .bungalow-card.selected .discount-badge-small {
+        color: #fff !important;
+        background: rgba(255,255,255,0.2) !important;
+    }
 
     .dark-mode .bungalow-card.selected {
         background-color: #DFD0B8;
@@ -667,6 +675,9 @@
     .dark-mode .bungalow-card.selected .font-bold,
     .dark-mode .bungalow-card.selected .room-icon {
         color: #153448 !important;
+    }
+    .dark-mode .bungalow-card.selected .line-through {
+        color: #dc2626 !important;
     }
 
     .bungalow-card.inactive {
@@ -720,6 +731,17 @@
     
     .dark-mode input[type="date"]::-webkit-calendar-picker-indicator:hover {
         filter: brightness(0) invert(0.8);
+    }
+
+    .discount-badge-small {
+        display: inline-block;
+        font-size: 0.6rem;
+        font-weight: 600;
+        padding: 1px 8px;
+        border-radius: 10px;
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+        margin-left: 4px;
     }
 
     /* ========== FOOTER ========== */
@@ -850,7 +872,7 @@
     
     html { scroll-behavior: smooth; }
 
-    /* ========== MAX CAPACITY NOTICE ========== */
+    /* ========== CAPACITY NOTICE ========== */
     .capacity-notice {
         font-size: 0.7rem;
         color: var(--text-card);
@@ -1085,7 +1107,6 @@
                             </select>
                         </div>
                     </div>
-                    <!-- ===== CAPACITY NOTICE ===== -->
                     <div class="capacity-notice" data-i18n="capacity_notice">
                         <i class="fas fa-info-circle"></i> Maksimal 1 bungalow 2 dewasa dan 2 anak
                     </div>
@@ -1142,16 +1163,17 @@
                     <div class="bungalow-card p-3 {{ $bungalow->status == 'inactive' ? 'inactive' : '' }}" 
                         data-bungalow="{{ $bungalow->code }}" 
                         data-price="{{ $bungalow->price }}"
+                        data-discount-price="{{ $bungalow->discount_price ?? 0 }}"
+                        data-has-discount="{{ $bungalow->has_discount ? 'true' : 'false' }}"
                         data-desc-id="{{ $bungalow->description_id }}"
                         data-desc-en="{{ $bungalow->description_en }}"
                         data-status="{{ $bungalow->status }}">
                         <div class="flex justify-between items-center">
                             <div>
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
                                     <i class="fas fa-bed room-icon" 
                                     style="color: {{ $bungalow->status == 'active' ? 'var(--primary-color)' : '#ef4444' }}; font-size: 16px;"></i>
                                     <h3 class="font-semibold text-base" style="color: var(--text-body)">{{ $bungalow->name }}</h3>
-                                    <!-- Status Default (Tersedia / Tidak Tersedia) -->
                                     <span class="status-default text-xs px-2 py-0.5 rounded-full" 
                                         style="background: {{ $bungalow->status == 'active' ? '#22c55e' : '#ef4444' }}; color: #fff;">
                                         {{ $bungalow->status == 'active' ? 'Tersedia' : 'Tidak Tersedia' }}
@@ -1160,7 +1182,19 @@
                                 <p class="text-xs mt-1 bungalow-desc" style="color: var(--text-card)"></p>
                             </div>
                             <div class="text-right">
-                                <div class="font-bold" style="color: var(--primary-color)">Rp {{ number_format($bungalow->price, 0, ',', '.') }}</div>
+                                @if($bungalow->has_discount)
+                                    <div>
+                                        <span class="text-sm line-through text-red-500">Rp {{ number_format($bungalow->price, 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="font-bold" style="color: #22c55e;">
+                                        Rp {{ number_format($bungalow->discount_price, 0, ',', '.') }}
+                                        <span class="text-xs font-normal discount-badge-small" style="color: #22c55e; background: rgba(34, 197, 94, 0.15); padding: 1px 8px; border-radius: 10px; margin-left: 4px;">
+                                            -{{ round((1 - $bungalow->discount_price / $bungalow->price) * 100) }}%
+                                        </span>
+                                    </div>
+                                @else
+                                    <div class="font-bold" style="color: var(--primary-color)">Rp {{ number_format($bungalow->price, 0, ',', '.') }}</div>
+                                @endif
                                 <div class="text-xs price-night-label" style="color: var(--text-card)">/malam</div>
                             </div>
                         </div>
@@ -1317,7 +1351,6 @@
             }
             if (checkInHidden) checkInHidden.value = this.value;
             calculateDuration();
-            // Reset selected bungalows when date changes
             resetSelectedBungalows();
         });
     }
@@ -1326,19 +1359,16 @@
         checkOut.addEventListener('change', function() {
             if (checkOutHidden) checkOutHidden.value = this.value;
             calculateDuration();
-            // Reset selected bungalows when date changes
             resetSelectedBungalows();
         });
     }
 
-    // ========== RESET SELECTED BUNGALOWS ==========
     function resetSelectedBungalows() {
         selectedBungalows = [];
         document.querySelectorAll('.bungalow-card.selected').forEach(card => {
             card.classList.remove('selected');
         });
         updateSummary();
-        // Re-check availability for all bungalows
         checkAllBungalowsAvailability();
     }
 
@@ -1382,7 +1412,6 @@
         container.appendChild(newGuest);
         document.getElementById('guestCount').value = guestCount;
         
-        // Update labels
         applyLang(currentLang);
     }
 
@@ -1394,7 +1423,6 @@
             guestForm.remove();
             guestCount--;
             document.getElementById('guestCount').value = guestCount;
-            // Renumber guest titles
             document.querySelectorAll('.guest-form').forEach((form, index) => {
                 const title = form.querySelector('h4');
                 if (title) title.textContent = `${t.guest_label || 'Tamu'} ${index + 1}`;
@@ -1412,7 +1440,6 @@
         
         if (phoneInput) {
             phoneInput.addEventListener('input', function() {
-                // Hanya angka yang diizinkan
                 this.value = this.value.replace(/[^0-9]/g, '');
             });
         }
@@ -1442,7 +1469,6 @@
         const phoneFull = countryCode + phone;
         document.getElementById('phoneFull').value = phoneFull;
         
-        // Update hidden input phone
         const phoneInput = document.querySelector('input[name="phone"]');
         if (phoneInput) {
             phoneInput.value = phoneFull;
@@ -1455,7 +1481,6 @@
         const checkOutVal = document.getElementById('checkOut').value;
         
         if (!checkInVal || !checkOutVal) {
-            // Jika belum pilih tanggal, tampilkan status default
             document.querySelectorAll('.bungalow-card').forEach(card => {
                 const bookedBadge = card.querySelector('.status-booked');
                 if (bookedBadge) bookedBadge.remove();
@@ -1470,24 +1495,20 @@
         }
 
         document.querySelectorAll('.bungalow-card').forEach(async (card) => {
-            // Skip jika bungalow inactive
             if (card.classList.contains('inactive')) return;
             
             const bungalowCode = card.dataset.bungalow;
             const isAvailable = await checkBungalowAvailability(bungalowCode);
             
-            // Hapus badge booked lama
             const oldBookedBadge = card.querySelector('.status-booked');
             if (oldBookedBadge) oldBookedBadge.remove();
             
-            // Sembunyikan status default
             const statusBadge = card.querySelector('.status-default');
             
             if (!isAvailable) {
                 card.classList.add('booked');
                 if (statusBadge) statusBadge.style.display = 'none';
                 
-                // Tambahkan badge "Booked"
                 const badge = document.createElement('span');
                 badge.className = 'status-booked text-xs px-2 py-0.5 rounded-full ml-2';
                 badge.style.cssText = 'background: #ef4444; color: #fff;';
@@ -1498,7 +1519,6 @@
                 card.classList.remove('booked');
                 if (statusBadge) {
                     statusBadge.style.display = 'inline-block';
-                    // Update teks status default sesuai bahasa
                     const isActive = card.dataset.status === 'active';
                     statusBadge.textContent = isActive ? (currentLang === 'id' ? 'Tersedia' : 'Available') : (currentLang === 'id' ? 'Tidak Tersedia' : 'Unavailable');
                     statusBadge.style.background = isActive ? '#22c55e' : '#ef4444';
@@ -1620,6 +1640,10 @@
             return 'Rp ' + (price / 1000).toFixed(0) + 'K';
         }
     }
+
+    function formatNumber(num) {
+        return num.toLocaleString('id-ID');
+    }
     
     function updateSummary() {
         const summaryList = document.getElementById('summaryList');
@@ -1640,19 +1664,37 @@
         
         let html = '';
         selectedBungalows.forEach(bungalow => {
-            const pricePerNight = bungalowPrices[bungalow] || 0;
+            const card = document.querySelector(`.bungalow-card[data-bungalow="${bungalow}"]`);
+            const hasDiscount = card?.dataset.hasDiscount === 'true';
+            const pricePerNight = hasDiscount ? parseFloat(card.dataset.discountPrice) : (bungalowPrices[bungalow] || 0);
+            const originalPrice = bungalowPrices[bungalow] || 0;
             const subtotal = pricePerNight * duration;
             total += subtotal;
             const name = currentLang === 'id' ? (bungalowNames[bungalow]?.id || bungalow) : (bungalowNames[bungalow]?.en || bungalow);
             const perNight = currentLang === 'id' ? 'malam' : 'nights';
+            
+            let priceHtml = '';
+            if (hasDiscount && pricePerNight < originalPrice) {
+                priceHtml = `
+                    <div class="text-xs" style="color: var(--primary-color)">
+                        <span class="line-through text-red-500 text-xs">Rp ${formatNumber(originalPrice)}</span>
+                        <span class="font-bold text-green-600">Rp ${formatNumber(pricePerNight)}</span> × ${duration} ${perNight}
+                    </div>
+                `;
+            } else {
+                priceHtml = `
+                    <div class="text-xs" style="color: var(--primary-color)">Rp ${formatNumber(pricePerNight)} × ${duration} ${perNight}</div>
+                `;
+            }
+            
             html += `
                 <div class="flex justify-between items-center" data-bungalow="${bungalow}">
                     <div>
                         <span style="color: var(--text-card)">${name}</span>
-                        <div class="text-xs" style="color: var(--primary-color)">${formatPrice(pricePerNight)} × ${duration} ${perNight}</div>
+                        ${priceHtml}
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="font-semibold" style="color: var(--text-body)">${formatPrice(subtotal)}</span>
+                        <span class="font-semibold" style="color: var(--text-body)">Rp ${formatNumber(subtotal)}</span>
                         <button type="button" onclick="removeBungalow('${bungalow}')" class="text-red-500 hover:text-red-700">
                             <i class="fas fa-times-circle"></i>
                         </button>
@@ -1698,13 +1740,11 @@
             const bungalowId = card.dataset.bungalow;
             const index = selectedBungalows.indexOf(bungalowId);
             
-            // Cek ketersediaan sebelum menambah
             if (index === -1) {
                 const isAvailable = await checkBungalowAvailability(bungalowId);
                 if (!isAvailable) {
                     const msg = currentLang === 'id' ? 'Maaf, bungalow ini sudah dipesan untuk tanggal tersebut.' : 'Sorry, this bungalow is already booked for those dates.';
                     alert(msg);
-                    // Update status card
                     card.classList.add('booked');
                     const statusBadge = card.querySelector('.status-default');
                     if (statusBadge) statusBadge.style.display = 'none';
@@ -1848,7 +1888,6 @@
         const t = translations[lang];
         if (!t) return;
         
-        // Update semua elemen dengan data-i18n
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.dataset.i18n;
             if (t[key] !== undefined) {
@@ -1856,24 +1895,20 @@
             }
         });
         
-        // Update guest titles
         document.querySelectorAll('.guest-form h4').forEach((title, index) => {
             title.textContent = `${t.guest_label || 'Tamu'} ${index + 1}`;
         });
         
-        // Update tombol add guest
         const addBtns = document.querySelectorAll('.guest-form .flex.justify-between .text-xs');
         addBtns.forEach(btn => {
             const span = btn.querySelector('span');
             if (span) span.textContent = t.add_guest || 'Tambah Tamu';
         });
         
-        // Update tombol remove di setiap guest
         document.querySelectorAll('.guest-form .bg-red-500').forEach(btn => {
             btn.innerHTML = `<i class="fas fa-times"></i> ${t.remove_guest || 'Hapus'}`;
         });
         
-        // Update footer
         const footerElements = {
             '[data-footer-name]': 'footer_name',
             '[data-footer-desc]': 'footer_desc',
@@ -1924,7 +1959,6 @@
         currentLang = lang;
         applyLang(lang);
         updateLangUI(lang);
-        // Re-check availability after language change
         checkAllBungalowsAvailability();
     }
     
@@ -1971,7 +2005,6 @@
         applyLang(savedLang);
         updateLangUI(savedLang);
         
-        // Pastikan semua lang-option sesuai dengan bahasa yang disimpan
         document.querySelectorAll('.lang-option').forEach(el => {
             if (el.dataset.lang === savedLang) {
                 el.classList.add('active');
@@ -1980,7 +2013,6 @@
             }
         });
         
-        // Check availability for all bungalows when page loads
         setTimeout(checkAllBungalowsAvailability, 500);
     });
 </script>
